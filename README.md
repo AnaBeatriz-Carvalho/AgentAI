@@ -1,5 +1,5 @@
 
-# 🏛️ Coleta e Classificação de Discursos do Senado Federal
+# 🏛️ Coleta e Classificação de Discursos do Senado Federal utilizando Agent AI
 
 Este projeto tem como objetivo coletar discursos do Senado Federal utilizando a API de dados abertos e classificar automaticamente os temas de cada discurso com base no conteúdo de seus resumos.
 
