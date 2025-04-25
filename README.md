@@ -18,7 +18,7 @@ O projeto é composto por dois scripts Python independentes:
 - Python 3.10+
 - `requests`
 - `xml.etree.ElementTree`
-- `transformers` (Hugging Face)
+- `transformers` 
 - Modelo: `facebook/bart-large-mnli`
 
 ## 🚀 Como Executar
