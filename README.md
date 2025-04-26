@@ -53,6 +53,6 @@ O projeto é composto por dois scripts Python independentes:
 O projeto demonstra como ferramentas de inteligência artificial podem auxiliar na automação de tarefas legislativas. A diferença entre as versões evidencia o impacto de boas práticas de programação: o uso eficiente de recursos, como o carregamento único de modelos pesados, pode reduzir significativamente o tempo de execução. Enquanto o GitHub Copilot sugeriu uma abordagem funcional viável, foi a análise crítica com apoio do ChatGPT que levou à otimização do desempenho.
 
 ## Desenvolvedores
-Ana Beatriz Carvalho Oliveira
-Alberto Bastos
+Ana Beatriz Carvalho Oliveira,
+Alberto Bastos,
 Victor Caetano
