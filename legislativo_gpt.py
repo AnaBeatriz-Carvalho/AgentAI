@@ -1,21 +1,74 @@
-import requests
-import xml.etree.ElementTree as ET
+import pandas as pd
+import csv
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 from transformers import pipeline
+import xml.etree.ElementTree as ET
+import requests
 
-# 🚀 Carrega o modelo UMA vez só
+# Carrega o classificador de tema
 classificador = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
+
 def classificar_tema(resumo):
-    # Define os possíveis temas para classificação
-    temas = ["Política", "Economia", "Educação", "Saúde", "Meio Ambiente", "Tecnologia", "Segurança"]
+    temas = [
+        "Política",
+        "Economia",
+        "Educação",
+        "Saúde",
+        "Meio Ambiente",
+        "Tecnologia",
+        "Segurança",
+    ]
     try:
-        # Realiza a classificação
         resultado = classificador(resumo, temas)
-        return resultado['labels'][0]
+        return resultado["labels"][0]
     except Exception as e:
         print(f"Erro ao classificar tema: {e}")
-        return 'Erro na classificação'
+        return "Erro na classificação"
 
+
+# Função para salvar os discursos em CSV
+def salvar_em_csv(discursos, nome_arquivo="discursos.csv"):
+    if discursos:  # Verifica se há discursos para salvar
+        df = pd.DataFrame(discursos)
+        df.to_csv(nome_arquivo, index=False)
+    else:
+        print("Nenhum dado para salvar.")
+
+
+# Função para salvar os discursos em PDF
+def salvar_em_pdf(discursos, nome_arquivo="relatorio_discursos.pdf"):
+    c = canvas.Canvas(nome_arquivo, pagesize=letter)
+    width, height = letter
+    y_position = height - 40  # Posição inicial do texto na página
+    c.setFont("Helvetica", 10)
+
+    # Define o limite de caracteres por linha
+    max_char_per_line = 100
+
+    for discurso in discursos:
+        # Desenha os textos
+        c.drawString(40, y_position, f"Autor: {discurso['NomeAutor']} ({discurso['Partido']})")
+        y_position -= 20
+        c.drawString(40, y_position, f"Tema: {discurso['Tema']}")
+        y_position -= 20
+        c.drawString(40, y_position, f"Resumo: {discurso['Resumo']}")
+        y_position -= 20
+        c.drawString(40, y_position, f"Texto Integral: {discurso['TextoIntegral']}")
+        y_position -= 20
+        c.drawString(40, y_position, f"URL Documento: {discurso['UrlTextoBinario']}")
+        y_position -= 40  # Espaço entre os discursos
+
+        # Se a posição for muito baixa, cria uma nova página
+        if y_position < 40:
+            c.showPage()
+            c.setFont("Helvetica", 10)
+            y_position = height - 40  # Reinicia a posição na nova página
+
+    c.save()
+
+# Função para buscar discursos (exemplo)
 def buscar_discursos(data_inicio, data_fim):
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio}/{data_fim}"
 
@@ -25,14 +78,21 @@ def buscar_discursos(data_inicio, data_fim):
 
     response = requests.get(url, headers=headers)
 
-    print(f"Status HTTP: {response.status_code}")
+    print(f"Status HTTP: {response.status_code}")  # Verifica o status da resposta
+    print(f"Conteúdo da resposta: {response.text[:500]}")  # Imprime um trecho da resposta
 
     if response.status_code == 200:
         try:
             root = ET.fromstring(response.content)
 
+            # Verificar se existe a seção de discursos
+            sessoes = root.findall('.//Sessoes//Sessao//Pronunciamentos//Pronunciamento')
+            if not sessoes:
+                print("Nenhum discurso encontrado para o intervalo de datas.")
+                return []
+
             discursos = []
-            for sessao in root.findall('.//Sessoes//Sessao//Pronunciamentos//Pronunciamento'):
+            for sessao in sessoes:
                 codigo_pronunciamento = sessao.find('CodigoPronunciamento')
                 tipo_uso_palavra_codigo = sessao.find('.//TipoUsoPalavra/Codigo')
                 tipo_uso_palavra_descricao = sessao.find('.//TipoUsoPalavra/Descricao')
@@ -67,15 +127,4 @@ def buscar_discursos(data_inicio, data_fim):
     else:
         print("Falha na requisição!")
         return None
-
-# Teste
-discursos = buscar_discursos("20250301", "20250401")
-
-if discursos:
-    for i, discurso in enumerate(discursos, 1):
-        print(f"Discurso {i}:")
-        for key, value in discurso.items():
-            print(f"{key}: {value}")
-        print("="*40)
-else:
-    print("Não foi possível recuperar os discursos.")
+	
