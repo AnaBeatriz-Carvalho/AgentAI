@@ -9,7 +9,6 @@ import requests
 # Carrega o classificador de tema
 classificador = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
-
 def classificar_tema(resumo):
     temas = [
         "Política",
@@ -27,28 +26,20 @@ def classificar_tema(resumo):
         print(f"Erro ao classificar tema: {e}")
         return "Erro na classificação"
 
-
-# Função para salvar os discursos em CSV
 def salvar_em_csv(discursos, nome_arquivo="discursos.csv"):
-    if discursos:  # Verifica se há discursos para salvar
+    if discursos:
         df = pd.DataFrame(discursos)
         df.to_csv(nome_arquivo, index=False)
     else:
         print("Nenhum dado para salvar.")
 
-
-# Função para salvar os discursos em PDF
 def salvar_em_pdf(discursos, nome_arquivo="relatorio_discursos.pdf"):
     c = canvas.Canvas(nome_arquivo, pagesize=letter)
     width, height = letter
-    y_position = height - 40  # Posição inicial do texto na página
+    y_position = height - 40
     c.setFont("Helvetica", 10)
 
-    # Define o limite de caracteres por linha
-    max_char_per_line = 100
-
     for discurso in discursos:
-        # Desenha os textos
         c.drawString(40, y_position, f"Autor: {discurso['NomeAutor']} ({discurso['Partido']})")
         y_position -= 20
         c.drawString(40, y_position, f"Tema: {discurso['Tema']}")
@@ -58,41 +49,40 @@ def salvar_em_pdf(discursos, nome_arquivo="relatorio_discursos.pdf"):
         c.drawString(40, y_position, f"Texto Integral: {discurso['TextoIntegral']}")
         y_position -= 20
         c.drawString(40, y_position, f"URL Documento: {discurso['UrlTextoBinario']}")
-        y_position -= 40  # Espaço entre os discursos
+        y_position -= 40
 
-        # Se a posição for muito baixa, cria uma nova página
         if y_position < 40:
             c.showPage()
             c.setFont("Helvetica", 10)
-            y_position = height - 40  # Reinicia a posição na nova página
+            y_position = height - 40
 
     c.save()
 
-# Função para buscar discursos (exemplo)
-def buscar_discursos(data_inicio, data_fim):
+def buscar_discursos(data_inicio, data_fim, stop_event=None, update_progress=None):
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio}/{data_fim}"
-
-    headers = {
-        "Accept": "application/xml"
-    }
-
+    headers = {"Accept": "application/xml"}
     response = requests.get(url, headers=headers)
 
-    print(f"Status HTTP: {response.status_code}")  # Verifica o status da resposta
-    print(f"Conteúdo da resposta: {response.text[:500]}")  # Imprime um trecho da resposta
+    print(f"Status HTTP: {response.status_code}")
+    print(f"Conteúdo da resposta: {response.text[:500]}")
 
     if response.status_code == 200:
         try:
             root = ET.fromstring(response.content)
-
-            # Verificar se existe a seção de discursos
             sessoes = root.findall('.//Sessoes//Sessao//Pronunciamentos//Pronunciamento')
+
             if not sessoes:
                 print("Nenhum discurso encontrado para o intervalo de datas.")
                 return []
 
             discursos = []
-            for sessao in sessoes:
+            total_discursos = len(sessoes)
+
+            for idx, sessao in enumerate(sessoes):
+                if stop_event and stop_event.is_set():
+                    print("Busca interrompida pelo usuário.")
+                    break
+
                 codigo_pronunciamento = sessao.find('CodigoPronunciamento')
                 tipo_uso_palavra_codigo = sessao.find('.//TipoUsoPalavra/Codigo')
                 tipo_uso_palavra_descricao = sessao.find('.//TipoUsoPalavra/Descricao')
@@ -118,13 +108,16 @@ def buscar_discursos(data_inicio, data_fim):
 
                 discursos.append(discurso_info)
 
+                # Atualiza a barra de progresso
+                if update_progress:
+                    update_progress.progress((idx + 1) / total_discursos)
+
             return discursos
 
         except ET.ParseError as e:
             print("Erro ao fazer o parse do XML:", e)
             print("Resposta recebida (parcial):", response.text[:500])
-            return None
+            return []
     else:
         print("Falha na requisição!")
-        return None
-	
+        return []
