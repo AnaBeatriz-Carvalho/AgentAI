@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import time
 import threading
 from legislativo_gpt import buscar_discursos, salvar_em_csv, salvar_em_pdf
+from grafico_levantamento import gerar_grafico_por_data_interativo
 
 # Configuração da página
 st.set_page_config(page_title="Classificador de Discursos", layout="wide")
@@ -46,7 +47,7 @@ def executar_busca():
             data_inicio.strftime("%Y%m%d"), 
             data_fim.strftime("%Y%m%d"), 
             stop_event=st.session_state.stop_flag, 
-            update_progress=progress_bar
+            _update_progress=progress_bar
         )
     except Exception as e:
         st.error(f"Erro durante a busca: {e}")
@@ -88,6 +89,7 @@ if st.session_state.discursos:
 
     df_discursos = pd.DataFrame(st.session_state.discursos)
     df_discursos.fillna("-", inplace=True)
+    print(df_discursos.head())
 
     # 🔥 Filtros
     st.subheader("🔎 Filtros de Pesquisa")
@@ -129,7 +131,7 @@ if st.session_state.discursos:
     for grupo, lista_discursos in grupos.items():
         st.markdown(f"### 📌 {grupo} ({len(lista_discursos)} discursos)")
         for discurso in lista_discursos:
-            with st.expander(f"{discurso['NomeAutor']} ({discurso['Partido']}) - Tema: {discurso['Tema']}"):
+            with st.expander(f"{discurso['DataSessao']}: {discurso['NomeAutor']} ({discurso['Partido']}) - Tema: {discurso['Tema']}"):
                 st.markdown(f"**Resumo:** {discurso['Resumo']}")
                 st.markdown(f"**Texto Integral:** {discurso['TextoIntegral']}")
 
@@ -152,3 +154,8 @@ if st.session_state.discursos:
             file_name="relatorio_discursos.pdf",
             mime="application/pdf"
         )
+
+    # 🔥 Gerar e Exibir Gráfico Interativo
+    st.subheader("📊 Gráfico de Discursos por Data")
+    grafico = gerar_grafico_por_data_interativo(df_filtrado)  # Gerar gráfico com os dados filtrados
+    st.plotly_chart(grafico)  # Exibir gráfico interativo
