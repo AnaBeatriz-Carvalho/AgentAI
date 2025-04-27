@@ -1,21 +1,19 @@
-streamlit==1.39.0
-torch==2.4.1 --extra-index-url https://download.pytorch.org/whl/cpu
-torchvision==0.19.1 --extra-index-url https://download.pytorch.org/whl/cpu
-torchaudio==2.4.1 --extra-index-url https://download.pytorch.org/whl/cpu
-numpy==1.26.4
-pandas==2.2.2
-pdfplumber==0.11.0
-PyPDF2==3.0.1
-python-dotenv==1.0.1
-requests==2.31.0
-spacy==3.7.4
-transformers==4.51.3
-plotly==5.24.0
-altair==5.4.1
-matplotlib==3.8.2
-scikit-learn==1.5.1
-nltk==3.8.1
-huggingface-hub==0.30.2
-safetensors==0.5.3
-tqdm==4.66.2
-PyYAML==6.0.2
+streamlit
+torch --extra-index-url https://download.pytorch.org/whl/cpu
+torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+numpy
+pandas
+pdfplumber
+PyPDF2
+python-dotenv
+requests
+spacy
+transformers
+plotly
+altair
+matplotlib
+scikit-learn
+nltk
+safetensors
+tqdm
