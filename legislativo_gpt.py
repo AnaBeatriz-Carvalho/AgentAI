@@ -5,7 +5,9 @@ from reportlab.pdfgen import canvas
 from transformers import pipeline
 import xml.etree.ElementTree as ET
 import requests
-
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from datetime import datetime
 # Carrega o classificador de tema
 classificador = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
@@ -33,30 +35,50 @@ def salvar_em_csv(discursos, nome_arquivo="discursos.csv"):
     else:
         print("Nenhum dado para salvar.")
 
+
+
 def salvar_em_pdf(discursos, nome_arquivo="relatorio_discursos.pdf"):
-    c = canvas.Canvas(nome_arquivo, pagesize=letter)
-    width, height = letter
-    y_position = height - 40
-    c.setFont("Helvetica", 10)
+    # Cria o canvas do reportlab
+    pdf = canvas.Canvas(nome_arquivo, pagesize=letter)
+    pdf.setFont("Helvetica", 12)
 
-    for discurso in discursos:
-        c.drawString(40, y_position, f"Autor: {discurso['NomeAutor']} ({discurso['Partido']})")
-        y_position -= 20
-        c.drawString(40, y_position, f"Tema: {discurso['Tema']}")
-        y_position -= 20
-        c.drawString(40, y_position, f"Resumo: {discurso['Resumo']}")
-        y_position -= 20
-        c.drawString(40, y_position, f"Texto Integral: {discurso['TextoIntegral']}")
-        y_position -= 20
-        c.drawString(40, y_position, f"URL Documento: {discurso['UrlTextoBinario']}")
-        y_position -= 40
+    # Capa
+    pdf.drawString(200, 750, "Relatório de Discursos")
+    pdf.drawString(180, 730, f"Data de geração: {datetime.now().strftime('%d/%m/%Y')}")
+    pdf.drawString(50, 710, "Este relatório contém os discursos coletados e classificados automaticamente.")
+    
+    pdf.showPage()
 
-        if y_position < 40:
-            c.showPage()
-            c.setFont("Helvetica", 10)
-            y_position = height - 40
+    # Conteúdo dos discursos
+    y_position = 700  # Posição inicial para o primeiro discurso
 
-    c.save()
+    for idx, discurso in enumerate(discursos, 1):
+        if y_position < 100:  # Se chegar no fim da página, cria uma nova página
+            pdf.showPage()
+            y_position = 750
+
+        # Adiciona título para cada discurso
+        pdf.setFont("Helvetica-Bold", 14)
+        pdf.drawString(50, y_position, f"Discurso {idx}")
+        y_position -= 20
+
+        # Adiciona detalhes do discurso
+        pdf.setFont("Helvetica", 12)
+        pdf.drawString(50, y_position, f"Autor: {discurso['NomeAutor']} ({discurso['Partido']})")
+        y_position -= 15
+        pdf.drawString(50, y_position, f"Tema: {discurso['Tema']}")
+        y_position -= 15
+
+        # Resumo e Texto Integral
+        pdf.setFont("Helvetica", 10)
+        pdf.drawString(50, y_position, f"Resumo: {discurso['Resumo']}")
+        y_position -= 15
+        pdf.drawString(50, y_position, f"Texto Integral: {discurso['TextoIntegral']}")
+        y_position -= 30
+
+    # Salva o PDF gerado
+    pdf.save()
+
 
 def buscar_discursos(data_inicio, data_fim, stop_event=None, update_progress=None):
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio}/{data_fim}"
