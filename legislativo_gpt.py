@@ -1,14 +1,11 @@
 import pandas as pd
-import csv
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from transformers import pipeline
 import xml.etree.ElementTree as ET
 import requests
-from reportlab.pdfgen import canvas
-from reportlab.lib import colors
 from datetime import datetime
-# Carrega o classificador de tema
+
 classificador = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
 def classificar_tema(resumo):
