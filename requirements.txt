@@ -3,3 +3,4 @@ transformers
 reportlab
 pandas
 requests
+torch
