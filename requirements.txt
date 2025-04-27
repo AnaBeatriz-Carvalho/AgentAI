@@ -1,7 +1,7 @@
 streamlit
-torch --extra-index-url https://download.pytorch.org/whl/cpu
-torchvision --extra-index-url https://download.pytorch.org/whl/cpu
-torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+torch 
+torchvision 
+torchaudio 
 numpy
 pandas
 pdfplumber
