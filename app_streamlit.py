@@ -9,6 +9,14 @@ from legislativo_gpt import buscar_discursos, salvar_em_csv, salvar_em_pdf
 st.set_page_config(page_title="Classificador de Discursos", layout="wide")
 st.title("🗣️ Classificação de Discursos do Senado")
 
+# Inicializar estados
+if "executando" not in st.session_state:
+    st.session_state.executando = False
+if "stop_flag" not in st.session_state:
+    st.session_state.stop_flag = None
+if "discursos" not in st.session_state:
+    st.session_state.discursos = None
+
 # Entrada de datas
 col1, col2 = st.columns(2)
 with col1:
@@ -18,16 +26,7 @@ with col2:
 
 intervalo = (data_fim - data_inicio).days
 mensagem_erro = st.empty()
-status_info = st.empty()
-tempo_execucao_box = st.empty()
-mensagem_cancelamento = st.empty()
 
-if "executando" not in st.session_state:
-    st.session_state.executando = False
-if "stop_flag" not in st.session_state:
-    st.session_state.stop_flag = None
-
-# Verificação de intervalo de datas
 if intervalo > 30:
     mensagem_erro.error("⚠️ O intervalo de datas não pode ser maior que 30 dias.")
 else:
@@ -52,7 +51,6 @@ def executar_busca():
     except Exception as e:
         st.error(f"Erro durante a busca: {e}")
 
-    st.session_state.stop_flag.set()
     progress_bar.empty()
     return discursos, time.time() - start_time
 
@@ -63,15 +61,15 @@ with col1:
 with col2:
     cancelar = st.button("❌ Cancelar Busca", disabled=not st.session_state.executando)
 
-# Cancelamento
+# Cancelar
 if cancelar and st.session_state.executando:
-    st.session_state.stop_flag.set()
+    if st.session_state.stop_flag:
+        st.session_state.stop_flag.set()
     st.session_state.executando = False
-    mensagem_cancelamento.warning("❌ Busca cancelada pelo usuário.")
-    time.sleep(2)
-    mensagem_cancelamento.empty()
+    st.warning("❌ Busca cancelada pelo usuário.")
+    time.sleep(1)
 
-# Execução
+# Buscar
 if buscar and intervalo <= 30:
     st.session_state.executando = True
 
@@ -79,16 +77,17 @@ if buscar and intervalo <= 30:
         discursos, tempo_total = executar_busca()
 
     st.session_state.executando = False
-    status_info.empty()
-
-    if st.session_state.stop_flag.is_set() and not discursos:
-        st.warning("Busca cancelada antes de terminar.")
-    elif discursos:
+    if discursos:
         st.success(f"✅ {len(discursos)} discursos encontrados em {tempo_total:.2f} segundos.")
+        st.session_state.discursos = discursos
+    else:
+        st.warning("⚠️ Nenhum discurso encontrado ou busca cancelada.")
 
-    # Prepara dados para garantir que filtros funcionem
-    df_discursos = pd.DataFrame(discursos)
-    df_discursos.fillna("-", inplace=True)  # substitui valores vazios por "-"
+# Só continua se tivermos discursos
+if st.session_state.discursos:
+
+    df_discursos = pd.DataFrame(st.session_state.discursos)
+    df_discursos.fillna("-", inplace=True)
 
     # 🔥 Filtros
     st.subheader("🔎 Filtros de Pesquisa")
@@ -100,7 +99,7 @@ if buscar and intervalo <= 30:
     filtro_partido = st.multiselect("Filtrar por Partido", partidos, key="filtro_partido")
     filtro_tema = st.multiselect("Filtrar por Tema", temas, key="filtro_tema")
 
-    # Aplicando os filtros
+    # Aplicar filtros
     df_filtrado = df_discursos.copy()
 
     if filtro_autor:
@@ -126,16 +125,15 @@ if buscar and intervalo <= 30:
                 grupos[chave] = []
             grupos[chave].append(discurso)
 
-    # 🔥 Mostrar os discursos agrupados
+    # 🔥 Mostrar discursos agrupados
     for grupo, lista_discursos in grupos.items():
         st.markdown(f"### 📌 {grupo} ({len(lista_discursos)} discursos)")
         for discurso in lista_discursos:
             with st.expander(f"{discurso['NomeAutor']} ({discurso['Partido']}) - Tema: {discurso['Tema']}"):
                 st.markdown(f"**Resumo:** {discurso['Resumo']}")
                 st.markdown(f"**Texto Integral:** {discurso['TextoIntegral']}")
-                st.markdown(f"[🔗 Ver Documento]({discurso['UrlTextoBinario']})")
 
-    # 🔥 Gerar CSV e PDF apenas dos filtrados
+    # 🔥 Botões de Download
     salvar_em_csv(discursos_filtrados, nome_arquivo="discursos.csv")
     salvar_em_pdf(discursos_filtrados, nome_arquivo="relatorio_discursos.pdf")
 
