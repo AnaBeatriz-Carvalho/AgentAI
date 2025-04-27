@@ -1,58 +1,80 @@
-
 # 🏛️ Coleta e Classificação de Discursos do Senado Federal utilizando Agent AI
 
-Este projeto tem como objetivo coletar discursos do Senado Federal utilizando a API de dados abertos e classificar automaticamente os temas de cada discurso com base no conteúdo de seus resumos.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://agentaiproject.streamlit.app/)
+
+Este projeto tem como objetivo coletar discursos do Senado Federal utilizando a API de dados abertos e classificar automaticamente os temas de cada discurso com base no conteúdo dos seus resumos, aplicando técnicas de Inteligência Artificial.
 
 ## 📁 Estrutura do Projeto
 
-O projeto é composto por dois scripts Python independentes:
+O projeto é composto por três arquivos principais:
 
 - **`legislativo_copilot.py`**  
-  Desenvolvido com o auxílio do GitHub Copilot, este script realiza a coleta dos discursos e classifica os temas diretamente dentro da função, usando a biblioteca `transformers` com o modelo `facebook/bart-large-mnli`. O modelo é carregado a cada chamada de classificação.
+  Script desenvolvido com o auxílio do GitHub Copilot. Realiza a coleta dos discursos e classifica os temas dentro da função, carregando o modelo a cada chamada (menos otimizado).
 
 - **`legislativo_gpt.py`**  
-  Versão otimizada com base nas sugestões do ChatGPT. Aqui, o modelo de classificação é carregado uma única vez fora da função, o que melhora significativamente o desempenho ao classificar múltiplos discursos.
+  Versão otimizada com base nas orientações do ChatGPT: o modelo de classificação é carregado apenas uma vez, melhorando bastante o desempenho na classificação de múltiplos discursos.
+
+- **`app_streamlit.py`**  
+  Interface interativa criada com Streamlit, permitindo coletar discursos, visualizar gráficos e exportar relatórios em CSV e PDF.
 
 ## ⚙️ Tecnologias Utilizadas
 
-- Python 3.10+
-- `requests`
-- `xml.etree.ElementTree`
-- `transformers` 
-- Modelo: `facebook/bart-large-mnli`
+- **Python 3.10+**
+- [Streamlit](https://streamlit.io/)
+- [Transformers (HuggingFace)](https://huggingface.co/transformers/)
+- [ReportLab](https://www.reportlab.com/)
+- [Plotly](https://plotly.com/python/)
+- Pandas
+- Requests
+- Torch
+- XML Parsing (`xml.etree.ElementTree`)
 
-## 🚀 Como Executar
+## 🚀 Como Executar Localmente
 
-1. Instale as dependências:
+1. Clone o repositório:
+
    ```bash
-   pip install transformers requests
+   git clone https://github.com/AnaBeatriz-Carvalho/AgentAI.git
    ```
 
-2. Execute um dos scripts diretamente:
+2. Instale as dependências:
+
    ```bash
-   python legislativo_copilot.py
-   ```
-   ou
-   ```bash
-   python legislativo_gpt.py
+   pip install -r requirements.txt
    ```
 
-3. O terminal exibirá os discursos obtidos e seus respectivos temas.
+3. Execute o aplicativo:
 
-## 📊 Comparativo entre versões
+   ```bash
+   streamlit run app_streamlit.py
+   ```
 
-| Versão               | Tempo de execução* | Carregamento do modelo |
-|----------------------|--------------------|-------------------------|
-| `legislativo_copilot.py` | ~509 segundos       | A cada chamada          |
-| `legislativo_gpt.py`     | ~351 segundos       | Uma vez só              |
+4. Ou acesse diretamente:  
+   👉 [https://agentaiproject.streamlit.app/](https://agentaiproject.streamlit.app/)
 
-> *Tempo estimado com base em execução local. Pode variar dependendo da conexão e da máquina.
+## 📊 Comparativo entre Versões de Scripts
+
+| Script                   | Tempo de Execução* | Carregamento de Modelo |
+|---------------------------|--------------------|-------------------------|
+| `legislativo_copilot.py`   | ~509 segundos       | A cada chamada          |
+| `legislativo_gpt.py`       | ~351 segundos       | Uma única vez           |
+
+> *Tempo aproximado. Pode variar conforme a conexão e a máquina utilizada.
 
 ## 📌 Conclusão
 
-O projeto demonstra como ferramentas de inteligência artificial podem auxiliar na automação de tarefas legislativas. A diferença entre as versões evidencia o impacto de boas práticas de programação: o uso eficiente de recursos, como o carregamento único de modelos pesados, pode reduzir significativamente o tempo de execução. Enquanto o GitHub Copilot sugeriu uma abordagem funcional viável, foi a análise crítica com apoio do ChatGPT que levou à otimização do desempenho.
+O projeto demonstra como o uso de Inteligência Artificial pode modernizar e automatizar o levantamento de dados legislativos. A comparação entre versões evidencia a importância de boas práticas de desenvolvimento para otimizar o desempenho de aplicações de IA.
 
-## Desenvolvedores
-Ana Beatriz Carvalho Oliveira,
-Alberto Bastos,
-Victor Caetano
+Enquanto o GitHub Copilot sugeriu uma abordagem funcional viável, foi a análise crítica apoiada no ChatGPT que levou a um ganho real de eficiência.
+
+---
+
+## 👨‍💻 Desenvolvedores
+
+- Ana Beatriz Carvalho Oliveira  
+- Alberto Bastos  
+- Victor Caetano  
+
+---
+
+
