@@ -4,26 +4,43 @@ from datetime import datetime, timedelta
 import time
 import threading
 from legislativo_gpt import buscar_discursos, salvar_em_csv, salvar_em_pdf
-from grafico_levantamento import gerar_grafico_por_data_interativo
+from grafico_levantamento import gerar_grafico_por_data_interativo_com_media
 
-# Configuração da página
 st.set_page_config(page_title="Classificador de Discursos", layout="wide")
+
+
+st.markdown("""
+<style>
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+}
+html, body, [class*="css"] {
+    font-family: 'Poppins', sans-serif;
+    color: #FFFFFF;
+}
+""", unsafe_allow_html=True)
+
+
+
 st.title("🗣️ Classificação de Discursos do Senado")
 
 # Inicializar estados
 if "executando" not in st.session_state:
     st.session_state.executando = False
 if "stop_flag" not in st.session_state:
-    st.session_state.stop_flag = None
+    st.session_state.stop_flag = threading.Event()
 if "discursos" not in st.session_state:
     st.session_state.discursos = None
 
 # Entrada de datas
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([2, 1])
+
 with col1:
-    data_inicio = st.date_input("Data de início", format="YYYY-MM-DD", value=datetime.today() - timedelta(days=7))
+    data_inicio = st.date_input("📅 Data de Início", format="YYYY-MM-DD")
 with col2:
-    data_fim = st.date_input("Data de fim", format="YYYY-MM-DD", value=datetime.today())
+    data_fim = st.date_input("📅 Data de Fim", format="YYYY-MM-DD")
+
+st.markdown("---")
 
 intervalo = (data_fim - data_inicio).days
 mensagem_erro = st.empty()
@@ -34,9 +51,8 @@ else:
     mensagem_erro.empty()
 
 # Função de execução
-def executar_busca():
+def executar_busca(data_inicio, data_fim):
     start_time = time.time()
-    st.session_state.stop_flag = threading.Event()
     st.session_state.stop_flag.clear()
 
     progress_bar = st.progress(0)
@@ -55,27 +71,29 @@ def executar_busca():
     progress_bar.empty()
     return discursos, time.time() - start_time
 
-# Layout de botões
-col1, col2 = st.columns([4, 1])
-with col1:
+# Função para cancelar
+def cancelar_busca():
+    if st.session_state.executando:
+        st.session_state.stop_flag.set()
+        st.session_state.executando = False
+        st.warning("❌ Busca cancelada pelo usuário.")
+        time.sleep(1)
+
+# Botões de ação
+col3, col4 = st.columns([1, 1])
+with col3:
     buscar = st.button("🔍 Buscar e Classificar Discursos", disabled=st.session_state.executando or intervalo > 30)
-with col2:
+with col4:
     cancelar = st.button("❌ Cancelar Busca", disabled=not st.session_state.executando)
 
-# Cancelar
-if cancelar and st.session_state.executando:
-    if st.session_state.stop_flag:
-        st.session_state.stop_flag.set()
-    st.session_state.executando = False
-    st.warning("❌ Busca cancelada pelo usuário.")
-    time.sleep(1)
+if cancelar:
+    cancelar_busca()
 
-# Buscar
 if buscar and intervalo <= 30:
     st.session_state.executando = True
 
     with st.spinner("Buscando discursos... Isso pode levar alguns segundos..."):
-        discursos, tempo_total = executar_busca()
+        discursos, tempo_total = executar_busca(data_inicio, data_fim)
 
     st.session_state.executando = False
     if discursos:
@@ -89,7 +107,6 @@ if st.session_state.discursos:
 
     df_discursos = pd.DataFrame(st.session_state.discursos)
     df_discursos.fillna("-", inplace=True)
-    print(df_discursos.head())
 
     # 🔥 Filtros
     st.subheader("🔎 Filtros de Pesquisa")
@@ -122,7 +139,7 @@ if st.session_state.discursos:
     else:
         grupos = {}
         for discurso in discursos_filtrados:
-            chave = discurso[agrupamento] or "Desconhecido"
+            chave = discurso.get(agrupamento, "Desconhecido") or "Desconhecido"
             if chave not in grupos:
                 grupos[chave] = []
             grupos[chave].append(discurso)
@@ -157,5 +174,5 @@ if st.session_state.discursos:
 
     # 🔥 Gerar e Exibir Gráfico Interativo
     st.subheader("📊 Gráfico de Discursos por Data")
-    grafico = gerar_grafico_por_data_interativo(df_filtrado)  # Gerar gráfico com os dados filtrados
+    grafico = gerar_grafico_por_data_interativo_com_media(df_filtrado)  # Gerar gráfico com os dados filtrados
     st.plotly_chart(grafico)  # Exibir gráfico interativo
