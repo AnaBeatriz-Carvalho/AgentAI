@@ -1,10 +1,11 @@
 import streamlit as st
-import time
-from datetime import datetime, timedelta
-import threading
 import pandas as pd
+from datetime import datetime, timedelta
+import time
+import threading
 from legislativo_gpt import buscar_discursos, salvar_em_csv, salvar_em_pdf
 
+# Configuração da página
 st.set_page_config(page_title="Classificador de Discursos", layout="wide")
 st.title("🗣️ Classificação de Discursos do Senado")
 
@@ -26,6 +27,7 @@ if "executando" not in st.session_state:
 if "stop_flag" not in st.session_state:
     st.session_state.stop_flag = None
 
+# Verificação de intervalo de datas
 if intervalo > 30:
     mensagem_erro.error("⚠️ O intervalo de datas não pode ser maior que 30 dias.")
 else:
@@ -84,32 +86,71 @@ if buscar and intervalo <= 30:
     elif discursos:
         st.success(f"✅ {len(discursos)} discursos encontrados em {tempo_total:.2f} segundos.")
 
-        # Mostrar discursos
-        for discurso in discursos:
+    # Prepara dados para garantir que filtros funcionem
+    df_discursos = pd.DataFrame(discursos)
+    df_discursos.fillna("-", inplace=True)  # substitui valores vazios por "-"
+
+    # 🔥 Filtros
+    st.subheader("🔎 Filtros de Pesquisa")
+    autores = sorted(df_discursos['NomeAutor'].unique())
+    partidos = sorted(df_discursos['Partido'].unique())
+    temas = sorted(df_discursos['Tema'].unique())
+
+    filtro_autor = st.multiselect("Filtrar por Autor", autores, key="filtro_autor")
+    filtro_partido = st.multiselect("Filtrar por Partido", partidos, key="filtro_partido")
+    filtro_tema = st.multiselect("Filtrar por Tema", temas, key="filtro_tema")
+
+    # Aplicando os filtros
+    df_filtrado = df_discursos.copy()
+
+    if filtro_autor:
+        df_filtrado = df_filtrado[df_filtrado['NomeAutor'].isin(filtro_autor)]
+    if filtro_partido:
+        df_filtrado = df_filtrado[df_filtrado['Partido'].isin(filtro_partido)]
+    if filtro_tema:
+        df_filtrado = df_filtrado[df_filtrado['Tema'].isin(filtro_tema)]
+
+    discursos_filtrados = df_filtrado.to_dict(orient="records")
+
+    # 🔥 Agrupamento
+    st.subheader("📚 Agrupar Discursos")
+    agrupamento = st.selectbox("Agrupar por:", ["Nenhum", "Partido", "Tema"])
+
+    if agrupamento == "Nenhum":
+        grupos = {"Todos os Discursos": discursos_filtrados}
+    else:
+        grupos = {}
+        for discurso in discursos_filtrados:
+            chave = discurso[agrupamento] or "Desconhecido"
+            if chave not in grupos:
+                grupos[chave] = []
+            grupos[chave].append(discurso)
+
+    # 🔥 Mostrar os discursos agrupados
+    for grupo, lista_discursos in grupos.items():
+        st.markdown(f"### 📌 {grupo} ({len(lista_discursos)} discursos)")
+        for discurso in lista_discursos:
             with st.expander(f"{discurso['NomeAutor']} ({discurso['Partido']}) - Tema: {discurso['Tema']}"):
                 st.markdown(f"**Resumo:** {discurso['Resumo']}")
                 st.markdown(f"**Texto Integral:** {discurso['TextoIntegral']}")
                 st.markdown(f"[🔗 Ver Documento]({discurso['UrlTextoBinario']})")
 
-        # Gerar CSV e PDF
-        salvar_em_csv(discursos, nome_arquivo="discursos.csv")
-        salvar_em_pdf(discursos, nome_arquivo="relatorio_discursos.pdf")
+    # 🔥 Gerar CSV e PDF apenas dos filtrados
+    salvar_em_csv(discursos_filtrados, nome_arquivo="discursos.csv")
+    salvar_em_pdf(discursos_filtrados, nome_arquivo="relatorio_discursos.pdf")
 
-        with open("discursos.csv", "rb") as csv_file:
-            st.download_button(
-                label="📥 Baixar CSV dos Discursos",
-                data=csv_file,
-                file_name="discursos.csv",
-                mime="text/csv"
-            )
+    with open("discursos.csv", "rb") as csv_file:
+        st.download_button(
+            label="📥 Baixar CSV dos Discursos",
+            data=csv_file,
+            file_name="discursos.csv",
+            mime="text/csv"
+        )
 
-        with open("relatorio_discursos.pdf", "rb") as pdf_file:
-            st.download_button(
-                label="📄 Baixar PDF dos Discursos",
-                data=pdf_file,
-                file_name="relatorio_discursos.pdf",
-                mime="application/pdf"
-            )
-
-    else:
-        st.warning("Nenhum discurso encontrado ou erro na consulta.")
+    with open("relatorio_discursos.pdf", "rb") as pdf_file:
+        st.download_button(
+            label="📄 Baixar PDF dos Discursos",
+            data=pdf_file,
+            file_name="relatorio_discursos.pdf",
+            mime="application/pdf"
+        )
