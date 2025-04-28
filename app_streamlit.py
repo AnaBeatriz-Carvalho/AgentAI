@@ -5,6 +5,10 @@ import time
 import threading
 from legislativo_gpt import buscar_discursos, salvar_em_csv, salvar_em_pdf
 from grafico_levantamento import gerar_grafico_por_data_interativo_com_media
+import os
+os.environ["STREAMLIT_SERVER_HEADLESS"] = "1"
+os.environ["STREAMLIT_WATCHFILE_WATCHER_TYPE"] = "none"
+
 
 # Configuração da página
 st.set_page_config(
