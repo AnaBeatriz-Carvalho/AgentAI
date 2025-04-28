@@ -5,3 +5,13 @@ backgroundColor="#0f2027"
 secondaryBackgroundColor="#203a43"
 textColor="#ffffff"
 font="sans serif"
+
+# Cores adicionais para elementos específicos
+[theme.button]
+backgroundColor="#00c6ff"
+textColor="#ffffff"
+
+# Personalização de containers
+[theme.sidebar]
+backgroundColor="#203a43"
+textColor="#ffffff"

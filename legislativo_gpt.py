@@ -80,65 +80,56 @@ def buscar_discursos(data_inicio, data_fim, stop_event=None, _update_progress=No
     headers = {"Accept": "application/xml"}
     response = requests.get(url, headers=headers)
 
-    print(f"Status HTTP: {response.status_code}")
-    if response.status_code == 200:
-        try:
-            root = ET.fromstring(response.content)
-            sessoes = root.findall('.//Sessoes//Sessao')
-
-            if not sessoes:
-                print("Nenhuma sessão encontrada para o intervalo de datas.")
-                return []
-
-            discursos = []
-            total_pronunciamentos = sum(len(sessao.findall('.//Pronunciamentos//Pronunciamento')) for sessao in sessoes)
-            current_idx = 0
-
-            for sessao in sessoes:
-                data_sessao = sessao.find('DataSessao').text if sessao.find('DataSessao') is not None else 'Não disponível'
-
-                pronunciamentos = sessao.findall('.//Pronunciamentos//Pronunciamento')
-                for pronunciamento in pronunciamentos:
-                    if stop_event and stop_event.is_set():
-                        print("Busca interrompida pelo usuário.")
-                        break
-
-                    codigo_pronunciamento = pronunciamento.find('CodigoPronunciamento')
-                    tipo_uso_palavra_codigo = pronunciamento.find('.//TipoUsoPalavra/Codigo')
-                    tipo_uso_palavra_descricao = pronunciamento.find('.//TipoUsoPalavra/Descricao')
-                    resumo = pronunciamento.find('Resumo')
-                    texto_integral = pronunciamento.find('TextoIntegralTxt')
-                    url_texto_binario = pronunciamento.find('UrlTextoBinario')
-                    nome_autor = pronunciamento.find('NomeAutor')
-                    partido = pronunciamento.find('Partido')
-
-                    discurso_info = {
-                        'DataSessao': data_sessao,
-                        'CodigoPronunciamento': codigo_pronunciamento.text if codigo_pronunciamento is not None else 'Não disponível',
-                        'TipoUsoPalavra': {
-                            'Codigo': tipo_uso_palavra_codigo.text if tipo_uso_palavra_codigo is not None else 'Não disponível',
-                            'Descricao': tipo_uso_palavra_descricao.text if tipo_uso_palavra_descricao is not None else 'Não disponível',
-                        },
-                        'Resumo': resumo.text if resumo is not None else 'Não disponível',
-                        'TextoIntegral': texto_integral.text if texto_integral is not None else 'Não disponível',
-                        'UrlTextoBinario': url_texto_binario.text if url_texto_binario is not None else 'Não disponível',
-                        'NomeAutor': nome_autor.text if nome_autor is not None else 'Não disponível',
-                        'Partido': partido.text if partido is not None else 'Não disponível',
-                        'Tema': classificar_tema(resumo.text) if resumo is not None else 'Não disponível'
-                    }
-
-                    discursos.append(discurso_info)
-
-                    current_idx += 1
-                    if _update_progress:
-                        _update_progress.progress(current_idx / total_pronunciamentos)
-
-            return discursos
-
-        except ET.ParseError as e:
-            print("Erro ao fazer o parse do XML:", e)
-            print("Resposta recebida (parcial):", response.text[:500])
-            return []
-    else:
+    if response.status_code != 200:
         print("Falha na requisição!")
+        return []
+
+    try:
+        root = ET.fromstring(response.content)
+        sessoes = root.findall('.//Sessoes//Sessao')
+
+        if not sessoes:
+            print("Nenhuma sessão encontrada para o intervalo de datas.")
+            return []
+
+        discursos = []
+        total_pronunciamentos = sum(len(sessao.findall('.//Pronunciamentos//Pronunciamento')) for sessao in sessoes)
+        current_idx = 0
+
+        for sessao in sessoes:
+            data_sessao = sessao.find('DataSessao').text if sessao.find('DataSessao') is not None else 'Não disponível'
+
+            pronunciamentos = sessao.findall('.//Pronunciamentos//Pronunciamento')
+            for pronunciamento in pronunciamentos:
+                if stop_event and stop_event.is_set():
+                    print("Busca interrompida pelo usuário.")
+                    return discursos  # Retorna o que foi coletado até agora
+
+                discurso_info = {
+                    'DataSessao': data_sessao,
+                    'CodigoPronunciamento': pronunciamento.findtext('CodigoPronunciamento', default='Não disponível'),
+                    'TipoUsoPalavra': {
+                        'Codigo': pronunciamento.findtext('.//TipoUsoPalavra/Codigo', default='Não disponível'),
+                        'Descricao': pronunciamento.findtext('.//TipoUsoPalavra/Descricao', default='Não disponível'),
+                    },
+                    'Resumo': pronunciamento.findtext('Resumo', default='Não disponível'),
+                    'TextoIntegral': pronunciamento.findtext('TextoIntegralTxt', default='Não disponível'),
+                    'UrlTextoBinario': pronunciamento.findtext('UrlTextoBinario', default='Não disponível'),
+                    'NomeAutor': pronunciamento.findtext('NomeAutor', default='Não disponível'),
+                    'Partido': pronunciamento.findtext('Partido', default='Não disponível'),
+                    'Tema': classificar_tema(pronunciamento.findtext('Resumo')) if pronunciamento.find('Resumo') is not None else 'Não disponível'
+                }
+
+                discursos.append(discurso_info)
+
+                # Atualiza a barra de progresso (se foi passada)
+                current_idx += 1
+                if _update_progress:
+                    _update_progress(current_idx / total_pronunciamentos)
+
+        return discursos
+
+    except ET.ParseError as e:
+        print("Erro ao fazer o parse do XML:", e)
+        print("Resposta recebida (parcial):", response.text[:500])
         return []
