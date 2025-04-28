@@ -1,4 +1,5 @@
 streamlit
+reportlab
 torch 
 torchvision 
 torchaudio 

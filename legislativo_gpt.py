@@ -1,4 +1,5 @@
 import pandas as pd
+import reportlab
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from transformers import pipeline
