@@ -1,0 +1,136 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Coleta e Classificação de Discursos do Senado Federal utilizando Agent AI},
+  pdfauthor={Ana Beatriz; Alberto Bastos; Victor Caetano},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Coleta e Classificação de Discursos do Senado Federal utilizando
+Agent AI}
+\author{Ana Beatriz \and Alberto Bastos \and Victor Caetano}
+\date{2025-05-14}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{5}
+\tableofcontents
+}
+\begin{abstract}
+Este é o resumo do artigo. Deve conter uma breve descrição dos objetivos, métodos, resultados e conclusões. Máximo de 250 palavras.
+\end{abstract}
+
+\textbf{Palavras-chave:} palavra1; palavra2; palavra3
+
+\section{Introdução}
+
+Contextualização do problema, lacunas na literatura, objetivos.
+
+\section{Trabalhos Relacionados}
+
+Discussão de estudos anteriores relevantes, comparando abordagens,
+lacunas e contribuições.
+
+\section{Metodologia}
+
+Descrição clara e replicável dos métodos utilizados, incluindo
+materiais, ferramentas e processos.
+
+\section{Resultados}
+
+Apresentação dos dados e análise estatística ou qualitativa.
+
+\section{Discussão}
+
+Interpretação dos resultados, relação com hipóteses, implicações
+teóricas ou práticas.
+
+\subsection{Ameaças à Validade}
+
+Discussão das possíveis limitações do estudo quanto à validade interna,
+externa, de construção e de conclusão.
+
+\subsection{Trabalhos Futuros}
+
+\colorbox{yellow}{Futuramente outras implementações podem ser feitas no código, de modo a permitir que funcionalidade, após interação com usuário, sugira temas.}
+
+\section{Conclusão}
+
+Resumo dos principais achados, contribuições e encerramento do artigo.
+
+\section*{Agradecimentos}
+
+(Se aplicável)
+
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\appendix
+\section*{Apêndice}
+
+(Material suplementar, se necessário)
+
+\textbackslash end\{document\}
+
+\end{document}
