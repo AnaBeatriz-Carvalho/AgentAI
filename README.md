@@ -82,11 +82,6 @@ Veja a lista completa em [`modelos_gemini_disponiveis.txt`](modelos_gemini_dispo
 
 ---
 
-## 📃 Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
-
----
 
 ## 👨‍💻 Desenvolvedores
 
