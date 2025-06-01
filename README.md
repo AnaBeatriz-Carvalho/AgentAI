@@ -1,71 +1,90 @@
-# 🏛️ Coleta e Classificação de Discursos do Senado Federal utilizando Agent AI
+# 🧠 Análise de Discursos do Senado com Agente Gemini
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://agentaiproject.streamlit.app/)
+Este projeto utiliza inteligência artificial (IA) da Google (Gemini) para extrair, analisar e interpretar discursos do Senado Federal brasileiro. Através de uma interface interativa feita com Streamlit, é possível visualizar dados, gráficos e interagir com um agente IA para obter respostas baseadas nos discursos.
 
-Este projeto tem como objetivo coletar discursos do Senado Federal utilizando a API de dados abertos e classificar automaticamente os temas de cada discurso com base no conteúdo dos seus resumos, aplicando técnicas de Inteligência Artificial.
+## 🚀 Funcionalidades
 
-## 📁 Estrutura do Projeto
+* 🗖️ **Seleção de período**: escolha um intervalo de até 30 dias para análise.
+* 🗣️ **Extração automática de discursos** via API de Dados Abertos do Senado.
+* 📈 **Visualização interativa** com gráfico de discursos por data e média móvel.
+* 🤖 **Consulta a IA Gemini**: faça perguntas e receba respostas contextualizadas com base nos discursos extraídos.
+* 💬 **Interface simples e intuitiva** feita com Streamlit.
 
-O projeto é composto por três arquivos principais:
 
-- **`legislativo_copilot.py`**  
-  Script desenvolvido com o auxílio do GitHub Copilot. Realiza a coleta dos discursos e classifica os temas dentro da função, carregando o modelo a cada chamada (menos otimizado).
+## ⚒️ Como Executar Localmente
 
-- **`legislativo_gpt.py`**  
-  Versão otimizada com base nas orientações do ChatGPT: o modelo de classificação é carregado apenas uma vez, melhorando bastante o desempenho na classificação de múltiplos discursos.
+### 1. Clone o repositório
 
-- **`app_streamlit.py`**  
-  Interface interativa criada com Streamlit, permitindo coletar discursos, visualizar gráficos e exportar relatórios em CSV e PDF.
+```bash
+git clone https://github.com/AnaBeatriz-Carvalho/AgentAI.git
+```
 
-## ⚙️ Tecnologias Utilizadas
+### 2. Crie um ambiente virtual
 
-- **Python 3.10+**
-- [Streamlit](https://streamlit.io/)
-- [Transformers (HuggingFace)](https://huggingface.co/transformers/)
-- [ReportLab](https://www.reportlab.com/)
-- [Plotly](https://plotly.com/python/)
-- Pandas
-- Requests
-- Torch
-- XML Parsing (`xml.etree.ElementTree`)
+```bash
+python -m venv venv
+source venv/bin/activate  # No Windows: venv\Scripts\activate
+```
 
-## 🚀 Como Executar Localmente
+### 3. Instale as dependências
 
-1. Clone o repositório:
+```bash
+pip install -r requirements.txt
+```
 
-   ```bash
-   git clone https://github.com/AnaBeatriz-Carvalho/AgentAI.git
-   ```
+### 4. Configure a chave da API Gemini
 
-2. Instale as dependências:
+Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```env
+GEMINI_API_KEY=sua_chave_de_api
+```
 
-3. Execute o aplicativo:
+> Você pode obter uma chave gratuita ou paga em [Google AI Studio](https://makersuite.google.com/app/apikey).
 
-   ```bash
-   streamlit run app_streamlit.py
-   ```
+---
 
-4. Ou acesse diretamente:  
-   👉 [https://agentaiproject.streamlit.app/](https://agentaiproject.streamlit.app/)
+## ▶️ Executar a Aplicação
 
-## 📊 Comparativo entre Versões de Scripts
+```bash
+streamlit run app_streamlit.py
+```
 
-| Script                   | Tempo de Execução* | Carregamento de Modelo |
-|---------------------------|--------------------|-------------------------|
-| `legislativo_copilot.py`   | ~509 segundos       | A cada chamada          |
-| `legislativo_gpt.py`       | ~351 segundos       | Uma única vez           |
+---
 
-> *Tempo aproximado. Pode variar conforme a conexão e a máquina utilizada.
+## 📂 Estrutura do Projeto
 
-## 📌 Conclusão
+```
+├── app_streamlit.py                  # Interface principal com Streamlit
+├── agente_gemini.py                 # Configuração da API do Gemini
+├── extrair_discursos.py            # Módulo de extração de dados do Senado
+├── grafico_levantamento.py        # Geração de gráfico interativo com Plotly
+├── modelos_gemini_disponiveis.txt # Lista de modelos Gemini suportados
+├── .env                            # Armazena a API key
+└── requirements.txt                # Lista de dependências do projeto
+```
 
-O projeto demonstra como o uso de Inteligência Artificial pode modernizar e automatizar o levantamento de dados legislativos. A comparação entre versões evidencia a importância de boas práticas de desenvolvimento para otimizar o desempenho de aplicações de IA.
+---
 
-Enquanto o GitHub Copilot sugeriu uma abordagem funcional viável, foi a análise crítica apoiada no ChatGPT que levou a um ganho real de eficiência.
+## 🤖 Modelos Gemini Suportados
+
+O projeto é compatível com diversos modelos do Gemini. O padrão atual é `gemini-1.5-flash`, mas você pode trocar no código ou expandir a interface para selecionar outros modelos.
+
+Veja a lista completa em [`modelos_gemini_disponiveis.txt`](modelos_gemini_disponiveis.txt).
+
+---
+
+## 📌 Observações
+
+* Limite de 30 dias por consulta devido à API do Senado.
+* A IA utiliza apenas parte dos discursos para economizar tokens.
+* Em caso de erro "quota exceeded", verifique o plano de sua API.
+
+---
+
+## 📃 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
@@ -74,7 +93,5 @@ Enquanto o GitHub Copilot sugeriu uma abordagem funcional viável, foi a anális
 - Ana Beatriz Carvalho Oliveira  
 - Alberto Bastos  
 - Victor Caetano  
-
----
 
 
