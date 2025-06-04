@@ -3,6 +3,7 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 import logging
+from classificador_tema import classificar_tema_discursos
 
 # Configura logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -97,7 +98,8 @@ def extrair_discursos_senado(data_inicio, data_fim):
         
         if df.empty:
             logging.warning("DataFrame vazio após processamento.")
-        
+        if not df.empty:
+            df = classificar_tema_discursos(df)
         return df
 
     except Exception as e:

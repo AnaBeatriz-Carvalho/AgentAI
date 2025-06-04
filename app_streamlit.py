@@ -77,7 +77,8 @@ elif st.button("Carregar Discursos", key="carregar_discursos"):
 # Exibe tabela e gráfico se o DataFrame não estiver vazio
 if not st.session_state.df.empty:
     st.subheader("📋 Dados dos Discursos")
-    st.dataframe(st.session_state.df[['DataSessao', 'CodigoPronunciamento', 'TipoDiscurso', 'Resumo', 'UrlTexto']], use_container_width=True)
+    st.dataframe(st.session_state.df[['DataSessao', 'CodigoPronunciamento', 'TipoDiscurso', 'Resumo', 'TemaPrevisto', 'UrlTexto']], use_container_width=True)
+
 
     st.subheader("📈 Gráfico Interativo")
     try:
