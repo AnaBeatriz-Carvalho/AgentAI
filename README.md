@@ -1,15 +1,15 @@
-# 🧠 Análise de Discursos do Senado com Agente Gemini
+# 🧠 Análise de Discursos do Senado com Agente Gemini + Classificação Temática
 
-Este projeto utiliza inteligência artificial (IA) da Google (Gemini) para extrair, analisar e interpretar discursos do Senado Federal brasileiro. Através de uma interface interativa feita com Streamlit, é possível visualizar dados, gráficos e interagir com um agente IA para obter respostas baseadas nos discursos.
+Este projeto utiliza inteligência artificial (IA) da Google (Gemini) para extrair, analisar, **classificar tematicamente** e interpretar discursos do Senado Federal brasileiro. Através de uma interface interativa feita com Streamlit, o usuário pode visualizar dados, gráficos e interagir com um agente IA para obter respostas baseadas nos discursos.
 
 ## 🚀 Funcionalidades
 
-* 🗖️ **Seleção de período**: escolha um intervalo de até 30 dias para análise.
+* 📆 **Seleção de período**: escolha um intervalo de até 30 dias para análise.
 * 🗣️ **Extração automática de discursos** via API de Dados Abertos do Senado.
-* 📈 **Visualização interativa** com gráfico de discursos por data e média móvel.
-* 🤖 **Consulta a IA Gemini**: faça perguntas e receba respostas contextualizadas com base nos discursos extraídos.
-* 💬 **Interface simples e intuitiva** feita com Streamlit.
-
+* 🧠 **Classificação temática automática** (Educação, Saúde, Economia, Segurança, Cultura, Meio Ambiente, etc.).
+* 📈 **Gráfico interativo** com distribuição temporal dos discursos e média móvel.
+* 🤖 **Consulta à IA Gemini**: perguntas personalizadas com base nos discursos.
+* 💬 **Interface intuitiva e moderna** feita com Streamlit.
 
 ## ⚒️ Como Executar Localmente
 
@@ -17,6 +17,7 @@ Este projeto utiliza inteligência artificial (IA) da Google (Gemini) para extra
 
 ```bash
 git clone https://github.com/AnaBeatriz-Carvalho/AgentAI.git
+
 ```
 
 ### 2. Crie um ambiente virtual
@@ -55,14 +56,43 @@ streamlit run app_streamlit.py
 ## 📂 Estrutura do Projeto
 
 ```
-├── app_streamlit.py                  # Interface principal com Streamlit
-├── agente_gemini.py                 # Configuração da API do Gemini
-├── extrair_discursos.py            # Módulo de extração de dados do Senado
-├── grafico_levantamento.py        # Geração de gráfico interativo com Plotly
-├── modelos_gemini_disponiveis.txt # Lista de modelos Gemini suportados
-├── .env                            # Armazena a API key
-└── requirements.txt                # Lista de dependências do projeto
+├── app_streamlit.py                   # Interface principal com Streamlit
+├── agente_gemini.py                   # Configuração do modelo Gemini
+├── classificacao_tematica.py          # Novo módulo de classificação automática por tema
+├── extrair_discursos.py               # Extração dos discursos via API do Senado
+├── grafico_levantamento.py            # Geração de gráficos interativos com Plotly
+├── modelos_gemini_disponiveis.txt     # Lista de modelos Gemini compatíveis
+├── .env                               # API Key da Gemini
+├── requirements.txt                   # Dependências do projeto
+
 ```
+
+---
+
+🤖 Classificação Temática
+Os discursos extraídos são automaticamente classificados em temas com auxílio do Gemini, como:
+
+Educação
+
+Saúde
+
+Economia
+
+Segurança
+
+Meio Ambiente
+
+Cultura
+
+Direitos Humanos
+
+Infraestrutura
+
+Política
+
+Outros
+
+A classificação é exibida na interface para facilitar a análise contextual.
 
 ---
 
