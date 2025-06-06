@@ -19,3 +19,4 @@ nltk
 safetensors
 tqdm
 joblib
+google.generativeai
