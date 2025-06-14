@@ -1,110 +1,87 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+import google.generativeai as genai
 from datetime import datetime, timedelta
-from agente_gemini import configurar_agente
-from grafico_levantamento import gerar_grafico_por_data_interativo_com_media
-from extrair_discursos import extrair_discursos_senado
-import logging
+import os 
+from dotenv import load_dotenv 
 
-# Configura logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+from data_processing import extrair_e_classificar_discursos
+from gemini_handler import responder_pergunta_usuario
 
-# Cache para dados do Senado
-@st.cache_data
-def carregar_dados_senado(data_inicio, data_fim):
-    return extrair_discursos_senado(data_inicio, data_fim)
+st.set_page_config(layout="wide", page_title="Análise de Discursos do Senado com Agente Gemini")
 
-# Cache para respostas do Gemini
-@st.cache_data
-def consultar_gemini(contexto, pergunta, data_inicio, data_fim, model_name):
-    agente = configurar_agente(model_name=model_name)
-    prompt = (
-        f"Com base nos seguintes discursos do Senado (período: {data_inicio.strftime('%d/%m/%Y')} a {data_fim.strftime('%d/%m/%Y')}):\n"
-        f"{contexto}\n"
-        f"Pergunta do usuário: {pergunta}\n"
-        "Forneça uma resposta detalhada e, se aplicável, um resumo dos principais pontos dos discursos."
-    )
-    try:
-        resposta = agente.generate_content(prompt)
-        return resposta.text
-    except Exception as e:
-        if "429" in str(e):
-            return (
-                f"Erro: Limite de quota do Gemini API excedido ou modelo sem cota gratuita. "
-                f"Verifique seu plano em https://ai.google.dev/gemini-api/docs/rate-limits. "
-                f"Considere usar 'gemini-1.5-flash' ou ativar faturamento. Detalhes: {e}"
-            )
-        raise e
+# --- GERENCIAMENTO DA API KEY COM .ENV (MUITO IMPORTANTE) ---
+load_dotenv() 
 
-# Inicializa o estado da sessão
-if 'df' not in st.session_state:
-    st.session_state.df = pd.DataFrame()
-if 'data_inicio' not in st.session_state:
-    st.session_state.data_inicio = datetime(2025, 3, 1)
-if 'data_fim' not in st.session_state:
-    st.session_state.data_fim = datetime(2025, 3, 29)
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-st.set_page_config(page_title="Análise de Discursos com IA", layout="wide")
-st.title("📊 Análise de Discursos do Senado com Agente Gemini")
+if not GOOGLE_API_KEY:
+    st.error("Chave da API do Google não encontrada!")
+    st.info("Por favor, crie um arquivo .env na raiz do projeto e adicione sua GOOGLE_API_KEY.")
+    st.stop()
 
-# Seleção de período pelo usuário
-st.subheader("📅 Selecione o Período de Análise (máximo 30 dias)")
+genai.configure(api_key=GOOGLE_API_KEY)
+
+
+st.title("🏛️ Análise dos Discursos do Senado com Agente Gemini")
+st.markdown("Uma ferramenta para explorar, classificar e consultar os discursos do Senado Federal brasileiro.")
+
+with st.sidebar:
+    st.header("Filtros")
+    # Define datas padrão (últimos 30 dias)
+    data_fim_padrao = datetime.today()
+    data_inicio_padrao = data_fim_padrao - timedelta(days=29)
+    
+    data_inicio = st.date_input("Data de Início", value=data_inicio_padrao, max_value=datetime.today())
+    data_fim = st.date_input("Data de Fim", value=data_fim_padrao, max_value=datetime.today())
+
+    if st.button("Buscar e Analisar Discursos", type="primary"):
+        st.session_state.df_discursos = extrair_e_classificar_discursos(data_inicio, data_fim)
+        # Limpa o chat antigo ao buscar novos dados
+        if 'messages' in st.session_state:
+            del st.session_state.messages 
+
+if 'df_discursos' not in st.session_state or st.session_state.df_discursos.empty:
+    st.info("Por favor, selecione um período e clique em 'Buscar e Analisar Discursos' para começar.")
+    st.stop()
+
+df = st.session_state.df_discursos
+
+# --- VISUALIZAÇÕES DE DADOS ---
+st.header("Dashboard Analítico")
 col1, col2 = st.columns(2)
+
 with col1:
-    data_inicio = st.date_input("Data de Início", value=st.session_state.data_inicio, key="data_inicio_input")
+    # Gráfico de Frequência de Temas
+    st.subheader("Frequência dos Temas")
+    tema_counts = df['Tema'].value_counts().reset_index()
+    tema_counts.columns = ['Tema', 'Contagem']
+    fig_temas = px.bar(tema_counts, x='Tema', y='Contagem', title='Distribuição de Discursos por Tema',
+                       color='Tema', template='plotly_white')
+    st.plotly_chart(fig_temas, use_container_width=True)
+
 with col2:
-    data_fim = st.date_input("Data de Fim", value=st.session_state.data_fim, key="data_fim_input")
+    # Gráfico de Discursos por Dia
+    st.subheader("Volume de Discursos por Dia")
+    discursos_por_dia = df.groupby(df['Data'].dt.date).size().reset_index(name='Contagem')
+    fig_temporal = px.line(discursos_por_dia, x='Data', y='Contagem', title='Linha do Tempo de Discursos',
+                           markers=True, template='plotly_white')
+    st.plotly_chart(fig_temporal, use_container_width=True)
 
-# Atualiza o estado da sessão com as datas selecionadas
-st.session_state.data_inicio = data_inicio
-st.session_state.data_fim = data_fim
+# --- TABELA DE DADOS ---
+st.subheader("Discursos Coletados e Classificados")
+st.dataframe(df)
 
-# Valida o intervalo de 30 dias
-if (data_fim - data_inicio).days > 30:
-    st.error("O intervalo entre as datas não pode exceder 30 dias. Por favor, ajuste as datas.")
-elif st.button("Carregar Discursos", key="carregar_discursos"):
-    st.info(f"Carregando discursos de {data_inicio.strftime('%d/%m/%Y')} a {data_fim.strftime('%d/%m/%Y')}...")
-    try:
-        st.session_state.df = carregar_dados_senado(data_inicio, data_fim)
-        if st.session_state.df.empty:
-            st.warning("Nenhum discurso encontrado para o período selecionado.")
-        else:
-            st.success(f"Carregados {len(st.session_state.df)} discursos com sucesso!")
-    except Exception as e:
-        st.error(f"Erro ao carregar dados do Senado: {e}")
-        st.session_state.df = pd.DataFrame()
+# --- CHAT COM O AGENTE GEMINI ---
+st.header("💬 Converse com os Dados")
+st.markdown("Faça uma pergunta em linguagem natural sobre os dados apresentados.")
 
-# Exibe tabela e gráfico se o DataFrame não estiver vazio
-if not st.session_state.df.empty:
-    st.subheader("📋 Dados dos Discursos")
-    st.dataframe(st.session_state.df[['DataSessao', 'CodigoPronunciamento',  'Resumo', 'TemaPrevisto', 'UrlTexto']], use_container_width=True)
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [{"role": "assistant", "content": "Olá! Em que posso ajudar com a análise destes discursos?"}]
 
+for msg in st.session_state.messages:
+    st.chat_message(msg["role"]).write(msg["content"])
 
-    st.subheader("📈 Gráfico Interativo")
-    try:
-        fig = gerar_grafico_por_data_interativo_com_media(st.session_state.df)
-        st.plotly_chart(fig, use_container_width=True)
-    except Exception as e:
-        st.error(f"Erro ao gerar gráfico: {e}")
-
-# Interação com o agente Gemini
-st.subheader("💬 Converse com o Agente sobre os Discursos")
-model_options = ['gemini-2.0-flash', 'gemini-1.5-flash']
-selected_model = st.selectbox("Selecione o modelo Gemini:", model_options, index=0, key="model_select")
-pergunta = st.text_input("Digite sua pergunta sobre os discursos:", key="pergunta_input")
-
-if pergunta and not st.session_state.df.empty:
-    with st.spinner("Consultando o agente Gemini..."):
-        try:
-            # Limita o contexto para economizar tokens
-            contexto = st.session_state.df[['DataSessao', 'CodigoPronunciamento', 'TipoDiscurso', 'TextoCompleto']].head(3).copy()
-            contexto['TextoCompleto'] = contexto['TextoCompleto'].str[:500]  # Trunca para 500 caracteres
-            contexto = contexto.to_dict('records')
-            
-            resposta = consultar_gemini(contexto, pergunta, st.session_state.data_inicio, st.session_state.data_fim, selected_model)
-            st.markdown("**Resposta do Agente:**")
-            st.write(resposta)
-        except Exception as e:
-            st.error(f"Erro ao consultar o Gemini: {e}")
-elif pergunta and st.session_state.df.empty:
-    st.warning("Carregue os discursos primeiro para fazer uma pergunta.")
+if prompt := st.chat_input("Ex: Qual o tema mais debatido? Quem mais discursou?"):
+    responder_pergunta_usuario(df, prompt)

@@ -15,3 +15,6 @@ textColor="#ffffff"
 [theme.sidebar]
 backgroundColor="#203a43"
 textColor="#ffffff"
+
+
+GEMINI_API_KEY = AIzaSyCpbB-MKNFQgVtjLATlEAt_067GAWNl4tc
