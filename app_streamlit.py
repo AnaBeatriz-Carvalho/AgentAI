@@ -89,7 +89,7 @@ if not st.session_state.df.empty:
 
 # Interação com o agente Gemini
 st.subheader("💬 Converse com o Agente sobre os Discursos")
-model_options = ['gemini-1.5-flash']
+model_options = ['gemini-2.0-flash', 'gemini-1.5-flash']
 selected_model = st.selectbox("Selecione o modelo Gemini:", model_options, index=0, key="model_select")
 pergunta = st.text_input("Digite sua pergunta sobre os discursos:", key="pergunta_input")
 
