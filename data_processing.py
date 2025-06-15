@@ -1,4 +1,3 @@
-# data_processing.py
 
 import pandas as pd
 import requests
@@ -7,6 +6,9 @@ from tqdm import tqdm
 import streamlit as st
 import google.generativeai as genai
 import xml.etree.ElementTree as ET
+import time
+import random
+import json
 
 # Lista de temas definidos no nosso artigo para guiar o modelo
 TEMAS_DEFINIDOS = [
@@ -38,7 +40,6 @@ def extrair_discursos_senado(data_inicio, data_fim):
     data_inicio_str = data_inicio.strftime('%Y%m%d')
     data_fim_str = data_fim.strftime('%Y%m%d')
     
-    # Usando o endpoint que retorna a estrutura XML completa que você encontrou.
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio_str}/{data_fim_str}"
     
     st.write(f"Buscando pronunciamentos de {data_inicio.strftime('%d/%m/%Y')} a {data_fim.strftime('%d/%m/%Y')}...")
@@ -56,20 +57,16 @@ def extrair_discursos_senado(data_inicio, data_fim):
         xml_root = ET.fromstring(response.text)
         discursos_list = []
         
-        # Iterando em todos os nós <Pronunciamento> no documento
         for pronunciamento_node in xml_root.findall('.//Pronunciamento'):
             def get_text(element_name):
                 found_element = pronunciamento_node.find(element_name)
                 return found_element.text.strip() if found_element is not None and found_element.text is not None else ""
 
-            # =======================================================================
-            # LÓGICA DE EXTRAÇÃO CORRIGIDA COM BASE NO SEU XML
-            # =======================================================================
             discurso_data = {
                 'Data': get_text('Data'),
-                'Parlamentar': get_text('NomeAutor'), # <-- CORRIGIDO
-                'Partido': get_text('Partido'),     # <-- CORRIGIDO
-                'UF': get_text('UF'),               # <-- CORRIGIDO
+                'Parlamentar': get_text('NomeAutor'),
+                'Partido': get_text('Partido'),
+                'UF': get_text('UF'),
                 'Resumo': get_text('Resumo')
             }
             discursos_list.append(discurso_data)
@@ -113,44 +110,54 @@ def extrair_discursos_senado(data_inicio, data_fim):
 
 def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Classifica os discursos em temas usando a API do Gemini.
+    Classifica discursos em lote (batch) com uma pausa entre cada lote
+    para evitar os limites de requisição da API (rate limiting).
     """
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
     except Exception as e:   
         st.error(f"Erro ao inicializar o modelo Gemini. Verifique sua API Key. Erro: {e}")
         return df
 
     temas_previstos = []
+    batch_size = 20 # Classifica 20 discursos por vez
     
-    progress_bar = st.progress(0, text="Classificando discursos com o Agente Gemini...")
-    
-    for i, resumo in enumerate(tqdm(df['Resumo'].fillna(""), desc="Classificando discursos")):
-        if len(resumo.split()) < 15: # Pula resumos muito curtos
-            temas_previstos.append("Outros")
-        else:
-            prompt = f"""
-            Analise o resumo do discurso parlamentar abaixo e classifique-o em UMA das seguintes categorias:
-            {', '.join(TEMAS_DEFINIDOS)}.
+    discursos_para_classificar = df['Resumo'].fillna("").tolist()
 
-            Responda APENAS com o nome da categoria. Não adicione textos, explicações ou pontuação.
+    progress_bar = st.progress(0, text="Classificando discursos em lotes com o Agente Gemini...")
 
-            Resumo: "{resumo[:3000]}"
-            Categoria:
-            """
-            try:
-                response = model.generate_content(prompt)
-                tema = response.text.strip()
-                if tema not in TEMAS_DEFINIDOS:
-                    temas_previstos.append("Outros") # Segurança contra respostas inesperadas
-                else:
-                    temas_previstos.append(tema)
-            except Exception:
-                temas_previstos.append("Erro na Classificação")
+    for i in range(0, len(discursos_para_classificar), batch_size):
+        batch_resumos = discursos_para_classificar[i:i + batch_size]
         
-        # Atualiza a barra de progresso do Streamlit
-        progress_bar.progress((i + 1) / len(df), text=f"Classificando discursos com o Agente Gemini... ({i+1}/{len(df)})")
+        prompt_batch = "Analise cada um dos resumos de discurso abaixo, numerados de 0 a {}.\n".format(len(batch_resumos) - 1)
+        prompt_batch += "Classifique cada um em UMA das seguintes categorias: {}.\n".format(', '.join(TEMAS_DEFINIDOS))
+        prompt_batch += "Responda com uma lista de objetos JSON, onde cada objeto tem uma chave 'index' e uma chave 'tema'. Exemplo: [{'index': 0, 'tema': 'Saúde'}, {'index': 1, 'tema': 'Economia'}].\n\n"
+
+        for j, resumo in enumerate(batch_resumos):
+            prompt_batch += f"Discurso {j}: \"{resumo[:1000]}\"\n"
+
+        try:
+            response = model.generate_content(prompt_batch)
+            response_text = response.text.strip().replace("```json", "").replace("```", "")
+            
+            resultados_batch = json.loads(response_text)
+            
+            temas_lote = [""] * len(batch_resumos)
+            for item in resultados_batch:
+                if 'index' in item and 'tema' in item and 0 <= item['index'] < len(temas_lote):
+                    temas_lote[item['index']] = item['tema'] if item['tema'] in TEMAS_DEFINIDOS else "Outros"
+
+            temas_previstos.extend(temas_lote)
+
+        except Exception as e:
+            st.error(f"Erro ao processar lote {i//batch_size + 1}: {e}")
+            temas_previstos.extend(["Erro na Classificação"] * len(batch_resumos))
+
+        progress_bar.progress(min((i + batch_size) / len(discursos_para_classificar), 1.0), text=f"Classificando lote {i//batch_size + 1}...")
+        
+        # Pausa estratégica para respeitar o limite de 15 RPM (1 requisição a cada 4s)
+        time.sleep(4.1)
 
     df['Tema'] = temas_previstos
-    progress_bar.empty() # Limpa a barra de progresso
+    progress_bar.empty()
     return df
