@@ -10,14 +10,14 @@ import time
 import random
 import json
 
-# Lista de temas definidos no nosso artigo para guiar o modelo
+
 TEMAS_DEFINIDOS = [
     "Educação", "Saúde", "Economia", "Cultura", "Segurança", 
     "Meio Ambiente", "Direitos Humanos", "Infraestrutura", 
     "Política", "Relações Exteriores", "Trabalho", "Outros"
 ]
 
-@st.cache_data(ttl=86400) # Cache de 24 horas para não reprocessar os mesmos dados
+@st.cache_data(ttl=86400) 
 def extrair_e_classificar_discursos(data_inicio, data_fim):
     """
     Função principal que extrai pronunciamentos da API do Senado e os classifica usando Gemini.
@@ -42,8 +42,6 @@ def extrair_discursos_senado(data_inicio, data_fim):
     
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio_str}/{data_fim_str}"
     
-    st.write(f"Buscando pronunciamentos de {data_inicio.strftime('%d/%m/%Y')} a {data_fim.strftime('%d/%m/%Y')}...")
-    st.caption(f"URL da API: `{url}`")
 
     headers = {
         'Accept': 'application/xml',
@@ -120,7 +118,7 @@ def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
     temas_previstos = []
-    batch_size = 20 # Classifica 20 discursos por vez
+    batch_size = 20 
     
     discursos_para_classificar = df['Resumo'].fillna("").tolist()
 
@@ -155,7 +153,7 @@ def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
 
         progress_bar.progress(min((i + batch_size) / len(discursos_para_classificar), 1.0), text=f"Classificando lote {i//batch_size + 1}...")
         
-        # Pausa estratégica para respeitar o limite de 15 RPM (1 requisição a cada 4s)
+        
         time.sleep(4.1)
 
     df['Tema'] = temas_previstos

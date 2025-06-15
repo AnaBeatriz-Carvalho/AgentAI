@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import google.generativeai as genai
 import pandas as pd
@@ -11,10 +9,10 @@ def responder_pergunta_usuario(dataframe_classificado: pd.DataFrame, pergunta: s
     st.session_state.messages.append({"role": "user", "content": pergunta})
     st.chat_message("user").write(pergunta)
 
-    # Usa um modelo mais robusto para a tarefa de Q&A
+    #
     model = genai.GenerativeModel('gemini-2.0-flash')
     
-    # Converte o dataframe para um formato de texto (Markdown é ótimo)
+
     contexto_dados = dataframe_classificado.to_markdown(index=False)
 
     prompt_qa = f"""
