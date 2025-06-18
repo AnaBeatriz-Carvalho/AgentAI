@@ -82,6 +82,8 @@ with tab_discursos:
         st.info("Para começar a análise de discursos, selecione um período na barra lateral e clique no botão 'Procurar e Analisar Discursos'.")
 
 
+# Substitua toda a sua 'tab_votacoes' por esta:
+
 with tab_votacoes:
     st.header("Análise de Votações do Plenário")
     with st.sidebar:
@@ -105,13 +107,19 @@ with tab_votacoes:
         
         descricao_selecionada = st.selectbox(
             "Selecione uma votação para ver os detalhes:",
-            options=dados_votacoes.keys()
+            options=list(dados_votacoes.keys())
         )
         
-        df_votos = dados_votacoes[descricao_selecionada]
+        # --- CORREÇÃO APLICADA AQUI ---
+        dados_da_votacao_selecionada = dados_votacoes[descricao_selecionada]
+        df_votos = dados_da_votacao_selecionada['df_votos']
+        detalhes_materia = dados_da_votacao_selecionada['detalhes']
         
         st.subheader(f"Detalhes da Votação")
         st.markdown(f"**Matéria:** *{descricao_selecionada}*")
+        st.markdown(f"**📌 Ementa:** *{detalhes_materia.get('ementa', 'N/A')}*")
+        st.markdown(f"**🗳️ Tipo de Votação:** {detalhes_materia.get('tipo_votacao', 'N/A')}")
+        st.markdown(f"**✅ Resultado:** {detalhes_materia.get('resultado', 'N/A')}")
         
         st.write("---")
         st.write("##### Filtros Adicionais")
