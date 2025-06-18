@@ -6,9 +6,9 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+
 from data_processing import extrair_e_classificar_discursos
 from gemini_handler import responder_pergunta_usuario
-
 
 st.set_page_config(
     layout="wide", 
@@ -38,7 +38,6 @@ with st.sidebar:
     data_fim = st.date_input("Data de Fim", value=data_fim_padrao, max_value=datetime.today())
 
     if st.button("Buscar e Analisar Discursos", type="primary"):
-      
         if 'messages' in st.session_state:
             del st.session_state.messages
         if 'df_discursos' in st.session_state:
@@ -53,7 +52,7 @@ if 'df_discursos' not in st.session_state or st.session_state.df_discursos.empty
 
 df = st.session_state.df_discursos
 
-
+# --- VISUALIZAÇÕES DE DADOS ---
 st.header("Dashboard Analítico")
 col1, col2 = st.columns(2)
 
@@ -70,12 +69,22 @@ with col2:
     discursos_por_dia = df.groupby(df['Data'].dt.date).size().reset_index(name='Contagem')
     fig_temporal = px.line(discursos_por_dia, x='Data', y='Contagem', title='Linha do Tempo de Discursos',
                            markers=True, template='plotly_white')
+    
+
+    fig_temporal.update_xaxes(tickformat="%d/%m/%Y")
+    
     st.plotly_chart(fig_temporal, use_container_width=True)
-
-
 st.subheader("Discursos Coletados e Classificados")
-st.dataframe(df)
-
+st.dataframe(
+    df,
+    column_config={
+        "Data": st.column_config.DatetimeColumn(
+            "Data",
+            format="DD/MM/YYYY",
+        )
+    },
+    use_container_width=True
+)
 
 st.header("💬 Converse com os Dados")
 st.markdown("Faça uma pergunta em linguagem natural sobre os dados apresentados.")
