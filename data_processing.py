@@ -11,13 +11,14 @@ import time
 import random
 import json
 
+# Lista de temas definidos no nosso artigo para guiar o modelo
 TEMAS_DEFINIDOS = [
     "Educação", "Saúde", "Economia", "Cultura", "Segurança", 
     "Meio Ambiente", "Direitos Humanos", "Infraestrutura", 
     "Política", "Relações Exteriores", "Trabalho", "Outros"
 ]
 
-@st.cache_data(ttl=86400) 
+@st.cache_data(ttl=86400) # Cache de 24 horas para não reprocessar os mesmos dados
 def extrair_e_classificar_discursos(data_inicio, data_fim):
     """
     Função principal que extrai pronunciamentos da API do Senado e os classifica usando Gemini.
