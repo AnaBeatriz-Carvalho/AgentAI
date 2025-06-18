@@ -1,3 +1,4 @@
+# data_processing.py
 
 import pandas as pd
 import requests
@@ -9,7 +10,6 @@ import xml.etree.ElementTree as ET
 import time
 import random
 import json
-
 
 TEMAS_DEFINIDOS = [
     "Educação", "Saúde", "Economia", "Cultura", "Segurança", 
@@ -42,7 +42,6 @@ def extrair_discursos_senado(data_inicio, data_fim):
     
     url = f"https://legis.senado.leg.br/dadosabertos/plenario/lista/discursos/{data_inicio_str}/{data_fim_str}"
     
-
     headers = {
         'Accept': 'application/xml',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -118,7 +117,7 @@ def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
     temas_previstos = []
-    batch_size = 20 
+    batch_size = 20
     
     discursos_para_classificar = df['Resumo'].fillna("").tolist()
 
@@ -152,7 +151,6 @@ def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
             temas_previstos.extend(["Erro na Classificação"] * len(batch_resumos))
 
         progress_bar.progress(min((i + batch_size) / len(discursos_para_classificar), 1.0), text=f"Classificando lote {i//batch_size + 1}...")
-        
         
         time.sleep(4.1)
 
