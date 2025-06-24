@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import xml.etree.ElementTree as ET
 import streamlit as st
+from difflib import get_close_matches
 
 HEADERS = {
     'Accept': 'application/xml',
@@ -20,10 +21,11 @@ def obter_votacoes_periodo(data_inicio, data_fim):
     url_detalhes = "https://legis.senado.leg.br/dadosabertos/votacao"
 
     try:
+        # Busca os detalhes das matérias
         response_detalhes = requests.get(url_detalhes, headers=HEADERS, timeout=30)
         response_detalhes.raise_for_status()
         detalhes_root = ET.fromstring(response_detalhes.text)
-        
+
         mapa_materias_detalhadas = {}
         for votacao in detalhes_root.findall('.//Votacao'):
             try:
@@ -40,9 +42,10 @@ def obter_votacoes_periodo(data_inicio, data_fim):
                     "resultado": resultado,
                     "tipo_votacao": tipo_votacao
                 }
-            except:
+            except Exception:
                 continue
 
+        # Busca as votações no período
         response_orientacoes = requests.get(url_orientacoes, headers=HEADERS, timeout=30)
         response_orientacoes.raise_for_status()
         root_orientacoes = ET.fromstring(response_orientacoes.text)
@@ -54,7 +57,15 @@ def obter_votacoes_periodo(data_inicio, data_fim):
             data_sessao = votacao_node.find('dataInicioVotacao').text.split(' ')[0] if votacao_node.find('dataInicioVotacao') is not None else ""
             chave = descricao_materia.strip()
 
-            detalhes = mapa_materias_detalhadas.get(chave, {})
+            # Match aproximado com o mapa de matérias detalhadas
+            chaves_detalhadas = list(mapa_materias_detalhadas.keys())
+            chave_proxima = get_close_matches(chave, chaves_detalhadas, n=1, cutoff=0.6)
+
+            if chave_proxima:
+                detalhes = mapa_materias_detalhadas.get(chave_proxima[0], {})
+            else:
+                detalhes = {}
+
             ementa = detalhes.get("ementa", "")
             resultado = detalhes.get("resultado", "")
             tipo_votacao = detalhes.get("tipo_votacao", "")
@@ -83,9 +94,10 @@ def obter_votacoes_periodo(data_inicio, data_fim):
 
         return votacoes_processadas
 
-    except requests.exceptions.HTTPError as err:
-        st.error(f"Erro HTTP: {err.response.status_code}")
+    except requests.RequestException as e:
+        st.error(f"Erro ao buscar dados de votações: {e}")
         return {}
-    except Exception as e:
-        st.error(f"Erro inesperado: {e}")
+
+    except ET.ParseError as e:
+        st.error(f"Erro ao processar XML de votações: {e}")
         return {}
