@@ -12,7 +12,6 @@ Este trabalho foi desenvolvido no âmbito do Programa de Pós-Graduação em Ci�
 
 * **Sessão de Votações:** Acompanhe as votações do plenário, com detalhes sobre o que foi votado, o resultado e a posição de cada parlamentar.
 * **Análise de Discursos:** Explore discursos e pronunciamentos, realize buscas por período e visualize as tendências dos temas debatidos.
-* **Consulta de Matérias:** Pesquise e obtenha informações detalhadas sobre projetos de lei, medidas provisórias e outras proposições.
 * **Classificação com IA:** Utiliza a API do Gemini para analisar e classificar o conteúdo de discursos e matérias em categorias temáticas (Saúde, Educação, Economia, etc.).
 * **Agente Conversacional (Chatbot):** Permite que o usuário "converse com os dados", fazendo perguntas em linguagem natural sobre as informações carregadas (votações, discursos, etc.) para receber respostas elaboradas.
 * **Dashboard Interativo:** Apresenta visualizações de dados, como a distribuição de temas e o volume de atividades ao longo do tempo, utilizando gráficos gerados com Plotly.
