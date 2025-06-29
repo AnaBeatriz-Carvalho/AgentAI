@@ -98,4 +98,8 @@ AgentAI/
 
 * **Ana Beatriz Carvalho Oliveira** - [beatriz.carvalho0804@gmail.com](beatriz.carvalho0804@gmail.com)
 
+---
 
+## 🤝 Contribuição
+
+Contribuições são muito bem-vindas! Se você tem ideias para novas funcionalidades, melhorias no código ou correções de bugs, sinta-se à vontade para abrir uma *issue* ou enviar um *pull request*.
