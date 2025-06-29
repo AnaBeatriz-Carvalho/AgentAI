@@ -85,7 +85,8 @@ Siga os passos abaixo para executar o projeto em seu ambiente local.
 AgentAI/
 │
 ├── 📄 app_streamlit.py      # Script principal da aplicação (UI)
-├── 📄 data_processing.py    # Módulo para extrair e processar dados da API do Senado (votações, discursos, etc.)
+├── 📄 data_processing.py    # Módulo para extrair e processar discursos
+├── 📄 votacoes_handler.py   # Módulo para extrair e processar dados de votações
 ├── 📄 gemini_handler.py     # Módulo que gerencia a lógica do chatbot e a interação com o Gemini
 ├── 📄 requirements.txt      # Lista de dependências Python do projeto
 ├── 📄 .env                  # Arquivo para armazenar a chave da API (criar localmente)        
