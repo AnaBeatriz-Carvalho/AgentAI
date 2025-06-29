@@ -1,10 +1,8 @@
 # 🏛️ Análise de Discursos do Senado com Agente Gemini
 
-Este projeto apresenta uma aplicação web interativa para a análise automatizada de discursos e pronunciamentos do Senado Federal brasileiro, utilizando a API de Dados Abertos do Senado e o poder da Inteligência Artificial Generativa do Google Gemini.
+Este projeto apresenta uma aplicação web interativa para a análise automatizada de discursos e pronunciamentos do Senado Federal brasileiro, utilizando a API de Dados Abertos do Senado e o poder da Inteligência Artificial Generativa.
 
 A aplicação permite que pesquisadores, jornalistas e cidadãos explorem o conteúdo parlamentar de forma intuitiva, realizando buscas por período, visualizando tendências temáticas e "conversando" com os dados através de um agente de linguagem natural.
-
-Este trabalho foi desenvolvido no âmbito do Programa de Pós-Graduação em Ciência da Computação (PROCC) da Universidade Federal de Sergipe.
 
 ---
 
