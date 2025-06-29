@@ -8,17 +8,19 @@ Este trabalho foi desenvolvido no âmbito do Programa de Pós-Graduação em Ci�
 
 ---
 
-## 🌟 Funcionalidades Principais
+## 🚀 Funcionalidades Principais
 
-* **Extração de Dados em Tempo Real:** Conecta-se diretamente à API de Dados Abertos do Senado para buscar pronunciamentos parlamentares por períodos de data selecionados.
-* **Classificação Temática com IA:** Utiliza a API do Google Gemini para analisar o resumo de cada discurso e classificá-lo em tempo real em categorias como "Saúde", "Educação", "Economia", etc.
-* **Dashboard Interativo:** Apresenta visualizações de dados, como a distribuição de temas e o volume de discursos ao longo do tempo, utilizando gráficos gerados com Plotly.
-* **Agente Conversacional (Chatbot):** Permite que o usuário faça perguntas em linguagem natural sobre os dados carregados. O Agente Gemini analisa o contexto dos discursos e fornece respostas elaboradas.
+* **Sessão de Votações:** Acompanhe as votações do plenário, com detalhes sobre o que foi votado, o resultado e a posição de cada parlamentar.
+* **Análise de Discursos:** Explore discursos e pronunciamentos, realize buscas por período e visualize as tendências dos temas debatidos.
+* **Consulta de Matérias:** Pesquise e obtenha informações detalhadas sobre projetos de lei, medidas provisórias e outras proposições.
+* **Classificação com IA:** Utiliza a API do Gemini para analisar e classificar o conteúdo de discursos e matérias em categorias temáticas (Saúde, Educação, Economia, etc.).
+* **Agente Conversacional (Chatbot):** Permite que o usuário "converse com os dados", fazendo perguntas em linguagem natural sobre as informações carregadas (votações, discursos, etc.) para receber respostas elaboradas.
+* **Dashboard Interativo:** Apresenta visualizações de dados, como a distribuição de temas e o volume de atividades ao longo do tempo, utilizando gráficos gerados com Plotly.
 * **Interface Amigável:** Desenvolvida com Streamlit para proporcionar uma experiência de usuário limpa, simples e responsiva.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## ⚙️ Tecnologias Utilizadas
 
 * **Linguagem:** Python 3.10+
 * **Interface Web:** Streamlit
@@ -82,20 +84,18 @@ Siga os passos abaixo para executar o projeto em seu ambiente local.
 ```
 AgentAI/
 │
-├── 📄 app_streamlit.py      # Script principal da aplicação, responsável pela interface do usuário (UI)
-├── 📄 data_processing.py    # Módulo para extrair, processar e classificar os dados da API do Senado
+├── 📄 app_streamlit.py      # Script principal da aplicação (UI)
+├── 📄 data_processing.py    # Módulo para extrair e processar dados da API do Senado (votações, discursos, etc.)
 ├── 📄 gemini_handler.py     # Módulo que gerencia a lógica do chatbot e a interação com o Gemini
-├── 📄 .env                  # Arquivo para armazenar a chave da API do Google (deve ser criado localmente)
 ├── 📄 requirements.txt      # Lista de dependências Python do projeto
-└── 📄 README.md             # Este arquivo
+├── 📄 .env                  # Arquivo para armazenar a chave da API (criar localmente)        
 ```
 
 ---
 
 
-## ✍️ Autores
+## ✍️ Autora
 
-* **Alberto Luciano de Souza Bastos** - [alberto.bastos@academico.ufs.br](mailto:alberto.bastos@academico.ufs.br)
-* **Ana Beatriz Carvalho Oliveira** - [anabeatrizcarvalho@academico.ufs.br](mailto:anabeatrizcarvalho@academico.ufs.br)
-* **Victor Caetano Menezes** - [victormenezes41@academico.ufs.br](mailto:victormenezes41@academico.ufs.br)
+* **Ana Beatriz Carvalho Oliveira** - [beatriz.carvalho0804@gmail.com](beatriz.carvalho0804@gmail.com)
+
 
