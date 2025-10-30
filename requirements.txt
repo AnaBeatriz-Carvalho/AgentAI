@@ -1,4 +1,3 @@
-
 streamlit
 pandas
 requests
@@ -7,3 +6,5 @@ google-generativeai
 tqdm
 python-dotenv
 tabulate
+pytest
+pytest-mock

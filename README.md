@@ -69,7 +69,11 @@ Siga os passos abaixo para executar o projeto em seu ambiente local.
 
 5.  **Execute a aplicação Streamlit:**
     ```bash
-    streamlit run app_streamlit.py
+    # opção A: usando o helper (recomendado)
+    python run_app.py
+
+    # opção B: invocando diretamente o Streamlit
+    streamlit run src/app/app_streamlit.py
     ```
 
 6.  Abra seu navegador e acesse o endereço `http://localhost:8501`.
@@ -81,12 +85,21 @@ Siga os passos abaixo para executar o projeto em seu ambiente local.
 ```
 AgentAI/
 │
-├── 📄 app_streamlit.py      # Script principal da aplicação (UI)
-├── 📄 data_processing.py    # Módulo para extrair e processar discursos
-├── 📄 votacoes_handler.py   # Módulo para extrair e processar dados de votações
-├── 📄 gemini_handler.py     # Módulo que gerencia a lógica do chatbot e a interação com o Gemini
-├── 📄 requirements.txt      # Lista de dependências Python do projeto
-├── 📄 .env                  # Arquivo para armazenar a chave da API (criar localmente)        
+├── src/                    # Código-fonte reorganizado em pacote
+│   ├── app/
+│   │   └── app_streamlit.py     # UI (Streamlit)
+│   ├── data/
+│   │   ├── data_processing.py   # Extração e transformação de discursos
+│   │   └── votacoes_handler.py   # Extração e transformação de votações
+│   ├── ai/
+│   │   └── gemini_handler.py    # Lógica de interação com Gemini
+│   ├── utils/
+│   │   └── helpers.py           # Utilitários pequenos
+│   └── config/
+│       └── settings.py          # Carregamento de variáveis de ambiente
+├── run_app.py              # Script auxiliar para iniciar a aplicação
+├── requirements.txt
+├── .env                    # Arquivo local para variáveis de ambiente (não incluído no repo)
 ```
 
 ---
