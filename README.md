@@ -62,7 +62,7 @@ AgentAI/
 ├── run_app.py                    # Script auxiliar para iniciar a aplicação
 ├── requirements.txt              # Dependências do projeto
 ├── .env.example                  # Exemplo de variáveis de ambiente
-├── .env                          # Arquivo real de ambiente (não versionado)
+├── .env                          # Arquivo real de ambiente 
 └── README.md
 ```
 
