@@ -188,6 +188,7 @@ def classificar_tema_discursos_com_gemini(
 
     progress_bar = st.progress(0, text="Classificando discursos em lotes com o Agente Gemini...")
 
+    # Loop simples em lotes fixos (versão anterior estável)
     for bstart in range(0, len(pendentes), batch_size):
         lote_indices = pendentes[bstart:bstart + batch_size]
         batch_resumos = [discursos[i] for i in lote_indices]
@@ -200,6 +201,7 @@ def classificar_tema_discursos_com_gemini(
         )
 
         for j, resumo in enumerate(batch_resumos):
+            # Usar até 600 caracteres como antes
             prompt_batch += f"Discurso {j}: \"{resumo[:600]}\"\n"
 
         # Retries com backoff quando 429
