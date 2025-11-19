@@ -4,7 +4,7 @@ import os
 from src.utils.helpers import env_path
 
 DEFAULT_GEMINI_MODEL_DISCURSOS = 'gemini-2.0-flash'
-DEFAULT_GEMINI_MODEL_VOTACOES = 'gemini-2.0-flash'
+DEFAULT_GEMINI_MODEL_VOTACOES = 'gemini-2.5-pro'
 
 def get_google_api_key():
     dotenv_path = env_path('.env')
