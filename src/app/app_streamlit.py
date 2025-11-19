@@ -189,7 +189,7 @@ with tab_votacoes:
         with st.expander("💡 Gerar explicação automática desta votação"):
             if st.button("Gerar Explicação", key=f"explicar_{codigo_materia or descricao_selecionada}"):
                 with st.spinner("Gerando explicação com IA..."):
-                    explicacao_ia = explicar_votacao(detalhes_materia, df_votos)
+                    explicacao_ia = explicar_votacao(detalhes_materia, df_votos, descricao_selecionada)
                 st.markdown("**Explicação Gerada:**")
                 st.write(explicacao_ia)
 

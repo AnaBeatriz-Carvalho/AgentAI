@@ -6,6 +6,9 @@ import json
 import streamlit as st
 import google.generativeai as genai
 import xml.etree.ElementTree as ET
+import os
+import hashlib
+import random
 
 # Lista de temas definidos no nosso artigo para guiar o modelo
 TEMAS_DEFINIDOS = [
@@ -15,7 +18,15 @@ TEMAS_DEFINIDOS = [
 ]
 
 @st.cache_data(ttl=86400) # Cache de 24 horas para não reprocessar os mesmos dados
-def extrair_e_classificar_discursos(data_inicio, data_fim):
+def extrair_e_classificar_discursos(
+    data_inicio,
+    data_fim,
+    batch_size: int = 10,
+    sleep_between_batches: float = 5.0,
+    max_retries: int = 5,
+    base_delay: float = 3.0,
+    debug_save_raw: bool = False,
+):
     """
     Função principal que extrai pronunciamentos da API do Senado e os classifica usando Gemini.
     """
@@ -23,7 +34,14 @@ def extrair_e_classificar_discursos(data_inicio, data_fim):
     if df_final.empty:
         return df_final
         
-    df_classificado = classificar_tema_discursos_com_gemini(df_final)
+    df_classificado = classificar_tema_discursos_com_gemini(
+        df_final,
+        batch_size=batch_size,
+        sleep_between_batches=sleep_between_batches,
+        max_retries=max_retries,
+        base_delay=base_delay,
+        debug_save_raw=debug_save_raw,
+    )
     return df_classificado
 
 def extrair_discursos_senado(data_inicio, data_fim):
@@ -102,55 +120,167 @@ def extrair_discursos_senado(data_inicio, data_fim):
         return pd.DataFrame()
 
 
-def classificar_tema_discursos_com_gemini(df: pd.DataFrame) -> pd.DataFrame:
+def _discursos_cache_path() -> str:
+    return os.path.join('outputs', 'discursos_cache.json')
+
+
+def clear_discursos_cache() -> bool:
+    """Remove o cache de classificação de discursos do disco."""
+    path = _discursos_cache_path()
+    try:
+        if os.path.exists(path):
+            os.remove(path)
+            return True
+        return False
+    except Exception:
+        return False
+
+
+def classificar_tema_discursos_com_gemini(
+    df: pd.DataFrame,
+    batch_size: int = 10,
+    sleep_between_batches: float = 5.0,
+    max_retries: int = 5,
+    base_delay: float = 3.0,
+    debug_save_raw: bool = False,
+) -> pd.DataFrame:
     """
     Classifica discursos em lote (batch) com uma pausa entre cada lote
     para evitar os limites de requisição da API (rate limiting).
     """
+    # Inicializa sempre com modelo flash estável; evita impacto das mudanças de votação
     try:
         model = genai.GenerativeModel('gemini-2.0-flash')
-    except Exception as e:   
+    except Exception as e:
         st.error(f"Erro ao inicializar o modelo Gemini. Verifique sua API Key. Erro: {e}")
         return df
 
-    temas_previstos = []
-    batch_size = 20
-    
-    discursos_para_classificar = df['Resumo'].fillna("").tolist()
+    # ------- Cache simples em disco para reduzir chamadas -------
+    cache_path = _discursos_cache_path()
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                cache = json.load(f)
+        except Exception:
+            cache = {}
+    else:
+        cache = {}
+
+    def resumo_key(txt: str) -> str:
+        return hashlib.sha256((txt or '').encode('utf-8')).hexdigest()
+
+    discursos = df['Resumo'].fillna("").tolist()
+    temas_previstos: list[str] = [None] * len(discursos)
+
+    # Preenche do cache
+    for idx, r in enumerate(discursos):
+        k = resumo_key(r)
+        tema_cached = cache.get(k)
+        if tema_cached:
+            temas_previstos[idx] = tema_cached
+
+    # Lista de índices a classificar
+    pendentes = [i for i, v in enumerate(temas_previstos) if not v]
+
+    if not pendentes:
+        df['Tema'] = temas_previstos
+        return df
 
     progress_bar = st.progress(0, text="Classificando discursos em lotes com o Agente Gemini...")
 
-    for i in range(0, len(discursos_para_classificar), batch_size):
-        batch_resumos = discursos_para_classificar[i:i + batch_size]
-        
-        prompt_batch = "Analise cada um dos resumos de discurso abaixo, numerados de 0 a {}.\n".format(len(batch_resumos) - 1)
-        prompt_batch += "Classifique cada um em UMA das seguintes categorias: {}.\n".format(', '.join(TEMAS_DEFINIDOS))
-        prompt_batch += "Responda com uma lista de objetos JSON, onde cada objeto tem uma chave 'index' e uma chave 'tema'. Exemplo: [{'index': 0, 'tema': 'Saúde'}, {'index': 1, 'tema': 'Economia'}].\n\n"
+    for bstart in range(0, len(pendentes), batch_size):
+        lote_indices = pendentes[bstart:bstart + batch_size]
+        batch_resumos = [discursos[i] for i in lote_indices]
+
+        prompt_batch = (
+            "Analise cada um dos resumos de discurso abaixo, numerados de 0 a {}.\n".format(len(batch_resumos) - 1)
+            + "Classifique cada um em UMA das seguintes categorias: {}.\n".format(', '.join(TEMAS_DEFINIDOS))
+            + "Responda somente com uma lista JSON de objetos no formato "
+              "[{\"index\": 0, \"tema\": \"Saúde\"}, {\"index\": 1, \"tema\": \"Economia\"}].\n\n"
+        )
 
         for j, resumo in enumerate(batch_resumos):
-            prompt_batch += f"Discurso {j}: \"{resumo[:1000]}\"\n"
+            prompt_batch += f"Discurso {j}: \"{resumo[:600]}\"\n"
 
+        # Retries com backoff quando 429
+        tentativa = 0
+        resultados_batch = None
+        while tentativa < max_retries:
+            try:
+                response = model.generate_content(prompt_batch)
+                response_text = response.text.strip()
+                response_text = response_text.replace("```json", "").replace("```", "")
+
+                if '[' in response_text and ']' in response_text:
+                    inicio = response_text.find('[')
+                    fim = response_text.rfind(']') + 1
+                    bruto = response_text[inicio:fim]
+                else:
+                    bruto = response_text
+
+                try:
+                    resultados_batch = json.loads(bruto)
+                except json.JSONDecodeError:
+                    corrigido = bruto.replace("'", '"').replace(',\n]', '\n]')
+                    try:
+                        resultados_batch = json.loads(corrigido)
+                    except Exception:
+                        resultados_batch = []
+                # Salva resposta bruta para debug se habilitado
+                if debug_save_raw:
+                    try:
+                        os.makedirs(os.path.join('outputs', 'debug_discursos'), exist_ok=True)
+                        lote_num = bstart // (batch_size if batch_size else 1) + 1
+                        fname = os.path.join('outputs', 'debug_discursos', f"lote_{lote_num}_{int(time.time())}.txt")
+                        with open(fname, 'w', encoding='utf-8') as f:
+                            f.write(response_text)
+                    except Exception:
+                        pass
+                break
+            except Exception as e:
+                msg = str(e)
+                if '429' in msg or 'Resource exhausted' in msg:
+                    sleep_s = base_delay * (2 ** tentativa) + random.uniform(0, 1.5)
+                    st.warning(f"Limite de taxa atingido no lote {bstart//batch_size + 1}. Tentando novamente em {sleep_s:.1f}s...")
+                    time.sleep(sleep_s)
+                    tentativa += 1
+                    continue
+                else:
+                    st.error(f"Erro ao processar lote {bstart//batch_size + 1}: {e}")
+                    resultados_batch = []
+                    break
+
+        temas_lote = ["Outros"] * len(batch_resumos)
+        for item in (resultados_batch or []):
+            if isinstance(item, dict) and 'index' in item and 'tema' in item:
+                idx_local = item['index']
+                tema = item['tema']
+                if isinstance(idx_local, int) and 0 <= idx_local < len(temas_lote):
+                    temas_lote[idx_local] = tema if tema in TEMAS_DEFINIDOS else "Outros"
+
+        # Se não conseguimos nada parseável após retries, marca como erro
+        if resultados_batch is not None and len(resultados_batch) == 0 and tentativa >= max_retries:
+            temas_lote = ["Erro na Classificação"] * len(batch_resumos)
+
+        # Atribui aos índices globais e atualiza cache
+        for offset, tema in enumerate(temas_lote):
+            gi = lote_indices[offset]
+            temas_previstos[gi] = tema
+            cache[resumo_key(discursos[gi])] = tema
+
+        # Persistir cache incrementalmente para resiliência
         try:
-            response = model.generate_content(prompt_batch)
-            response_text = response.text.strip().replace("```json", "").replace("```", "")
-            
-            resultados_batch = json.loads(response_text)
-            
-            temas_lote = [""] * len(batch_resumos)
-            for item in resultados_batch:
-                if 'index' in item and 'tema' in item and 0 <= item['index'] < len(temas_lote):
-                    temas_lote[item['index']] = item['tema'] if item['tema'] in TEMAS_DEFINIDOS else "Outros"
+            os.makedirs('outputs', exist_ok=True)
+            with open(cache_path, 'w', encoding='utf-8') as f:
+                json.dump(cache, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
 
-            temas_previstos.extend(temas_lote)
+        progresso = (bstart + len(lote_indices)) / len(pendentes)
+        progress_bar.progress(min(progresso, 1.0), text=f"Classificando lote {bstart//batch_size + 1}...")
+        time.sleep(sleep_between_batches)
 
-        except Exception as e:
-            st.error(f"Erro ao processar lote {i//batch_size + 1}: {e}")
-            temas_previstos.extend(["Erro na Classificação"] * len(batch_resumos))
-
-        progress_bar.progress(min((i + batch_size) / len(discursos_para_classificar), 1.0), text=f"Classificando lote {i//batch_size + 1}...")
-        
-        time.sleep(4.1)
-
-    df['Tema'] = temas_previstos
+    # Preenche algum restante nulo como 'Outros'
+    df['Tema'] = [t if t else 'Outros' for t in temas_previstos]
     progress_bar.empty()
     return df
