@@ -9,6 +9,35 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 }
 
+def obter_detalhes_materia(codigo_materia: str) -> dict:
+    """Consulta detalhes adicionais de uma matéria legislativa.
+
+    Retorna ementa, explicação da ementa e autores (lista concatenada) se disponíveis.
+    """
+    if not codigo_materia:
+        return {}
+    url = f"https://legis.senado.leg.br/dadosabertos/materia/{codigo_materia}"
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.text)
+        ementa = root.find('.//EmentaMateria')
+        explicacao = root.find('.//ExplicacaoEmentaMateria')
+        autores_nodes = root.findall('.//Autor')
+        autores = []
+        for a in autores_nodes:
+            nome = a.find('NomeAutor')
+            if nome is not None and nome.text:
+                autores.append(nome.text.strip())
+        return {
+            'ementa': (ementa.text.strip() if ementa is not None and ementa.text else ''),
+            'explicacao': (explicacao.text.strip() if explicacao is not None and explicacao.text else ''),
+            'autores': ', '.join(autores) if autores else ''
+        }
+    except Exception:
+        # Silencioso: falha de detalhes não deve quebrar fluxo principal
+        return {}
+
 @st.cache_data(ttl=3600)
 def obter_votacoes_periodo(data_inicio, data_fim):
     """
@@ -57,6 +86,11 @@ def obter_votacoes_periodo(data_inicio, data_fim):
             data_sessao = votacao_node.find('dataInicioVotacao').text.split(' ')[0] if votacao_node.find('dataInicioVotacao') is not None else ""
             chave = descricao_materia.strip()
 
+            codigo_materia = ''
+            codigo_elem = votacao_node.find('codigoMateria')
+            if codigo_elem is not None and codigo_elem.text:
+                codigo_materia = codigo_elem.text.strip()
+
             # Match aproximado com o mapa de matérias detalhadas
             chaves_detalhadas = list(mapa_materias_detalhadas.keys())
             chave_proxima = get_close_matches(chave, chaves_detalhadas, n=1, cutoff=0.6)
@@ -66,9 +100,19 @@ def obter_votacoes_periodo(data_inicio, data_fim):
             else:
                 detalhes = {}
 
+            # Enriquecer com detalhes da matéria se tivermos o código
+            if codigo_materia:
+                extra = obter_detalhes_materia(codigo_materia)
+                # Só sobrescreve se não vier vazio
+                if extra.get('ementa'): detalhes['ementa'] = extra['ementa']
+                if extra.get('explicacao'): detalhes['explicacao'] = extra['explicacao']
+                if extra.get('autores'): detalhes['autores'] = extra['autores']
+
             ementa = detalhes.get("ementa", "")
             resultado = detalhes.get("resultado", "")
             tipo_votacao = detalhes.get("tipo_votacao", "")
+            explicacao = detalhes.get("explicacao", "")
+            autores = detalhes.get("autores", "")
 
             descricao_completa = f"{descricao_materia} (Votação em {data_sessao})"
 
@@ -86,7 +130,10 @@ def obter_votacoes_periodo(data_inicio, data_fim):
                 votacoes_processadas[descricao_completa] = {
                     "df_votos": df_votos,
                     "detalhes": {
+                        "codigo_materia": codigo_materia,
                         "ementa": ementa,
+                        "explicacao": explicacao,
+                        "autores": autores,
                         "resultado": resultado,
                         "tipo_votacao": tipo_votacao
                     }
