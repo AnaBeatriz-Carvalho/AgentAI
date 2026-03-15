@@ -10,7 +10,6 @@ if str(ROOT) not in sys.path:
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import google.generativeai as genai
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
@@ -19,24 +18,17 @@ from io import BytesIO
 # helper imports kept minimal; removed unused upload helper per user preference
 
 from src.data.data_processing import extrair_e_classificar_discursos
-from src.ai.gemini_handler import responder_pergunta_usuario
+from src.ai.local_llm_handler import responder_pergunta_usuario_local
 from src.data.votacoes_handler import obter_votacoes_periodo
-from src.config.settings import get_google_api_key
+from src.ai.local_llm_handler import analisar_discurso
 
 st.set_page_config(
     layout="wide",
-    page_title="Análise de Atividades do Senado com Agente Gemini",
+    page_title="Análise de Atividades do Senado",
     initial_sidebar_state="expanded"
 )
 
-GOOGLE_API_KEY = get_google_api_key()
-if not GOOGLE_API_KEY:
-    st.error("Chave da API do Google não encontrada!")
-    st.info("Por favor, verifique se o ficheiro .env está na raiz do projeto e contém a variável GOOGLE_API_KEY.")
-    st.stop()
-genai.configure(api_key=GOOGLE_API_KEY)
-
-st.title("\U0001F3DB️ Análise de Atividades do Senado com Agente Gemini")
+st.title("\U0001F3DB️ Análise de Atividades do Senado com LLM Local")
 
 tab_discursos, tab_votacoes = st.tabs(["Análise de Discursos", "Análise de Votações"])
 
@@ -50,12 +42,19 @@ with tab_discursos:
         discursos_data_inicio = st.date_input("Data de Início (Discursos)", value=discursos_data_inicio_padrao, max_value=datetime.today(), key="discursos_inicio")
         discursos_data_fim = st.date_input("Data de Fim (Discursos)", value=discursos_data_fim_padrao, max_value=datetime.today(), key="discursos_fim")
 
+        with st.expander("Configuração de IA (LLM local)"):
+            sleep_between_batches = st.number_input("Pausa entre chamadas (segundos)", min_value=0.0, max_value=10.0, value=0.5, step=0.1)
+
         if st.button("Procurar e Analisar Discursos", type="primary"):
             if 'messages' in st.session_state: del st.session_state.messages
             if 'df_discursos' in st.session_state: del st.session_state.df_discursos
 
             with st.spinner("A extrair e analisar discursos... Este processo pode demorar alguns minutos."):
-                st.session_state.df_discursos = extrair_e_classificar_discursos(discursos_data_inicio, discursos_data_fim)
+                st.session_state.df_discursos = extrair_e_classificar_discursos(
+                    discursos_data_inicio,
+                    discursos_data_fim,
+                    sleep_between_batches=float(sleep_between_batches),
+                )
 
     if 'df_discursos' in st.session_state and not st.session_state.df_discursos.empty:
         df_discursos = st.session_state.df_discursos
@@ -91,7 +90,7 @@ with tab_discursos:
 
         # Input field for free questions (minimal chat, no uploads or example prompts)
         if prompt := st.chat_input("Faça uma pergunta sobre os discursos..."):
-            responder_pergunta_usuario(df_discursos, prompt)
+            responder_pergunta_usuario_local(df_discursos, prompt)
 
         # Advanced filters: keyword, parlamentar, partido
         with st.expander("Filtros avançados (aplicáveis à tabela)"):

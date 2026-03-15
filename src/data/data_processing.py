@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 import os
 import hashlib
 import random
+from src.ai.local_llm_handler import classificar_tema_local
 
 # Lista de temas definidos no nosso artigo para guiar o modelo
 TEMAS_DEFINIDOS = [
@@ -26,23 +27,53 @@ def extrair_e_classificar_discursos(
     max_retries: int = 5,
     base_delay: float = 3.0,
     debug_save_raw: bool = False,
+    classificar: bool = True,
+    usar_llm_local: bool = False,
+    **kwargs,
 ):
     """
-    Função principal que extrai pronunciamentos da API do Senado e os classifica usando Gemini.
+    Função principal que extrai pronunciamentos da API do Senado e os classifica via IA (Gemini ou LLM local).
     """
     df_final = extrair_discursos_senado(data_inicio, data_fim)
     if df_final.empty:
         return df_final
-        
-    df_classificado = classificar_tema_discursos_com_gemini(
+
+    # Migração total para LLM local: ignora parâmetros antigos de Gemini.
+    if not classificar:
+        df_final['Tema'] = 'Não classificado'
+        return df_final
+
+    return classificar_tema_discursos_com_local_llm(
         df_final,
-        batch_size=batch_size,
         sleep_between_batches=sleep_between_batches,
-        max_retries=max_retries,
-        base_delay=base_delay,
-        debug_save_raw=debug_save_raw,
     )
-    return df_classificado
+
+    
+
+
+def classificar_tema_discursos_com_local_llm(
+    df: pd.DataFrame,
+    sleep_between_batches: float = 0.5,
+) -> pd.DataFrame:
+    """
+    Classifica discursos usando LLM local (LM Studio). Processa um a um para reduzir carga.
+    """
+    discursos = df['Resumo'].fillna("").tolist()
+    temas_previstos: list[str] = [None] * len(discursos)
+
+    progress_bar = st.progress(0, text="Classificando discursos com LLM local...")
+    total = len(discursos) or 1
+
+    for i, resumo in enumerate(discursos):
+        tema = classificar_tema_local(resumo, TEMAS_DEFINIDOS)
+        temas_previstos[i] = tema if tema in TEMAS_DEFINIDOS else "Outros"
+        progresso = (i + 1) / total
+        progress_bar.progress(min(progresso, 1.0), text=f"Classificando discurso {i + 1}/{total}...")
+        time.sleep(sleep_between_batches)
+
+    df['Tema'] = [t if t else 'Outros' for t in temas_previstos]
+    progress_bar.empty()
+    return df
 
 def extrair_discursos_senado(data_inicio, data_fim):
     """

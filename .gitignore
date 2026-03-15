@@ -1,5 +1,29 @@
+### Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+### Virtual envs
+.venv/
+.venv-1/
+venv/
+env/
+
+### Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+### OS / editor
+.DS_Store
+Thumbs.db
+
+### App secrets
+.env
+
+### App generated artifacts
 discursos.csv
 relatorio_discursos.pdf
-.env
+outputs/*.json

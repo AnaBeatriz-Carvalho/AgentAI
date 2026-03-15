@@ -3,9 +3,10 @@ pandas
 requests
 plotly
 google-generativeai
-tqdm
 python-dotenv
-tabulate
 pytest
 pytest-mock
-commitizen
+openai
+# tqdm
+# tabulate
+# commitizen
