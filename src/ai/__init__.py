@@ -1,1 +1,1 @@
-"""AI integration package (Gemini handlers)"""
+"""Pacote de integração com IA (LLM local)."""

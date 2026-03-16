@@ -46,25 +46,14 @@ def test_extrair_discursos_senado_parsing(monkeypatch):
     assert set(['Data', 'Parlamentar', 'Partido', 'UF', 'Resumo']).issubset(df.columns)
 
 
-def test_classificar_tema_discursos_com_gemini_batch(monkeypatch):
-    # Dataframe with one resumo
+def test_classificar_tema_discursos_com_local_llm(monkeypatch):
     df = pd.DataFrame({'Resumo': ['texto sobre saúde e hospitais']})
 
-    # Fake model that returns a JSON list
-    class FakeModel:
-        def __init__(self, *args, **kwargs):
-            pass
+    # força classificação determinística sem chamar LLM
+    monkeypatch.setattr(dp, 'classificar_tema_local', lambda resumo, temas: 'Saúde')
 
-        def generate_content(self, prompt):
-            return SimpleNamespace(text='[{"index": 0, "tema": "Saúde"}]')
-
-    monkeypatch.setattr(dp, 'genai', SimpleNamespace(GenerativeModel=FakeModel))
-
-    # stub out progress bar functions used by the module
+    # stub do progress bar do streamlit
     class P:
-        def __init__(self, *a, **k):
-            pass
-
         def progress(self, *a, **k):
             return None
 
@@ -73,7 +62,7 @@ def test_classificar_tema_discursos_com_gemini_batch(monkeypatch):
 
     monkeypatch.setattr(dp.st, 'progress', lambda *a, **k: P())
 
-    out = dp.classificar_tema_discursos_com_gemini(df.copy())
+    out = dp.classificar_tema_discursos_com_local_llm(df.copy(), sleep_between_batches=0.0)
 
     assert 'Tema' in out.columns
     assert out.loc[0, 'Tema'] == 'Saúde'

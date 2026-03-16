@@ -1,37 +1,35 @@
-# 🏛️ Análise de Discursos do Senado com Agente Gemini  
+# 🏛️ Análise de Atividades do Senado (LLM Local + Streamlit)
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Framework-Streamlit-red)
-![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 
-Aplicação web interativa para **análise automatizada de discursos, votações e pronunciamentos** do Senado Federal brasileiro.  
-Desenvolvida com **Streamlit** e **IA Generativa (Google Gemini)**, a ferramenta permite explorar dados públicos de forma intuitiva, combinando transparência, ciência de dados e aprendizado de máquina.
+Aplicação web interativa para analisar **pronunciamentos (discursos)** e **votações** do Senado Federal (dados públicos), com:
 
----
-
-## 🚀 Funcionalidades Principais  
-
-- **🗳️ Sessão de Votações:** Acompanhe votações plenárias com detalhes sobre matérias, resultados e posições parlamentares.  
-- **🗣️ Análise de Discursos:** Busque discursos por período, tema ou parlamentar e visualize tendências de debate.  
-- **🧠 Classificação com IA:** Utilize o modelo **Gemini** para categorizar discursos em temas como *Educação, Economia, Saúde*, entre outros.  
-- **💬 Agente Conversacional:** Faça perguntas em linguagem natural sobre votações e discursos e obtenha respostas explicativas.  
-- **📊 Dashboard Interativo:** Visualize métricas e séries temporais com **Plotly**.  
-- **🪶 Interface Moderna:** Desenvolvida com **Streamlit**, intuitiva e responsiva.
+- **LLM local** para classificação/análise de discursos e chat com os dados (via API OpenAI-compatível, ex.: LM Studio)
 
 ---
 
-## ⚙️ Tecnologias Utilizadas  
+## 🚀 Funcionalidades
+
+- **🗣️ Discursos:** coleta por período, classificação temática, resumo e atributos (agenda, tom, posicionamento etc.)
+- **📊 Dashboard:** gráficos (Plotly) e tabela filtrável
+- **💬 Chat com os dados:** perguntas em linguagem natural usando o contexto da amostra coletada
+- **🗳️ Votações:** exploração por período, filtros por partido/parlamentar e export CSV
+
+---
+
+## ⚙️ Tecnologias
 
 | Categoria | Ferramenta |
-|------------|------------|
-| **Linguagem** | Python 3.10+ |
-| **Framework Web** | Streamlit |
-| **Manipulação de Dados** | Pandas |
-| **IA Generativa** | Google Gemini (`google-generativeai`) |
-| **Visualização** | Plotly |
-| **HTTP Requests** | Requests |
-| **Testes Automatizados** | Pytest |
-| **Ambiente** | Python-dotenv |
+|---|---|
+| Linguagem | Python 3.10+ |
+| App web | Streamlit |
+| Dados | Pandas |
+| Visualização | Plotly |
+| HTTP | Requests |
+| LLM local | OpenAI SDK apontando para servidor local (ex.: LM Studio) |
+| Testes | Pytest |
+| Config | python-dotenv |
 
 ---
 
@@ -47,7 +45,7 @@ AgentAI/
 │   │   ├── data_processing.py    # Processamento e limpeza dos discursos
 │   │   └── votacoes_handler.py   # Extração e organização das votações
 │   ├── ai/
-│   │   └── gemini_handler.py     # Integração com a API do Gemini
+│   │   ├── local_llm_handler.py  # LLM local (OpenAI-compatível / LM Studio)
 │   ├── utils/
 │   │   └── helpers.py            # Funções auxiliares gerais
 │   └── config/
@@ -56,27 +54,26 @@ AgentAI/
 ├── tests/                        # Testes automatizados com pytest
 │   ├── test_data_processing.py
 │   ├── test_votacoes_handler.py
-│   ├── test_gemini_handler.py
 │   └── conftest.py
 │
 ├── run_app.py                    # Script auxiliar para iniciar a aplicação
 ├── requirements.txt              # Dependências do projeto
-├── .env.example                  # Exemplo de variáveis de ambiente
-├── .env                          # Arquivo real de ambiente 
+├── .env.example                  # Exemplo de variáveis de ambiente (NÃO comite chaves reais)
+├── .env                          # Variáveis locais (NÃO comite)
 └── README.md
 ```
 
 ---
 
-## 💻 Instalação e Execução  
+## 💻 Instalação e Execução
 
-### Pré-requisitos  
-- Python 3.10+  
-- Chave de API válida do [Google AI Studio](https://aistudio.google.com/app/apikey)
+### Pré-requisitos
+- Python 3.10+
+- Um servidor **OpenAI-compatível** rodando localmente para o LLM (recomendado: **LM Studio**)
 
 ---
 
-### Passos  
+### Passos
 
 1. **Clone o repositório:**
    ```bash
@@ -98,31 +95,52 @@ AgentAI/
    pip install -r requirements.txt
    ```
 
-4. **Configure as variáveis de ambiente:**
-   O projeto fornece um arquivo modelo `.env.example` com os nomes das variáveis esperadas.
+4. **Configure as variáveis de ambiente (opcional, mas recomendado):**
 
-   - Copie o arquivo:
-     ```bash
-     cp .env.example .env
-     ```
-     *(no Windows: `copy .env.example .env`)*
+    - Copie o arquivo de exemplo:
+       ```bash
+       cp .env.example .env
+       ```
+    - Se quiser alterar endpoint/modelo do LLM local, edite no `.env`:
+       ```
+       LOCAL_LLM_BASE_URL="http://localhost:1234/v1"
+       LOCAL_LLM_API_KEY="lm-studio"
+       LOCAL_LLM_MODEL="qwen3-vl-4b"
+       ```
 
-   - Abra o novo arquivo `.env` e adicione sua chave da API:
-     ```
-     GOOGLE_API_KEY="SUA_CHAVE_DE_API_AQUI"
-     ```
+5. **Inicie o LLM local (LM Studio):**
 
-5. **Execute a aplicação:**
-   ```bash
-   python run_app.py
-   ```
-   ou  
+   - Abra o LM Studio
+   - Carregue um modelo e inicie o **Local Server** no endpoint `http://localhost:1234/v1`
+   - O projeto está configurado para usar um modelo chamado `qwen3-vl-4b` (ajuste via `.env` se necessário)
+
+6. **Execute a aplicação:**
    ```bash
    streamlit run src/app/app_streamlit.py
    ```
 
-6. **Acesse no navegador:**  
+   Alternativa:
+   ```bash
+   python run_app.py
+   ```
+
+7. **Acesse no navegador:**
    [http://localhost:8501](http://localhost:8501)
+
+---
+
+## 🔧 Configuração do tema (Streamlit)
+
+Existe um arquivo de tema em `streamlit/config.toml`. O Streamlit normalmente lê esse arquivo a partir de `.streamlit/config.toml`.
+
+Se você quiser garantir que o tema seja aplicado:
+
+```bash
+mkdir -p .streamlit
+cp streamlit/config.toml .streamlit/config.toml
+```
+
+Importante: não deixe chaves/segredos dentro desse TOML.
 
 ---
 
@@ -141,8 +159,15 @@ pytest -q
 
 1. **Extração:** dados públicos são obtidos da API de Dados Abertos do Senado.  
 2. **Tratamento:** limpeza, normalização e estruturação dos dados (módulo `data/`).  
-3. **Análise com IA:** classificação temática via `Gemini` (módulo `ai/`).  
+3. **Análise com IA:** classificação/análise com LLM local (módulo `ai/local_llm_handler.py`).  
 4. **Visualização:** interface e dashboards em `app/`.
+
+---
+
+## 🔒 Nota de segurança
+
+- Não comite chaves de API em arquivos do repo.
+- Use `.env` (já listado no `.gitignore`) para segredos.
 
 ---
 
