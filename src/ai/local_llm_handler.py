@@ -5,10 +5,10 @@ import streamlit as st
 import pandas as pd
 from typing import Optional
 
-client = OpenAI(
-    base_url="http://localhost:1234/v1",
-    api_key="lm-studio"
-)
+from src.config.settings import get_local_llm_config
+
+_CFG = get_local_llm_config()
+client = OpenAI(base_url=_CFG["base_url"], api_key=_CFG["api_key"])
 
 
 _ANALISE_SCHEMA_EXEMPLO = {
@@ -131,7 +131,7 @@ def analisar_discurso_struct(texto: str) -> dict:
 
     try:
         response = client.chat.completions.create(
-            model="qwen3-vl-4b",
+            model=_CFG["model"],
             messages=[
                 {"role": "system", "content": "Você responde apenas JSON válido, sem texto extra."},
                 {"role": "user", "content": prompt},
@@ -174,7 +174,7 @@ def classificar_tema_local(resumo: str, temas: list[str]) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="qwen3-vl-4b",
+            model=_CFG["model"],
             messages=[
                 {"role": "system", "content": "Você é um classificador de temas de discursos parlamentares."},
                 {"role": "user", "content": prompt},

@@ -22,6 +22,11 @@ Thumbs.db
 
 ### App secrets
 .env
+.env.*
+!.env.example
+
+### Streamlit local config
+.streamlit/
 
 ### App generated artifacts
 discursos.csv

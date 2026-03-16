@@ -3,30 +3,22 @@ from dotenv import load_dotenv
 import os
 from src.utils.helpers import env_path
 
-DEFAULT_GEMINI_MODEL_DISCURSOS = 'gemini-2.0-flash'
-DEFAULT_GEMINI_MODEL_VOTACOES = 'gemini-2.5-pro'
-
-def get_google_api_key():
-    dotenv_path = env_path('.env')
-    load_dotenv(dotenv_path=dotenv_path)
-    return os.getenv('GOOGLE_API_KEY')
+DEFAULT_LOCAL_LLM_BASE_URL = "http://localhost:1234/v1"
+DEFAULT_LOCAL_LLM_API_KEY = "lm-studio"
+DEFAULT_LOCAL_LLM_MODEL = "qwen3-vl-4b"
 
 def get_env(key: str, default=None):
     dotenv_path = env_path('.env')
     load_dotenv(dotenv_path=dotenv_path)
     return os.getenv(key, default)
 
-def get_gemini_models():
-    """Retorna dicionário com modelos configurados para discursos e votações.
 
-    Variáveis suportadas em .env:
-      GEMINI_MODEL_DISCURSOS
-      GEMINI_MODEL_VOTACOES
-    Se ausentes, usa defaults.
-    """
+def get_local_llm_config() -> dict:
+    """Config do LLM local (OpenAI-compatível) via .env."""
     dotenv_path = env_path('.env')
     load_dotenv(dotenv_path=dotenv_path)
     return {
-        'discursos': os.getenv('GEMINI_MODEL_DISCURSOS', DEFAULT_GEMINI_MODEL_DISCURSOS),
-        'votacoes': os.getenv('GEMINI_MODEL_VOTACOES', DEFAULT_GEMINI_MODEL_VOTACOES)
+        "base_url": os.getenv("LOCAL_LLM_BASE_URL", DEFAULT_LOCAL_LLM_BASE_URL),
+        "api_key": os.getenv("LOCAL_LLM_API_KEY", DEFAULT_LOCAL_LLM_API_KEY),
+        "model": os.getenv("LOCAL_LLM_MODEL", DEFAULT_LOCAL_LLM_MODEL),
     }

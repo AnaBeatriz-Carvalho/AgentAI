@@ -66,7 +66,7 @@ with tab_discursos:
             tema_counts = df_discursos['Tema'].value_counts().reset_index()
             tema_counts.columns = ['Tema', 'Contagem']
             fig_temas = px.bar(tema_counts, x='Tema', y='Contagem', title='Distribuição de Discursos por Tema', color='Tema', template='plotly_white')
-            st.plotly_chart(fig_temas, width='stretch')
+            st.plotly_chart(fig_temas, use_container_width=True)
         with col2:
             st.write("##### Volume de Discursos por Dia")
             discursos_por_dia = df_discursos.groupby(df_discursos['Data'].dt.date).size().reset_index(name='Contagem') if 'Data' in df_discursos.columns else pd.DataFrame()
@@ -75,10 +75,14 @@ with tab_discursos:
                 discursos_por_dia.rename(columns={0: 'Data'}, inplace=True)
                 fig_temporal = px.line(discursos_por_dia, x='Data', y='Contagem', title='Linha do Tempo de Discursos', markers=True, template='plotly_white')
                 fig_temporal.update_xaxes(tickformat="%d/%m/%Y")
-                st.plotly_chart(fig_temporal, width='stretch')
+                st.plotly_chart(fig_temporal, use_container_width=True)
 
         st.subheader("Discursos Recolhidos e Classificados")
-        st.dataframe(df_discursos, column_config={"Data": st.column_config.DatetimeColumn("Data", format="DD/MM/YYYY")}, width='stretch')
+        st.dataframe(
+            df_discursos,
+            column_config={"Data": st.column_config.DatetimeColumn("Data", format="DD/MM/YYYY")},
+            use_container_width=True,
+        )
 
         st.header("\U0001F4AC Converse com os Dados dos Discursos")
         if "messages" not in st.session_state:
@@ -109,7 +113,7 @@ with tab_discursos:
             st.write(f"{len(df_filtrado_discursos)} discursos após aplicar filtros")
             if not df_filtrado_discursos.empty:
                 st.download_button("Baixar CSV dos discursos filtrados", df_filtrado_discursos.to_csv(index=False), file_name="discursos_filtrados.csv")
-                st.dataframe(df_filtrado_discursos, width='stretch')
+                st.dataframe(df_filtrado_discursos, use_container_width=True)
     else:
         st.info("Para começar a análise de discursos, selecione um período na barra lateral e clique no botão 'Procurar e Analisar Discursos'.")
 
@@ -183,15 +187,6 @@ with tab_votacoes:
         st.markdown(f"\U0001F5F3️ **Tipo de Votação:** {tipo_votacao}")
         st.markdown(f"✅ **Resultado:** {resultado}")
 
-        # Botão para gerar explicação via IA
-        from src.ai.gemini_handler import explicar_votacao
-        with st.expander("💡 Gerar explicação automática desta votação"):
-            if st.button("Gerar Explicação", key=f"explicar_{codigo_materia or descricao_selecionada}"):
-                with st.spinner("Gerando explicação com IA..."):
-                    explicacao_ia = explicar_votacao(detalhes_materia, df_votos, descricao_selecionada)
-                st.markdown("**Explicação Gerada:**")
-                st.write(explicacao_ia)
-
         st.write("---")
         st.write("##### Filtros Adicionais")
         partidos = sorted(df_votos['Partido'].unique())
@@ -209,7 +204,7 @@ with tab_votacoes:
         col_tabela, col_grafico = st.columns([2, 1])
         with col_tabela:
             st.write("##### Votos por Parlamentar")
-            st.dataframe(df_filtrado, width='stretch')
+            st.dataframe(df_filtrado, use_container_width=True)
 
             # Provide CSV download of filtered votes
             if not df_filtrado.empty:
@@ -221,7 +216,7 @@ with tab_votacoes:
                 votos_counts = df_filtrado['Voto'].value_counts().reset_index()
                 votos_counts.columns = ['Voto', 'Total']
                 fig_votos = px.pie(votos_counts, names='Voto', values='Total', title='Distribuição dos Votos', hole=0.3)
-                st.plotly_chart(fig_votos, width='stretch')
+                st.plotly_chart(fig_votos, use_container_width=True)
             else:
                 st.warning("Nenhum voto corresponde aos filtros selecionados.")
 

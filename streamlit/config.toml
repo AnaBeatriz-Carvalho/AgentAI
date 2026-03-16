@@ -16,5 +16,4 @@ textColor="#ffffff"
 backgroundColor="#203a43"
 textColor="#ffffff"
 
-
-GEMINI_API_KEY = AIzaSyCpbB-MKNFQgVtjLATlEAt_067GAWNl4tc
+# Importante: não coloque chaves/segredos neste arquivo.
