@@ -1,4 +1,3 @@
-import json
 from datetime import date
 
 import pandas as pd

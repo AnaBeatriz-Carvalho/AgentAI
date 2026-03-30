@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 from typing import Union
 
 def read_uploaded_text(uploaded_file) -> Union[str, None]:

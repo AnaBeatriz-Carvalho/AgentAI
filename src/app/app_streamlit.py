@@ -11,16 +11,13 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
-import os
 from pathlib import Path
-from io import BytesIO
 
 # helper imports kept minimal; removed unused upload helper per user preference
 
 from src.data.data_processing import extrair_e_classificar_discursos
 from src.ai.local_llm_handler import responder_pergunta_usuario_local
 from src.data.votacoes_handler import obter_votacoes_periodo
-from src.ai.local_llm_handler import analisar_discurso
 
 st.set_page_config(
     layout="wide",
