@@ -1,4 +1,3 @@
-from types import SimpleNamespace
 from src.utils.helpers import read_uploaded_text
 
 
