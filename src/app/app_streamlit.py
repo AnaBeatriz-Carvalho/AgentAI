@@ -65,16 +65,25 @@ with tab_discursos:
             st.write("##### Frequência dos Temas")
             tema_counts = df_discursos['Tema'].value_counts().reset_index()
             tema_counts.columns = ['Tema', 'Contagem']
-            fig_temas = px.bar(tema_counts, x='Tema', y='Contagem', title='Distribuição de Discursos por Tema', color='Tema', template='plotly_white')
+            tema_counts = tema_counts.sort_values('Contagem', ascending=True)
+            fig_temas = px.bar(tema_counts, y='Tema', x='Contagem', orientation='h', title='Distribuição de Discursos por Tema',
+                                color='Contagem', color_continuous_scale='Blues', template='plotly_white')
+            fig_temas.update_traces(textposition='auto', texttemplate='%{x}', hovertemplate='%{y}: <b>%{x}</b><extra></extra>')
+            fig_temas.update_layout(showlegend=False, height=400, xaxis_title='Quantidade', yaxis_title='')
             st.plotly_chart(fig_temas, use_container_width=True)
         with col2:
             st.write("##### Volume de Discursos por Dia")
             discursos_por_dia = df_discursos.groupby(df_discursos['Data'].dt.date).size().reset_index(name='Contagem') if 'Data' in df_discursos.columns else pd.DataFrame()
             if not discursos_por_dia.empty:
-                # garantir que a coluna de data tenha nome apropriado para o gráfico
                 discursos_por_dia.rename(columns={0: 'Data'}, inplace=True)
-                fig_temporal = px.line(discursos_por_dia, x='Data', y='Contagem', title='Linha do Tempo de Discursos', markers=True, template='plotly_white')
-                fig_temporal.update_xaxes(tickformat="%d/%m/%Y")
+                fig_temporal = px.line(discursos_por_dia, x='Data', y='Contagem', title='Linha do Tempo de Discursos',
+                                      markers=True, template='plotly_white', line_shape='linear')
+                fig_temporal.update_traces(line=dict(color='#1f77b4', width=3), marker=dict(size=8),
+                                          hovertemplate='%{x}: <b>%{y}</b> discursos<extra></extra>')
+                fig_temporal.update_layout(height=400, xaxis_title='Data', yaxis_title='Quantidade',
+                                         hovermode='x unified', showlegend=False)
+                fig_temporal.update_xaxes(tickformat="%d/%m", showgrid=True, gridwidth=1, gridcolor='LightGray')
+                fig_temporal.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
                 st.plotly_chart(fig_temporal, use_container_width=True)
 
         st.subheader("Discursos Recolhidos e Classificados")
