@@ -113,7 +113,10 @@ def extrair_discursos_senado(data_inicio: date, data_fim: date) -> pd.DataFrame:
 
     except requests.exceptions.HTTPError as err:
         status_code = err.response.status_code
+<<<<<<< HEAD
         logger.error(f"HTTP error {status_code} fetching discursos", exc_info=True)
+=======
+>>>>>>> 2cb0027 (Melhorias de rodar modelo localmente)
         if status_code == 404:
             st.info("😴 Nenhum pronunciamento encontrado para este período.")
             st.caption("Isso pode acontecer em fins de semana, feriados ou recesso. Tente um intervalo com dias úteis.")
@@ -124,20 +127,30 @@ def extrair_discursos_senado(data_inicio: date, data_fim: date) -> pd.DataFrame:
             st.info("🔧 O serviço do Senado está temporariamente indisponível.")
             st.caption("Tente novamente em alguns instantes.")
         else:
-            st.error(f"Falha ao buscar dados na API do Senado. Status: {err.response.status_code}")
-            st.error(f"Detalhe do erro: {err.response.text}")
+            st.info("⚠️ Não foi possível recuperar os dados neste momento.")
+            st.caption("Verifique sua conexão e tente novamente.")
         return pd.DataFrame()
     except requests.exceptions.Timeout:
+<<<<<<< HEAD
         logger.error(f"Timeout fetching discursos from {data_inicio_str} to {data_fim_str}")
+=======
+>>>>>>> 2cb0027 (Melhorias de rodar modelo localmente)
         st.info("⏱️ A requisição demorou muito para responder.")
         st.caption("A conexão pode estar lenta. Tente novamente em alguns instantes.")
         return pd.DataFrame()
     except ET.ParseError:
+<<<<<<< HEAD
         logger.error(f"XML parse error for discursos period {data_inicio_str} to {data_fim_str}", exc_info=True)
         st.info("⚠️ Houve um problema ao processar os dados recebidos.")
         st.caption("Tente novamente com um período diferente.")
         return pd.DataFrame()
     except Exception as e:
         logger.error(f"Unexpected error fetching discursos: {e}", exc_info=True)
+=======
+        st.info("⚠️ Houve um problema ao processar os dados recebidos.")
+        st.caption("Tente novamente com um período diferente.")
+        return pd.DataFrame()
+    except Exception:
+>>>>>>> 2cb0027 (Melhorias de rodar modelo localmente)
         st.info("⚠️ Algo inesperado aconteceu. Tente novamente mais tarde.")
         return pd.DataFrame()

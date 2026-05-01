@@ -286,5 +286,7 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
             resposta = response.choices[0].message.content.strip()
             st.session_state.messages.append({"role": "assistant", "content": resposta})
             st.chat_message("assistant").write(resposta)
-        except Exception as e:
-            st.error(f"Ocorreu um erro ao contatar o LLM local: {e}")
+        except Exception:
+            resposta = "Desculpe, tive uma dificuldade momentânea em processar sua pergunta. Por favor, tente novamente em alguns instantes ou reformule a pergunta."
+            st.session_state.messages.append({"role": "assistant", "content": resposta})
+            st.chat_message("assistant").write(resposta)

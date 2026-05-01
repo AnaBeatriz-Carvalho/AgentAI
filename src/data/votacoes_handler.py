@@ -216,10 +216,12 @@ def obter_votacoes_periodo(data_inicio, data_fim):
         _save_cache(cache)
         return votacoes_processadas
 
-    except requests.RequestException as e:
-        st.error(f"Erro ao buscar dados de votações: {e}")
+    except requests.RequestException:
+        st.info("⚠️ Não foi possível recuperar as votações neste momento.")
+        st.caption("Verifique sua conexão e tente novamente.")
         return {}
 
-    except ET.ParseError as e:
-        st.error(f"Erro ao processar XML de votações: {e}")
+    except ET.ParseError:
+        st.info("⚠️ Houve um problema ao processar os dados das votações.")
+        st.caption("Tente novamente com um período diferente.")
         return {}
