@@ -39,6 +39,9 @@ with tab_discursos:
         discursos_data_inicio = st.date_input("Data de Início (Discursos)", value=discursos_data_inicio_padrao, max_value=datetime.today(), key="discursos_inicio")
         discursos_data_fim = st.date_input("Data de Fim (Discursos)", value=discursos_data_fim_padrao, max_value=datetime.today(), key="discursos_fim")
 
+        if discursos_data_fim < discursos_data_inicio:
+            st.error("❌ Data de fim não pode ser anterior à data de início!")
+
         with st.expander("Configuração de IA (LLM local)"):
             sleep_between_batches = st.number_input("Pausa entre chamadas (segundos)", min_value=0.0, max_value=10.0, value=0.5, step=0.1)
 
@@ -123,6 +126,9 @@ with tab_votacoes:
 
         votacoes_data_inicio = st.date_input("Data de Início (Votações)", value=votacoes_data_inicio_padrao, max_value=datetime.today(), key="votacoes_inicio")
         votacoes_data_fim = st.date_input("Data de Fim (Votações)", value=votacoes_data_fim_padrao, max_value=datetime.today(), key="votacoes_fim")
+
+        if votacoes_data_fim < votacoes_data_inicio:
+            st.error("❌ Data de fim não pode ser anterior à data de início!")
 
         if st.button("Procurar Votações", key="procurar_votacoes"):
             with st.spinner("A procurar votações no período..."):

@@ -6,24 +6,21 @@ from difflib import get_close_matches
 import re
 import json
 from pathlib import Path
+from datetime import date
+
+from src.config.constants import SENADO_HEADERS, REQUEST_TIMEOUT, SENADO_API_MATERIAS, SENADO_API_MATERIA_DETALHES
+from src.utils.logger import get_logger
 
 CACHE_PATH = Path('outputs/materias_cache.json')
-
-HEADERS = {
-    'Accept': 'application/xml',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-}
+logger = get_logger(__name__)
 
 def obter_detalhes_materia(codigo_materia: str) -> dict:
-    """Consulta detalhes adicionais de uma matéria legislativa.
-
-    Retorna ementa, explicação da ementa e autores (lista concatenada) se disponíveis.
-    """
+    """Consulta detalhes adicionais de uma matéria legislativa."""
     if not codigo_materia:
         return {}
-    url = f"https://legis.senado.leg.br/dadosabertos/materia/{codigo_materia}"
+    url = f"{SENADO_API_MATERIA_DETALHES}/{codigo_materia}"
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=30)
+        resp = requests.get(url, headers=SENADO_HEADERS, timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
         root = ET.fromstring(resp.text)
         ementa = root.find('.//EmentaMateria')
@@ -39,29 +36,31 @@ def obter_detalhes_materia(codigo_materia: str) -> dict:
             'explicacao': (explicacao.text.strip() if explicacao is not None and explicacao.text else ''),
             'autores': ', '.join(autores) if autores else ''
         }
-    except Exception:
-        # Silencioso: falha de detalhes não deve quebrar fluxo principal
+    except Exception as e:
+        logger.debug(f"Failed to get materia details for {codigo_materia}: {e}")
         return {}
 
-def _load_cache():
+def _load_cache() -> dict:
+    """Carrega cache de detalhes de matérias do arquivo."""
     if CACHE_PATH.exists():
         try:
             return json.loads(CACHE_PATH.read_text(encoding='utf-8'))
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Failed to load cache: {e}")
             return {}
     return {}
 
-def _save_cache(cache: dict):
+
+def _save_cache(cache: dict) -> None:
+    """Salva cache de detalhes de matérias em arquivo."""
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     try:
         CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(f"Failed to save cache: {e}")
 
 def _deduzir_identificacao(descricao: str) -> dict:
-    """Tenta extrair tipo, número e ano da matéria a partir da descrição textual.
-    Ex: "Emenda nº 721 (Substitutivo) ao PLP nº 108/2024" -> {'tipo': 'PLP', 'numero': '108', 'ano': '2024'}
-    """
+    """Extrai tipo, número e ano da matéria a partir da descrição textual."""
     if not descricao:
         return {}
     texto = descricao.replace('\n', ' ').replace(',', ' ').replace('  ', ' ')
@@ -76,10 +75,10 @@ def _deduzir_identificacao(descricao: str) -> dict:
     return {}
 
 def _buscar_por_tipo_numero_ano(tipo: str, numero: str, ano: str) -> dict:
-    """Tenta localizar matéria na listagem geral de votações para obter ementa (heurística)."""
-    url = "https://legis.senado.leg.br/dadosabertos/votacao"
+    """Localiza matéria na listagem geral de votações para obter ementa (heurística)."""
+    url = SENADO_API_MATERIAS
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=30)
+        resp = requests.get(url, headers=SENADO_HEADERS, timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
         root = ET.fromstring(resp.text)
         for vot in root.findall('.//Votacao'):
@@ -96,7 +95,8 @@ def _buscar_por_tipo_numero_ano(tipo: str, numero: str, ano: str) -> dict:
                         'resultado': resultado or '',
                         'tipo_votacao': tipo_votacao or ''
                     }
-    except Exception:
+    except Exception as e:
+        logger.debug(f"Failed to search materia {tipo} {numero}/{ano}: {e}")
         return {}
     return {}
 
@@ -113,7 +113,7 @@ def obter_votacoes_periodo(data_inicio, data_fim):
 
     try:
         # Busca os detalhes das matérias
-        response_detalhes = requests.get(url_detalhes, headers=HEADERS, timeout=30)
+        response_detalhes = requests.get(url_detalhes, headers=SENADO_HEADERS, timeout=30)
         response_detalhes.raise_for_status()
         detalhes_root = ET.fromstring(response_detalhes.text)
 
@@ -137,7 +137,7 @@ def obter_votacoes_periodo(data_inicio, data_fim):
                 continue
 
         # Busca as votações no período
-        response_orientacoes = requests.get(url_orientacoes, headers=HEADERS, timeout=30)
+        response_orientacoes = requests.get(url_orientacoes, headers=SENADO_HEADERS, timeout=30)
         response_orientacoes.raise_for_status()
         root_orientacoes = ET.fromstring(response_orientacoes.text)
 
