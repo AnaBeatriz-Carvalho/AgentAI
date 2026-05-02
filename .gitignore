@@ -32,3 +32,6 @@ Thumbs.db
 discursos.csv
 relatorio_discursos.pdf
 outputs/*.json
+
+
+app.log
