@@ -105,14 +105,14 @@ AgentAI/
        ```
        LOCAL_LLM_BASE_URL="http://localhost:1234/v1"
        LOCAL_LLM_API_KEY="lm-studio"
-       LOCAL_LLM_MODEL="qwen3-vl-4b"
+       LOCAL_LLM_MODEL="mistralai/mistral-7b-instruct-v0.3"
        ```
 
 5. **Inicie o LLM local (LM Studio):**
 
    - Abra o LM Studio
-   - Carregue um modelo e inicie o **Local Server** no endpoint `http://localhost:1234/v1`
-   - O projeto está configurado para usar um modelo chamado `qwen3-vl-4b` (ajuste via `.env` se necessário)
+   - Carregue o modelo **Mistral 7B Instruct** (recomendado: `mistralai/mistral-7b-instruct-v0.3`) e inicie o **Local Server** no endpoint `http://localhost:1234/v1`
+   - O projeto está configurado para usar este modelo por padrão (ajuste via `.env` se necessário)
 
 6. **Execute a aplicação:**
    ```bash
