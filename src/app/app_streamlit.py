@@ -16,7 +16,7 @@ from pathlib import Path
 # helper imports kept minimal; removed unused upload helper per user preference
 
 from src.data.data_processing import extrair_e_classificar_discursos
-from src.ai.local_llm_handler import responder_pergunta_usuario_local
+from src.ai.local_llm_handler import responder_pergunta_usuario_local, explicar_votacao_local
 from src.data.votacoes_handler import obter_votacoes_periodo
 
 st.set_page_config(
@@ -200,6 +200,10 @@ with tab_votacoes:
         st.markdown(f"✅ **Resultado:** {resultado}")
 
         st.write("---")
+        st.subheader("💡 O que significa esta votação?")
+        with st.spinner("IA analisando a matéria..."):
+            explicacao = explicar_votacao_local(descricao_selecionada, ementa, tipo_votacao, resultado)
+            st.info(explicacao)
         st.write("##### Filtros Adicionais")
         partidos = sorted(df_votos['Partido'].unique())
         parlamentares = sorted(df_votos['Parlamentar'].unique())
@@ -236,3 +240,50 @@ with tab_votacoes:
         if df_votos is not None and not df_votos.empty:
             with st.expander("Exportar dados da votação selecionada"):
                 st.download_button("Baixar CSV da votação", df_votos.to_csv(index=False), file_name="votacao_detalhes.csv")
+
+        st.header("💬 Perguntas sobre esta Votação")
+        if "messages_votacoes" not in st.session_state:
+            st.session_state["messages_votacoes"] = [{"role": "assistant", "content": "Faça perguntas sobre esta votação e os votos dos senadores!"}]
+
+        for msg in st.session_state.messages_votacoes:
+            st.chat_message(msg["role"]).write(msg["content"])
+
+        if prompt_votacao := st.chat_input("Faça uma pergunta sobre esta votação..."):
+            st.session_state.messages_votacoes.append({"role": "user", "content": prompt_votacao})
+            st.chat_message("user").write(prompt_votacao)
+
+            contexto_votacao = f"""
+Votação: {descricao_selecionada}
+Tipo: {tipo_votacao}
+Resultado: {resultado}
+Total de votos: {len(df_votos)}
+Distribuição de votos: {df_votos['Voto'].value_counts().to_dict()}
+"""
+
+            prompt_resp = f"""Você é um assistente especializado em votações do Senado Federal brasileiro.
+Responda à pergunta do usuário com base nos dados da votação.
+
+{contexto_votacao}
+
+Pergunta: {prompt_votacao}
+
+Responda de forma clara, concisa e em português brasileiro. Se não souber responder, seja honesto."""
+
+            try:
+                response = client.chat.completions.create(
+                    model=_CFG["model"],
+                    messages=[
+                        {"role": "user", "content": prompt_resp},
+                    ],
+                    temperature=0.2,
+                )
+                resposta_votacao = response.choices[0].message.content.strip()
+                st.session_state.messages_votacoes.append({"role": "assistant", "content": resposta_votacao})
+                st.chat_message("assistant").write(resposta_votacao)
+            except Exception as e:
+                from src.utils.logger import get_logger
+                logger = get_logger(__name__)
+                logger.error(f"Erro ao responder pergunta sobre votação: {str(e)}", exc_info=True)
+                erro_msg = "Desculpe, tive uma dificuldade em processar sua pergunta. Tente novamente."
+                st.session_state.messages_votacoes.append({"role": "assistant", "content": erro_msg})
+                st.chat_message("assistant").write(erro_msg)

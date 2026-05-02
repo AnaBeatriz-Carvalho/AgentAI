@@ -92,9 +92,21 @@ Objetivos da análise:
 - Identificar automaticamente o parlamentar, partido e estado se essas informações estiverem presentes no texto.
 
 Categorias fixas de agenda política (escolha apenas 1):
-economia, saúde, educação, segurança pública, infraestrutura, meio ambiente, agricultura, energia,
-ciência e tecnologia, direitos sociais, política institucional, relações internacionais,
-administração pública, justiça e legislação, outros
+
+economia - créditos, financiamentos, impostos, câmbio, PIB, mercado, investimentos, setor privado
+saúde - SUS, medicamentos, hospitais, pandemia, vacinação, doenças, saúde pública
+educação - escolas, universidades, ensino, pesquisa científica, bolsas de estudo
+segurança pública - polícia, crime, violência, presídios, segurança pessoal
+infraestrutura - rodovias, ferrovias, portos, aeroportos, água, saneamento, energia, telecomunicações
+meio ambiente - desmatamento, poluição, mudanças climáticas, sustentabilidade, preservação
+agricultura - produção agrícola, agropecuária, pecuária, fertilizantes, subsídios agrícolas
+ciência e tecnologia - inovação, pesquisa, tecnologia, startups
+direitos sociais - pobreza, desigualdade, programas sociais, seguro desemprego
+política institucional - reforma política, poder judiciário, poder legislativo, constituição
+relações internacionais - diplomacia, comércio exterior, acordos bilaterais, organismos internacionais
+administração pública - reforma administrativa, funcionalismo público, orçamento
+justiça e legislação - leis, regulamentações, direitos legais, processos judiciais
+outros - não se encaixa nas categorias acima
 
 Posicionamento em relação ao governo (escolha apenas 1):
 apoio ao governo, oposição ao governo, posição institucional, neutro / informativo, indeterminado
@@ -106,9 +118,10 @@ Regras obrigatórias:
 - Não invente informações que não estejam no texto.
 - Se alguma informação não puder ser identificada, retorne "não identificado".
 - O resumo deve ter no máximo 2 frases.
-- O tema principal deve ter no máximo 5 palavras.
+- O tema principal deve ter no máximo 5 palavras e deve ser baseado no ASSUNTO PRINCIPAL, não em palavras-chave isoladas.
 - Extraia no máximo 5 atores mencionados.
 - Se o discurso for muito curto para análise adequada, retorne exatamente "conteúdo insuficiente" no campo "resumo".
+- IMPORTANTE: Identifique o tema baseado no CONTEXTO E OBJETIVO PRINCIPAL do texto, não apenas em palavras isoladas.
 
 Estrutura obrigatória da resposta:
 - Responda EXCLUSIVAMENTE em JSON VÁLIDO (sem Markdown, sem texto extra).
@@ -160,46 +173,78 @@ def analisar_discurso(texto: str) -> str:
 
 
 def classificar_tema_local(resumo: str, temas: list[str]) -> str:
-    """Classifica um resumo em um tema da lista usando o LLM local."""
-    temas_txt = ", ".join(temas)
+    """Classifica um resumo em um tema da lista usando palavras-chave."""
+    palavras_chave = {
+        "Educação": ["educação", "ensino", "escola", "universidade", "aluno", "professor", "bolsa", "pesquisa", "ciência", "tecnologia", "inovação", "acadêmico"],
+        "Saúde": ["saúde", "sus", "medicamento", "hospital", "médico", "doença", "vacinação", "pandemia", "enfermidade", "clínico"],
+        "Economia": ["economia", "crédito", "financiamento", "imposto", "câmbio", "pib", "investimento", "setor privado", "mercado", "inflação", "operação de crédito"],
+        "Segurança": ["segurança pública", "polícia", "crime", "violência", "prisão", "criminalidade", "delegacia", "criminal"],
+        "Infraestrutura": ["rodovia", "ferrovia", "porto", "aeroporto", "saneamento", "energia", "água", "construção", "obra", "resiliência", "manutenção"],
+        "Meio Ambiente": ["meio ambiente", "desmatamento", "poluição", "climática", "sustentabilidade", "preservação", "ecologia", "floresta", "carbono"],
+        "Direitos Humanos": ["direitos humanos", "direito", "liberdade", "igualdade", "dignidade", "minorias", "discriminação", "humano"],
+        "Trabalho": ["trabalho", "emprego", "labor", "agricultura", "agropecuária", "produtor", "sindicato", "trabalhador", "rural"],
+        "Política": ["política", "congresso", "senado", "câmara", "governo", "poder", "instituição", "legislação", "lei", "reforma", "parlamentar"],
+        "Relações Exteriores": ["relações exteriores", "diplomacia", "internacional", "exterior", "país", "comércio exterior", "acordo", "embaixada"],
+        "Cultura": ["cultura", "arte", "música", "cinema", "patrimônio", "cultural", "artista", "festival"],
+    }
+
+    texto_lower = resumo.lower()
+    contagem = {}
+
+    for tema, palavras in palavras_chave.items():
+        contagem[tema] = sum(1 for palavra in palavras if palavra in texto_lower)
+
+    tema_vencedor = max(contagem, key=contagem.get)
+
+    if contagem[tema_vencedor] > 0:
+        from src.utils.logger import get_logger
+        logger = get_logger(__name__)
+        logger.info(f"Tema identificado: {tema_vencedor} (correspondências: {contagem[tema_vencedor]})")
+        return tema_vencedor
+
+    from src.utils.logger import get_logger
+    logger = get_logger(__name__)
+    logger.info("Classificado como: Outros")
+    return "Outros"
+
+
+def explicar_votacao_local(descricao_materia: str, ementa: str, tipo_votacao: str, resultado: str) -> str:
+    """Explica uma matéria de votação de forma clara e acessível."""
     prompt = f"""
-    Classifique o resumo abaixo em APENAS UMA das categorias:
-    {temas_txt}
+Você é um especialista em legislação brasileira explicando para um cidadão leigo o que significa uma votação no Senado.
 
-    Responda somente com JSON no formato: {{"tema": "<categoria>"}}.
+Matéria: {descricao_materia}
+Ementa: {ementa}
+Tipo de Votação: {tipo_votacao}
+Resultado: {resultado}
 
-    Resumo:
-    {resumo}
-    """
+Forneça uma explicação clara e concisa (3-4 frases) que inclua:
+1. O que é esta matéria em linguagem simples
+2. O que significa o tipo de votação utilizado
+3. O resultado e sua importância
+
+Seja objetivo e evite jargão técnico desnecessário.
+"""
 
     try:
+        from src.utils.logger import get_logger
+        logger = get_logger(__name__)
+
         response = client.chat.completions.create(
             model=_CFG["model"],
             messages=[
-                {"role": "system", "content": "Você é um classificador de temas de discursos parlamentares."},
                 {"role": "user", "content": prompt},
             ],
-            temperature=0.2,
+            temperature=0.3,
         )
-        text = response.choices[0].message.content.strip()
-    except Exception:
-        return "Outros"
-
-    # Tenta parsear JSON
-    try:
-        data = json.loads(text)
-        tema = str(data.get("tema", "")).strip()
-        if tema:
-            return tema
-    except Exception:
-        pass
-
-    # Fallback: buscar tema por match direto
-    for tema in temas:
-        if re.search(rf"\b{re.escape(tema)}\b", text, re.IGNORECASE):
-            return tema
-
-    return "Outros"
+        explicacao = response.choices[0].message.content.strip()
+        logger.info(f"Explicação de votação gerada com sucesso")
+        return explicacao
+    except Exception as e:
+        from src.utils.logger import get_logger
+        logger = get_logger(__name__)
+        logger.error(f"Erro ao explicar votação: {str(e)}", exc_info=True)
+        return "Desculpe, não consegui gerar uma explicação no momento. Tente novamente."
 
 
 def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
@@ -242,51 +287,57 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
 
     contexto_dados = df.to_markdown(index=False)
 
-    prompt_qa = f"""
-    Você é um assistente parlamentar e cientista de dados. Analise os discursos e responda à pergunta abaixo.
-    Gere insights RELATIVOS à amostra: frequências de parlamentares, predominância de temas, variações no período.
-    Se a pergunta exigir dado ausente (ex.: presença física), explique brevemente a limitação e ofereça alternativa
-    baseada em padrões de discursos e temas. Evite descartar totalmente a resposta; sempre traga ângulo útil.
+    prompt_qa = f"""Você é um assistente parlamentar e cientista de dados. Analise os discursos e responda à pergunta abaixo.
+Gere insights RELATIVOS à amostra: frequências de parlamentares, predominância de temas, variações no período.
+Se a pergunta exigir dado ausente (ex.: presença física), explique brevemente a limitação e ofereça alternativa
+baseada em padrões de discursos e temas. Evite descartar totalmente a resposta; sempre traga ângulo útil.
 
-    Estatísticas resumidas:
-    {resumo_stats}
+Estatísticas resumidas:
+{resumo_stats}
 
-    Pergunta do usuário:
-    "{pergunta}"
+Pergunta do usuário:
+"{pergunta}"
 
-    {extra_context or ''}
+{extra_context or ''}
 
-    Dados tabulares (amostra):
-    ---
-    {contexto_dados[:16000]}
-    ---
+Dados tabulares (amostra):
+---
+{contexto_dados[:16000]}
+---
 
-    Diretrizes de resposta:
-    - Português brasileiro, claro e conciso.
-    - 4–6 frases objetivas.
-    - Referencie parlamentares com mais discursos quando pertinente.
-    - Use temas para qualificar tendências.
-    - Indique se período é curto, mas ainda ofereça leitura relativa.
-    - Não repita a pergunta, não use jargões desnecessários.
-    - Não invente fatos externos.
+Diretrizes de resposta:
+- Português brasileiro, claro e conciso.
+- 4–6 frases objetivas.
+- Referencie parlamentares com mais discursos quando pertinente.
+- Use temas para qualificar tendências.
+- Indique se período é curto, mas ainda ofereça leitura relativa.
+- Não repita a pergunta, não use jargões desnecessários.
+- Não invente fatos externos.
 
-    Resposta:
-    """
+Resposta:
+"""
 
     with st.spinner("O LLM local está analisando os dados e elaborando sua resposta..."):
         try:
+            from src.utils.logger import get_logger
+            logger = get_logger(__name__)
+            logger.info(f"Respondendo pergunta do usuário: {pergunta[:50]}...")
+
             response = client.chat.completions.create(
-                model="qwen3-vl-4b",
+                model=_CFG["model"],
                 messages=[
-                    {"role": "system", "content": "Você é um assistente parlamentar útil e objetivo."},
                     {"role": "user", "content": prompt_qa},
                 ],
                 temperature=0.2,
             )
             resposta = response.choices[0].message.content.strip()
+            logger.info(f"Resposta gerada com sucesso: {resposta[:50]}...")
             st.session_state.messages.append({"role": "assistant", "content": resposta})
             st.chat_message("assistant").write(resposta)
-        except Exception:
+        except Exception as e:
+            from src.utils.logger import get_logger
+            logger = get_logger(__name__)
+            logger.error(f"Erro ao responder pergunta: {str(e)}", exc_info=True)
             resposta = "Desculpe, tive uma dificuldade momentânea em processar sua pergunta. Por favor, tente novamente em alguns instantes ou reformule a pergunta."
             st.session_state.messages.append({"role": "assistant", "content": resposta})
             st.chat_message("assistant").write(resposta)

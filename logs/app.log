@@ -2,3 +2,579 @@
 2026-04-30 23:44:54 - src.data.data_processing - INFO - Successfully extracted 106 discursos
 2026-04-30 23:49:19 - src.data.data_processing - INFO - Fetching discursos from 20260401 to 20260430
 2026-04-30 23:49:20 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:31:23 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:31:23 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:35:42 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:35:42 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:37:52 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:37:53 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:45:20 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:45:21 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:47:24 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:47:24 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:47:25 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:25 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Segurança
+2026-05-01 21:47:25 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:25 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:26 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:26 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:26 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:26 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:47:27 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:27 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:47:27 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:27 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:47:28 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:28 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:47:28 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:28 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:29 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:29 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:29 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:29 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:30 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:30 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:30 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:30 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:31 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:31 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:32 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:32 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:32 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:32 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Política
+2026-05-01 21:47:33 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:33 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:33 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:33 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:34 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:34 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Relações Exteriores
+2026-05-01 21:47:34 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:34 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:35 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:35 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:35 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:35 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:36 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:36 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:36 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:36 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:37 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:37 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:37 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:37 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:38 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:38 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:38 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:38 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:39 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:39 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:39 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:39 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:40 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:40 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:41 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:41 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:41 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:41 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:42 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:42 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:42 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:42 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:43 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:43 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Trabalho
+2026-05-01 21:47:43 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:43 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:44 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:44 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:44 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:44 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:45 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:45 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:45 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:45 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:46 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:46 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:46 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:46 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:47:47 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:47 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:47 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:47 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:48 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:48 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:48 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:48 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:49 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:49 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:50 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:50 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:50 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:50 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:47:51 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:51 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:51 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:51 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:52 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:52 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:52 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:52 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:53 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:53 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:53 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:53 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:54 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:54 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Direitos Humanos
+2026-05-01 21:47:54 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:54 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Trabalho
+2026-05-01 21:47:55 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:55 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:55 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:55 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:56 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:56 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:56 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:56 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:57 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:57 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:58 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:58 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:58 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:58 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:59 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:59 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:47:59 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:47:59 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:00 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:00 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:00 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:00 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:01 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:01 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:01 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:01 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:02 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:02 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:02 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:02 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:48:03 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:03 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:03 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:03 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:04 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:04 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:04 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:04 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:05 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:05 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:05 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:05 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:06 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:06 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:07 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:07 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:07 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:07 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:08 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:08 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:08 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:08 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:09 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:09 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:09 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:09 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:10 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:10 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:10 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:10 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:11 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:11 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Saúde
+2026-05-01 21:48:11 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:11 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:12 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:12 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:12 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:12 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:13 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:13 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:13 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:13 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:14 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:14 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:48:15 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:15 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Política
+2026-05-01 21:48:15 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:15 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:16 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:16 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:48:16 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:16 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Política
+2026-05-01 21:48:17 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:17 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:17 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:17 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:18 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:18 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Trabalho
+2026-05-01 21:48:18 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:18 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:19 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:19 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Cultura
+2026-05-01 21:48:19 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:19 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Educação
+2026-05-01 21:48:20 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:20 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:48:20 - src.ai.local_llm_handler - INFO - Tema identificado: 'não identificado'
+2026-05-01 21:48:20 - src.ai.local_llm_handler - INFO - Encontrado por busca direta: Política
+2026-05-01 21:51:30 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:51:31 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:51:31 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 4)
+2026-05-01 21:51:31 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 2)
+2026-05-01 21:51:32 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:51:32 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:33 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:33 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:34 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:34 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:51:35 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:51:35 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:51:36 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:51:37 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 2)
+2026-05-01 21:51:37 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:51:38 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:51:38 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:51:39 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:51:39 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:51:40 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:51:40 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:51:41 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 2)
+2026-05-01 21:51:41 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:42 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:42 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:43 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:43 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:44 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:44 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:51:45 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:45 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:46 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:46 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:51:47 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:47 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:51:48 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:48 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:49 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:49 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:50 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:51:50 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:51 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:51 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:52 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:52 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:51:53 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:53 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:54 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:51:54 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:51:55 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:55 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:51:56 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:51:56 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:51:57 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 1)
+2026-05-01 21:51:57 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:51:58 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:51:58 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:51:59 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 3)
+2026-05-01 21:51:59 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:52:00 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:00 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:01 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:01 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:02 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 1)
+2026-05-01 21:52:02 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:52:03 - src.ai.local_llm_handler - INFO - Tema identificado: Cultura (correspondências: 2)
+2026-05-01 21:52:03 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:04 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:52:04 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:05 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:05 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:06 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:06 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:07 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:52:07 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:08 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:08 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:09 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:09 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:10 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:10 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:52:11 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:11 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:52:12 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:12 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:52:13 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:52:13 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:52:14 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:52:14 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:15 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:52:15 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:16 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:52:16 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:17 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:52:17 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:18 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:52:18 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:19 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:19 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:52:20 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:52:21 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:21 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:52:22 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:22 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:52:23 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:23 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 4)
+2026-05-01 21:52:24 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:52:24 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:54:32 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:54:33 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:54:33 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 4)
+2026-05-01 21:54:33 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 2)
+2026-05-01 21:54:34 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:54:34 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:35 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:35 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:36 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:36 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:54:37 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:54:37 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:54:38 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:54:38 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 2)
+2026-05-01 21:54:39 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:54:39 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:54:40 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:54:40 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:54:41 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:54:42 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:54:42 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:54:43 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 2)
+2026-05-01 21:54:43 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:44 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:44 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:45 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:45 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:46 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:46 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:54:47 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:47 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:48 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:48 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:54:49 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:49 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:54:50 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:50 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:51 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:51 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:52 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:54:52 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:53 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:53 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:54:54 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:54 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:54:55 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:55 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:56 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:54:56 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:54:57 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:57 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:54:58 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:54:58 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:54:59 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 1)
+2026-05-01 21:54:59 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:55:00 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:55:00 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:55:01 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 3)
+2026-05-01 21:55:01 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:55:02 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:02 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:03 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:03 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:04 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 1)
+2026-05-01 21:55:04 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:55:05 - src.ai.local_llm_handler - INFO - Tema identificado: Cultura (correspondências: 2)
+2026-05-01 21:55:05 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:06 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:55:06 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:07 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:07 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:08 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:08 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:09 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:55:09 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:10 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:10 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:11 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:11 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:12 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:12 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:55:13 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:13 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:55:14 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:14 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:55:15 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:55:15 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:55:16 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:55:16 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:17 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:55:17 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:18 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:55:18 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:19 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:55:19 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:20 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:55:20 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:21 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:21 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:55:22 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:55:22 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:23 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:55:23 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:24 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:55:24 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:25 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 4)
+2026-05-01 21:55:25 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:55:26 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:56:02 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: quais os temas mais frequentes...
+2026-05-01 21:56:02 - src.ai.local_llm_handler - ERROR - Erro ao responder pergunta: Error code: 400 - {'error': 'Error rendering prompt with jinja template: "Only user and assistant roles are supported!".\n\nThis is usually an issue with the model\'s prompt template. If you are using a popular model, you can try to search the model under lmstudio-community, which will have fixed prompt templates. If you cannot find one, you are welcome to post this issue to our discord or issue tracker on GitHub. Alternatively, if you know how to write jinja templates, you can override the prompt template in My Models > model settings > Prompt Template.'}
+Traceback (most recent call last):
+  File "/Users/anabeatrizcarvalho/Documents/GitHub/AgentAI/src/ai/local_llm_handler.py", line 288, in responder_pergunta_usuario_local
+    response = client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/openai/_utils/_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py", line 1211, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/openai/_base_client.py", line 1297, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/openai/_base_client.py", line 1070, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': 'Error rendering prompt with jinja template: "Only user and assistant roles are supported!".\n\nThis is usually an issue with the model\'s prompt template. If you are using a popular model, you can try to search the model under lmstudio-community, which will have fixed prompt templates. If you cannot find one, you are welcome to post this issue to our discord or issue tracker on GitHub. Alternatively, if you know how to write jinja templates, you can override the prompt template in My Models > model settings > Prompt Template.'}
+2026-05-01 21:57:11 - src.data.data_processing - INFO - Fetching discursos from 20260402 to 20260501
+2026-05-01 21:57:12 - src.data.data_processing - INFO - Successfully extracted 106 discursos
+2026-05-01 21:57:12 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 4)
+2026-05-01 21:57:12 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 2)
+2026-05-01 21:57:13 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:13 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:14 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:14 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:15 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:15 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:16 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:16 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:57:17 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:57:17 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 2)
+2026-05-01 21:57:18 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:57:18 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:57:19 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:19 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:20 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:57:20 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 3)
+2026-05-01 21:57:21 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:57:21 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 2)
+2026-05-01 21:57:22 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:22 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:23 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:23 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:24 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:24 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:25 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:57:25 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:26 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:26 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:27 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:27 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:28 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 3)
+2026-05-01 21:57:28 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:29 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:29 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:30 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:30 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:31 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:31 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:32 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:32 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:33 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:57:33 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:34 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:34 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:35 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:35 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:36 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:36 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:37 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:37 - src.ai.local_llm_handler - INFO - Tema identificado: Segurança (correspondências: 1)
+2026-05-01 21:57:38 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:38 - src.ai.local_llm_handler - INFO - Tema identificado: Infraestrutura (correspondências: 1)
+2026-05-01 21:57:39 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:39 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 3)
+2026-05-01 21:57:40 - src.ai.local_llm_handler - INFO - Tema identificado: Trabalho (correspondências: 1)
+2026-05-01 21:57:40 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:41 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:41 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:42 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:57:42 - src.ai.local_llm_handler - INFO - Tema identificado: Direitos Humanos (correspondências: 1)
+2026-05-01 21:57:43 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:43 - src.ai.local_llm_handler - INFO - Tema identificado: Cultura (correspondências: 2)
+2026-05-01 21:57:44 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:44 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:57:45 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:45 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:46 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:46 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:47 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:47 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:48 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:49 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:57:49 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:50 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:50 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:51 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:51 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:52 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:52 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:53 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:53 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:54 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 2)
+2026-05-01 21:57:54 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:55 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 2)
+2026-05-01 21:57:55 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:56 - src.ai.local_llm_handler - INFO - Tema identificado: Saúde (correspondências: 1)
+2026-05-01 21:57:56 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:57 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:57:57 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:58 - src.ai.local_llm_handler - INFO - Classificado como: Outros
+2026-05-01 21:57:58 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:57:59 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:57:59 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:00 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:00 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 2)
+2026-05-01 21:58:01 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:58:01 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:02 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:58:02 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:03 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 1)
+2026-05-01 21:58:03 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:04 - src.ai.local_llm_handler - INFO - Tema identificado: Educação (correspondências: 4)
+2026-05-01 21:58:04 - src.ai.local_llm_handler - INFO - Tema identificado: Economia (correspondências: 1)
+2026-05-01 21:58:05 - src.ai.local_llm_handler - INFO - Tema identificado: Política (correspondências: 1)
+2026-05-01 21:58:15 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: quais os temas mais frequentes...
+2026-05-01 21:58:26 - src.ai.local_llm_handler - INFO - Resposta gerada com sucesso: Os temas mais frequentes nos discursos dos parlame...
+2026-05-01 22:00:09 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: qual o assunto mais aquecido?...
+2026-05-01 22:00:21 - src.ai.local_llm_handler - INFO - Resposta gerada com sucesso: O assunto mais aquecido nos discursos dos parlamen...
+2026-05-01 22:00:57 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: teve discussão sobre a isometria?...
+2026-05-01 22:01:04 - src.ai.local_llm_handler - INFO - Resposta gerada com sucesso: No período analisado, não houve discussão específi...
+2026-05-01 22:02:38 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: teve assuntos sobre a cai?...
+2026-05-01 22:02:47 - src.ai.local_llm_handler - INFO - Resposta gerada com sucesso: No período analisado, houve dois discursos sobre o...
+2026-05-01 22:03:16 - src.ai.local_llm_handler - INFO - Respondendo pergunta do usuário: teve assuntos sobre a cpi?...
+2026-05-01 22:03:34 - src.ai.local_llm_handler - INFO - Resposta gerada com sucesso: No período analisado, o assunto da Comissão de Inq...
+2026-05-01 22:07:21 - src.ai.local_llm_handler - INFO - Explicação de votação gerada com sucesso
+2026-05-01 22:07:59 - src.ai.local_llm_handler - INFO - Explicação de votação gerada com sucesso
