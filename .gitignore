@@ -33,5 +33,4 @@ discursos.csv
 relatorio_discursos.pdf
 outputs/*.json
 
-
-app.log
+logs/app.log
