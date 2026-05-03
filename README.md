@@ -45,22 +45,30 @@ AgentAI/
 │   │   ├── data_processing.py    # Processamento e limpeza dos discursos
 │   │   └── votacoes_handler.py   # Extração e organização das votações
 │   ├── ai/
-│   │   ├── local_llm_handler.py  # LLM local (OpenAI-compatível / LM Studio)
+│   │   └── local_llm_handler.py  # LLM local (OpenAI-compatível / LM Studio)
 │   ├── utils/
-│   │   └── helpers.py            # Funções auxiliares gerais
+│   │   ├── helpers.py            # Funções auxiliares gerais
+│   │   └── logger.py             # Logging centralizado
 │   └── config/
-│       └── settings.py           # Carregamento de variáveis de ambiente
+│       ├── settings.py           # Carregamento de variáveis de ambiente
+│       └── constants.py          # Constantes centralizadas
 │
 ├── tests/                        # Testes automatizados com pytest
-│   ├── test_data_processing.py
-│   ├── test_votacoes_handler.py
-│   └── conftest.py
+│   ├── test_data_processing.py   # Testes de processamento de dados
+│   ├── test_votacoes_handler.py  # Testes de votações
+│   ├── test_local_llm_handler.py # Testes do LLM local
+│   ├── test_utils_helpers.py     # Testes de utilidades
+│   ├── test_plotly_export.py     # Testes de visualização
+│   └── conftest.py               # Configurações pytest
 │
 ├── run_app.py                    # Script auxiliar para iniciar a aplicação
+├── inspect_votacoes.py           # Script para inspecionar dados de votações
+├── inspect_periodo_votacoes.py   # Script para análise de períodos de votação
 ├── requirements.txt              # Dependências do projeto
 ├── .env.example                  # Exemplo de variáveis de ambiente (NÃO comite chaves reais)
 ├── .env                          # Variáveis locais (NÃO comite)
-└── README.md
+├── .gitignore                    # Arquivos a ignorar no git
+├── README.md                     # Este arquivo
 ```
 
 ---
@@ -107,6 +115,7 @@ AgentAI/
        LOCAL_LLM_API_KEY="lm-studio"
        LOCAL_LLM_MODEL="mistralai/mistral-7b-instruct-v0.3"
        ```
+    - **Nota:** Se o servidor LLM estiver em outra máquina, substitua `localhost` pelo IP específico (ex.: `http://192.168.x.x:1234/v1`)
 
 5. **Inicie o LLM local (LM Studio):**
 
@@ -150,8 +159,25 @@ O projeto inclui **testes automatizados** com `pytest` para garantir qualidade e
 
 Execute todos os testes:
 ```bash
-pytest -q
+pytest -v
 ```
+
+Teste específico:
+```bash
+pytest tests/test_local_llm_handler.py -v
+```
+
+Cobertura de testes:
+```bash
+pytest --cov=src tests/
+```
+
+**Testes disponíveis:**
+- `test_data_processing.py` — Extração e processamento de discursos
+- `test_votacoes_handler.py` — Manipulação de dados de votações
+- `test_local_llm_handler.py` — Análise e classificação com LLM
+- `test_utils_helpers.py` — Funções auxiliares
+- `test_plotly_export.py` — Visualizações e gráficos
 
 ---
 
@@ -168,23 +194,6 @@ pytest -q
 
 - Não comite chaves de API em arquivos do repo.
 - Use `.env` (já listado no `.gitignore`) para segredos.
-
----
-
-
-## 🤝 Contribuindo  
-
-Contribuições são bem-vindas!  
-Siga o fluxo padrão de contribuição:
-
-```bash
-git checkout -b feature/nova-funcionalidade
-git commit -m "feat: adiciona nova funcionalidade"
-git push origin feature/nova-funcionalidade
-```
-
-Abra um **Pull Request** e descreva suas alterações.  
-Sugestões de melhorias, correções e documentação são sempre valorizadas 💡  
 
 ---
 

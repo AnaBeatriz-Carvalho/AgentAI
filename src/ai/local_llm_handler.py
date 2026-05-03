@@ -57,7 +57,8 @@ def _default_insuficiente() -> dict:
 def _coerce_analise_payload(payload: object) -> dict:
     if not isinstance(payload, dict):
         return _default_insuficiente()
-    out = dict(_default_insuficiente())
+    out = dict(_ANALISE_SCHEMA_EXEMPLO)
+
     for k in _ANALISE_SCHEMA_EXEMPLO.keys():
         if k in payload:
             out[k] = payload[k]
@@ -65,14 +66,17 @@ def _coerce_analise_payload(payload: object) -> dict:
     # Normalizações leves
     if not isinstance(out.get("atores_mencionados"), list):
         out["atores_mencionados"] = []
-    out["atores_mencionados"] = [str(x).strip() for x in out["atores_mencionados"] if str(x).strip()][:5]
+    else:
+        out["atores_mencionados"] = [str(x).strip() for x in out["atores_mencionados"] if x and str(x).strip()][:5]
 
     for k in ["parlamentar", "partido", "estado", "agenda_politica", "tema_principal", "resumo", "posicionamento_governo", "tom_politico"]:
-        out[k] = (str(out.get(k, "")).strip() or "não identificado")
+        val = out.get(k, "")
+        out[k] = (str(val).strip() if val else "não identificado")
 
-    # Regras
-    if out["resumo"].lower() == "conteúdo insuficiente" or out["resumo"].lower() == "conteudo insuficiente":
+    # Regra: se foi explicitamente "conteúdo insuficiente" no payload, retorna defaults
+    if payload.get("resumo", "").lower() in ["conteúdo insuficiente", "conteudo insuficiente"]:
         return _default_insuficiente()
+
     return out
 
 
