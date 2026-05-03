@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 from src.utils.helpers import env_path
 
-DEFAULT_LOCAL_LLM_BASE_URL = "http://192.168.15.2:1234/v1"
+DEFAULT_LOCAL_LLM_BASE_URL = "http://localhost:1234/v1"
 DEFAULT_LOCAL_LLM_API_KEY = "lm-studio"
 DEFAULT_LOCAL_LLM_MODEL = "mistralai/mistral-7b-instruct-v0.3"
 
