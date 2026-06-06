@@ -37,6 +37,7 @@ MAX_PARLAMENTARES_TOP = 7
 MAX_TEMAS_DISPLAY = 10
 
 # Nomes de colunas
+COL_ID_DISCURSO = "id_discurso"
 COL_DATA = "Data"
 COL_PARLAMENTAR = "Parlamentar"
 COL_PARTIDO = "Partido"

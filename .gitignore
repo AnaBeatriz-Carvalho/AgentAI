@@ -34,3 +34,4 @@ relatorio_discursos.pdf
 outputs/*.json
 
 logs/app.log
+.venv_mac/

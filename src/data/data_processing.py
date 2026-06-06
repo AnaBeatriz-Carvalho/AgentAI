@@ -7,7 +7,7 @@ from datetime import date, timedelta
 from src.ai.local_llm_handler import classificar_tema_local
 from src.config.constants import (
     TEMAS_DEFINIDOS, SENADO_API_DISCURSOS, SENADO_HEADERS,
-    REQUEST_TIMEOUT, MAX_PERIODO_DIAS, COL_DATA, COL_RESUMO
+    REQUEST_TIMEOUT, MAX_PERIODO_DIAS, COL_DATA, COL_RESUMO, COL_ID_DISCURSO
 )
 from src.utils.logger import get_logger
 
@@ -77,12 +77,18 @@ def extrair_discursos_senado(data_inicio: date, data_fim: date) -> pd.DataFrame:
         xml_root = ET.fromstring(response.text)
         discursos_list = []
 
-        for pronunciamento_node in xml_root.findall('.//Pronunciamento'):
+        for indice, pronunciamento_node in enumerate(xml_root.findall('.//Pronunciamento')):
             def get_text(element_name):
                 found_element = pronunciamento_node.find(element_name)
                 return found_element.text.strip() if found_element is not None and found_element.text is not None else ""
 
+            # Identificador estável da fonte: usa o código do pronunciamento se a API
+            # o expuser; caso contrário gera um id sequencial determinístico.
+            codigo = get_text('CodigoPronunciamento') or get_text('Codigo')
+            id_discurso = codigo if codigo else f"D{indice + 1}"
+
             discurso_data = {
+                COL_ID_DISCURSO: id_discurso,
                 'Data': get_text('Data'),
                 'Parlamentar': get_text('NomeAutor'),
                 'Partido': get_text('Partido'),

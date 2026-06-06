@@ -3,12 +3,30 @@ import json
 import re
 import streamlit as st
 import pandas as pd
+from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
 from src.config.settings import get_local_llm_config
+from src.config.constants import COL_ID_DISCURSO
 
 _CFG = get_local_llm_config()
 client = OpenAI(base_url=_CFG["base_url"], api_key=_CFG["api_key"])
+
+# Caminho do log estruturado de rastreabilidade (uma linha JSON por consulta).
+_TRACE_PATH = Path(__file__).resolve().parents[2] / "logs" / "qa_trace.jsonl"
+
+# Colunas expostas como "fonte" na interface e no trace, quando presentes.
+_COLUNAS_FONTE = [COL_ID_DISCURSO, "Data", "Parlamentar", "Partido", "Tema", "Resumo"]
+
+# Stopwords mínimas para extrair termos úteis da pergunta no retrieval.
+_STOPWORDS = {
+    "qual", "quais", "quem", "como", "onde", "quando", "porque", "por", "que", "para",
+    "sobre", "dos", "das", "uma", "uns", "umas", "com", "sem", "the", "and", "mais",
+    "menos", "foi", "são", "sao", "tem", "têm", "teve", "está", "esta", "este", "esse",
+    "essa", "isso", "aqui", "ali", "seu", "sua", "nos", "nas", "ele", "ela", "eles",
+    "elas", "discurso", "discursos", "parlamentar", "parlamentares", "senado", "senador",
+}
 
 
 _ANALISE_SCHEMA_EXEMPLO = {
@@ -251,6 +269,56 @@ Seja objetivo e evite jargão técnico desnecessário.
         return "Desculpe, não consegui gerar uma explicação no momento. Tente novamente."
 
 
+def _selecionar_fontes(df: pd.DataFrame, pergunta: str, limite: int = 40) -> pd.DataFrame:
+    """Recupera os discursos relevantes à pergunta (retrieval por palavra-chave).
+
+    Retorna o subconjunto que será efetivamente injetado no prompt — garantindo que
+    as fontes exibidas/logadas correspondam ao contexto usado pelo modelo. Se nenhum
+    registro casar com os termos da pergunta, devolve a amostra geral (até `limite`).
+    """
+    if df.empty:
+        return df
+
+    termos = [t for t in re.findall(r"\w{4,}", (pergunta or "").lower()) if t not in _STOPWORDS]
+
+    if termos:
+        campos = [c for c in ["Resumo", "Parlamentar", "Tema", "Partido"] if c in df.columns]
+        if campos:
+            texto_busca = df[campos].fillna("").agg(" ".join, axis=1).str.lower()
+            mask = texto_busca.apply(lambda txt: any(termo in txt for termo in termos))
+            relevantes = df[mask]
+            if not relevantes.empty:
+                return relevantes.head(limite)
+
+    # Fallback: sem correspondência explícita, usa a amostra geral.
+    return df.head(limite)
+
+
+def _registrar_trace(pergunta: str, fontes: pd.DataFrame, resposta: str) -> None:
+    """Persiste, por consulta, pergunta + ids das fontes + resposta (JSONL).
+
+    Base para avaliar rastreabilidade posteriormente (sentido B).
+    """
+    try:
+        ids_fontes = (
+            fontes[COL_ID_DISCURSO].astype(str).tolist()
+            if COL_ID_DISCURSO in fontes.columns else []
+        )
+        registro = {
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "pergunta": pergunta,
+            "fontes_ids": ids_fontes,
+            "n_fontes": len(ids_fontes),
+            "resposta": resposta,
+        }
+        _TRACE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with _TRACE_PATH.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(registro, ensure_ascii=False) + "\n")
+    except Exception as e:
+        from src.utils.logger import get_logger
+        get_logger(__name__).debug(f"Falha ao registrar trace de rastreabilidade: {e}")
+
+
 def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
     """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos."""
     if "messages" not in st.session_state:
@@ -289,7 +357,10 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
     total_discursos = len(df)
     resumo_stats = f"Total: {total_discursos}. {periodo_txt} {top_parlamentares_txt} {temas_dist_txt}".strip()
 
-    contexto_dados = df.to_markdown(index=False)
+    # Recupera os discursos relevantes (retrieval) que fundamentarão a resposta.
+    fontes_usadas = _selecionar_fontes(df, pergunta)
+    colunas_fonte = [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
+    contexto_dados = fontes_usadas[colunas_fonte].to_markdown(index=False) if colunas_fonte else fontes_usadas.to_markdown(index=False)
 
     prompt_qa = f"""Você é um assistente parlamentar e cientista de dados. Analise os discursos e responda à pergunta abaixo.
 Gere insights RELATIVOS à amostra: frequências de parlamentares, predominância de temas, variações no período.
@@ -304,7 +375,7 @@ Pergunta do usuário:
 
 {extra_context or ''}
 
-Dados tabulares (amostra):
+Discursos recuperados (fontes — cada linha tem um id_discurso):
 ---
 {contexto_dados[:16000]}
 ---
@@ -312,11 +383,12 @@ Dados tabulares (amostra):
 Diretrizes de resposta:
 - Português brasileiro, claro e conciso.
 - 4–6 frases objetivas.
+- Fundamente as afirmações nos discursos recuperados acima e cite as fontes usadas pelo id_discurso entre colchetes (ex.: [D3], [D7]) ao final das frases pertinentes.
 - Referencie parlamentares com mais discursos quando pertinente.
 - Use temas para qualificar tendências.
 - Indique se período é curto, mas ainda ofereça leitura relativa.
 - Não repita a pergunta, não use jargões desnecessários.
-- Não invente fatos externos.
+- Não invente fatos externos nem cite ids que não estejam na lista acima.
 
 Resposta:
 """
@@ -337,7 +409,16 @@ Resposta:
             resposta = response.choices[0].message.content.strip()
             logger.info(f"Resposta gerada com sucesso: {resposta[:50]}...")
             st.session_state.messages.append({"role": "assistant", "content": resposta})
-            st.chat_message("assistant").write(resposta)
+            with st.chat_message("assistant"):
+                st.write(resposta)
+                if not fontes_usadas.empty and colunas_fonte:
+                    with st.expander(f"📚 Fontes utilizadas ({len(fontes_usadas)} discursos)"):
+                        st.dataframe(
+                            fontes_usadas[colunas_fonte],
+                            use_container_width=True,
+                            hide_index=True,
+                        )
+            _registrar_trace(pergunta, fontes_usadas, resposta)
         except Exception as e:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
