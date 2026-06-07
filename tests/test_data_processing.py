@@ -42,7 +42,53 @@ def test_extrair_discursos_senado_parsing(monkeypatch):
 
     assert isinstance(df, pd.DataFrame)
     assert len(df) == 2
-    assert set(['Data', 'Parlamentar', 'Partido', 'UF', 'Resumo']).issubset(df.columns)
+    assert set(['id_discurso', 'Data', 'Parlamentar', 'Partido', 'UF', 'Resumo']).issubset(df.columns)
+
+
+def test_id_discurso_sequencial_sem_codigo(monkeypatch):
+    """Sem código na API, o id_discurso deve ser sequencial (D1, D2, ...)."""
+    sample_xml = '''<ListaPronunciamentos>
+    <Pronunciamento>
+        <Data>2025-10-01</Data>
+        <NomeAutor>Fulano</NomeAutor>
+        <Partido>ABC</Partido>
+        <UF>SP</UF>
+        <Resumo>Primeiro pronunciamento</Resumo>
+    </Pronunciamento>
+    <Pronunciamento>
+        <Data>2025-10-02</Data>
+        <NomeAutor>Beltrano</NomeAutor>
+        <Partido>XYZ</Partido>
+        <UF>RJ</UF>
+        <Resumo>Segundo pronunciamento</Resumo>
+    </Pronunciamento>
+</ListaPronunciamentos>'''
+
+    monkeypatch.setattr(dp, "requests", SimpleNamespace(get=lambda *a, **k: DummyResp(sample_xml)))
+
+    df = dp.extrair_discursos_senado(date(2025, 10, 1), date(2025, 10, 2))
+
+    assert df['id_discurso'].tolist() == ['D1', 'D2']
+
+
+def test_id_discurso_usa_codigo_pronunciamento(monkeypatch):
+    """Quando a API traz CodigoPronunciamento, ele deve virar o id_discurso."""
+    sample_xml = '''<ListaPronunciamentos>
+    <Pronunciamento>
+        <CodigoPronunciamento>998877</CodigoPronunciamento>
+        <Data>2025-10-01</Data>
+        <NomeAutor>Fulano</NomeAutor>
+        <Partido>ABC</Partido>
+        <UF>SP</UF>
+        <Resumo>Pronunciamento com codigo</Resumo>
+    </Pronunciamento>
+</ListaPronunciamentos>'''
+
+    monkeypatch.setattr(dp, "requests", SimpleNamespace(get=lambda *a, **k: DummyResp(sample_xml)))
+
+    df = dp.extrair_discursos_senado(date(2025, 10, 1), date(2025, 10, 1))
+
+    assert df['id_discurso'].tolist() == ['998877']
 
 
 def test_classificar_tema_discursos_com_local_llm(monkeypatch):

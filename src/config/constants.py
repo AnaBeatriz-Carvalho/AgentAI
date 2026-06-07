@@ -36,6 +36,13 @@ MAX_RESUMO_LENGTH = 2
 MAX_PARLAMENTARES_TOP = 7
 MAX_TEMAS_DISPLAY = 10
 
+# Orçamento de contexto enviado ao LLM nos chats (evita estourar a janela do modelo).
+# Defaults dimensionados para um modelo carregado com n_ctx = 4096. Se você carregar o
+# modelo no LM Studio com um contexto maior (ex.: 8192/16384), pode aumentar estes valores
+# para respostas mais ricas (mais fontes citáveis).
+MAX_FONTES_PROMPT = 15            # nº de discursos/votos injetados como fontes no prompt
+MAX_CHARS_CONTEXTO_PROMPT = 7000  # corte final de segurança do bloco de contexto
+
 # Nomes de colunas
 COL_ID_DISCURSO = "id_discurso"
 COL_DATA = "Data"

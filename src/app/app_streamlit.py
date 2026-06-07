@@ -16,8 +16,9 @@ from pathlib import Path
 # helper imports kept minimal; removed unused upload helper per user preference
 
 from src.data.data_processing import extrair_e_classificar_discursos
-from src.ai.local_llm_handler import responder_pergunta_usuario_local, explicar_votacao_local
+from src.ai.local_llm_handler import responder_pergunta_usuario_local, explicar_votacao_local, responder_pergunta_votacao_local
 from src.data.votacoes_handler import obter_votacoes_periodo
+from src.utils.rastreabilidade import TRACE_PADRAO, avaliar, avaliar_por_origem, carregar_registros
 
 st.set_page_config(
     layout="wide",
@@ -27,7 +28,9 @@ st.set_page_config(
 
 st.title("\U0001F3DB️ Análise de Atividades do Senado com LLM Local")
 
-tab_discursos, tab_votacoes = st.tabs(["Análise de Discursos", "Análise de Votações"])
+tab_discursos, tab_votacoes, tab_rastreabilidade = st.tabs(
+    ["Análise de Discursos", "Análise de Votações", "📊 Rastreabilidade"]
+)
 
 with tab_discursos:
     st.header("Análise de Pronunciamentos Parlamentares")
@@ -252,38 +255,58 @@ with tab_votacoes:
             st.session_state.messages_votacoes.append({"role": "user", "content": prompt_votacao})
             st.chat_message("user").write(prompt_votacao)
 
-            contexto_votacao = f"""
-Votação: {descricao_selecionada}
-Tipo: {tipo_votacao}
-Resultado: {resultado}
-Total de votos: {len(df_votos)}
-Distribuição de votos: {df_votos['Voto'].value_counts().to_dict()}
-"""
+            responder_pergunta_votacao_local(
+                df_votos=df_votos,
+                detalhes=detalhes_materia,
+                descricao=descricao_selecionada,
+                tipo_votacao=tipo_votacao,
+                resultado=resultado,
+                pergunta=prompt_votacao,
+            )
 
-            prompt_resp = f"""Você é um assistente especializado em votações do Senado Federal brasileiro.
-Responda à pergunta do usuário com base nos dados da votação.
 
-{contexto_votacao}
+with tab_rastreabilidade:
+    st.header("📊 Rastreabilidade das respostas")
+    st.caption(
+        "Estas porcentagens medem **rastreabilidade** (se a resposta se apoia em fontes reais), "
+        "não acurácia de classificação. São calculadas a partir de `logs/qa_trace.jsonl`, que "
+        "recebe uma linha a cada pergunta feita nos chats de Discursos e Votações."
+    )
 
-Pergunta: {prompt_votacao}
+    # O clique no botão já provoca o rerun do script, relendo o log atualizado.
+    st.button("🔄 Atualizar")
 
-Responda de forma clara, concisa e em português brasileiro. Se não souber responder, seja honesto."""
+    registros = carregar_registros(TRACE_PADRAO)
 
-            try:
-                response = client.chat.completions.create(
-                    model=_CFG["model"],
-                    messages=[
-                        {"role": "user", "content": prompt_resp},
-                    ],
-                    temperature=0.2,
-                )
-                resposta_votacao = response.choices[0].message.content.strip()
-                st.session_state.messages_votacoes.append({"role": "assistant", "content": resposta_votacao})
-                st.chat_message("assistant").write(resposta_votacao)
-            except Exception as e:
-                from src.utils.logger import get_logger
-                logger = get_logger(__name__)
-                logger.error(f"Erro ao responder pergunta sobre votação: {str(e)}", exc_info=True)
-                erro_msg = "Desculpe, tive uma dificuldade em processar sua pergunta. Tente novamente."
-                st.session_state.messages_votacoes.append({"role": "assistant", "content": erro_msg})
-                st.chat_message("assistant").write(erro_msg)
+    if not registros:
+        st.info(
+            "Ainda não há consultas registradas. Faça perguntas nos chats de **Discursos** ou "
+            "**Votações** para gerar métricas. (O chat precisa do LM Studio servindo o modelo em "
+            "`localhost:1234/v1` para produzir respostas com citações.)"
+        )
+    else:
+        def _mostrar_metricas(m: dict):
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Consultas", m.get("total", 0))
+            c2.metric("Cobertura de recuperação", f"{m.get('cobertura_recuperacao', 0):.1%}")
+            c3.metric("Cobertura de citação", f"{m.get('cobertura_citacao', 0):.1%}")
+            c4.metric("Precisão de citação", f"{m.get('precisao_citacao', 0):.1%}")
+
+        st.subheader("Geral")
+        _mostrar_metricas(avaliar(registros))
+
+        st.subheader("Por origem")
+        por_origem = avaliar_por_origem(registros)
+        for origem in sorted(por_origem):
+            st.markdown(f"**{origem.capitalize()}**")
+            _mostrar_metricas(por_origem[origem])
+
+        with st.expander("O que cada métrica significa"):
+            st.markdown(
+                "- **Cobertura de recuperação**: % de perguntas em que o sistema encontrou ao menos "
+                "1 fonte para embasar a resposta.\n"
+                "- **Cobertura de citação**: % de respostas que citaram ao menos um id de fonte válido "
+                "(presente entre as fontes recuperadas daquela pergunta).\n"
+                "- **Precisão de citação**: dos ids citados pelo modelo, % que corresponde a fontes "
+                "reais (não inventadas)."
+            )

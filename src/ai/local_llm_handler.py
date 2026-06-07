@@ -1,6 +1,7 @@
 from openai import OpenAI
 import json
 import re
+import unicodedata
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -8,7 +9,7 @@ from pathlib import Path
 from typing import Optional
 
 from src.config.settings import get_local_llm_config
-from src.config.constants import COL_ID_DISCURSO
+from src.config.constants import COL_ID_DISCURSO, MAX_FONTES_PROMPT, MAX_CHARS_CONTEXTO_PROMPT
 
 _CFG = get_local_llm_config()
 client = OpenAI(base_url=_CFG["base_url"], api_key=_CFG["api_key"])
@@ -269,48 +270,83 @@ Seja objetivo e evite jargão técnico desnecessário.
         return "Desculpe, não consegui gerar uma explicação no momento. Tente novamente."
 
 
-def _selecionar_fontes(df: pd.DataFrame, pergunta: str, limite: int = 40) -> pd.DataFrame:
-    """Recupera os discursos relevantes à pergunta (retrieval por palavra-chave).
+def _normalizar(texto: str) -> str:
+    """Minúsculas + remoção de acentos, para casar termos independente de acentuação."""
+    if not texto:
+        return ""
+    nfkd = unicodedata.normalize("NFKD", str(texto))
+    sem_acento = "".join(c for c in nfkd if not unicodedata.combining(c))
+    return sem_acento.lower()
+
+
+# Colunas padrão de busca para o retrieval de discursos.
+_COLUNAS_BUSCA_PADRAO = ["Resumo", "Parlamentar", "Tema", "Partido"]
+
+
+def _selecionar_fontes(
+    df: pd.DataFrame,
+    pergunta: str,
+    limite: int = 40,
+    colunas_busca: Optional[list[str]] = None,
+) -> pd.DataFrame:
+    """Recupera as fontes relevantes à pergunta (retrieval por palavra-chave).
 
     Retorna o subconjunto que será efetivamente injetado no prompt — garantindo que
-    as fontes exibidas/logadas correspondam ao contexto usado pelo modelo. Se nenhum
-    registro casar com os termos da pergunta, devolve a amostra geral (até `limite`).
+    as fontes exibidas/logadas correspondam ao contexto usado pelo modelo. Os registros
+    são ranqueados pelo número de termos distintos da pergunta que casam (busca
+    insensível a acento/caixa); empata-se pela ordem original. Se nenhum registro casar,
+    devolve a amostra geral (até `limite`).
+
+    `colunas_busca` permite reutilizar o retrieval para outras bases (ex.: votos), com
+    fallback nas colunas padrão de discursos.
     """
     if df.empty:
         return df
 
-    termos = [t for t in re.findall(r"\w{4,}", (pergunta or "").lower()) if t not in _STOPWORDS]
+    termos = {t for t in re.findall(r"\w{4,}", _normalizar(pergunta)) if t not in _STOPWORDS}
 
     if termos:
-        campos = [c for c in ["Resumo", "Parlamentar", "Tema", "Partido"] if c in df.columns]
+        candidatas = colunas_busca if colunas_busca is not None else _COLUNAS_BUSCA_PADRAO
+        campos = [c for c in candidatas if c in df.columns]
         if campos:
-            texto_busca = df[campos].fillna("").agg(" ".join, axis=1).str.lower()
-            mask = texto_busca.apply(lambda txt: any(termo in txt for termo in termos))
-            relevantes = df[mask]
+            texto_busca = df[campos].fillna("").astype(str).agg(" ".join, axis=1).map(_normalizar)
+            scores = texto_busca.apply(lambda txt: sum(1 for termo in termos if termo in txt))
+            relevantes = df[scores > 0]
             if not relevantes.empty:
-                return relevantes.head(limite)
+                # Ordena por nº de termos casados (desc.), mantendo a ordem original no empate.
+                ordem = scores[scores > 0].sort_values(kind="stable", ascending=False).index
+                return df.loc[ordem].head(limite)
 
     # Fallback: sem correspondência explícita, usa a amostra geral.
     return df.head(limite)
 
 
-def _registrar_trace(pergunta: str, fontes: pd.DataFrame, resposta: str) -> None:
+def _registrar_trace(
+    pergunta: str,
+    fontes_ids: list[str],
+    resposta: str,
+    origem: str = "discurso",
+    fontes_codigos: Optional[list[str]] = None,
+) -> None:
     """Persiste, por consulta, pergunta + ids das fontes + resposta (JSONL).
 
-    Base para avaliar rastreabilidade posteriormente (sentido B).
+    Base para avaliar rastreabilidade posteriormente (sentido B). `origem` distingue
+    as bases ("discurso" / "votacao") para análises segmentadas. `fontes_ids` são os
+    ids citáveis (refs curtos usados na resposta); `fontes_codigos`, quando fornecido,
+    guarda os identificadores reais correspondentes (ex.: código do Senado) para auditoria.
     """
     try:
-        ids_fontes = (
-            fontes[COL_ID_DISCURSO].astype(str).tolist()
-            if COL_ID_DISCURSO in fontes.columns else []
-        )
+        ids_fontes = [str(x) for x in (fontes_ids or [])]
         registro = {
             "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "origem": origem,
             "pergunta": pergunta,
             "fontes_ids": ids_fontes,
             "n_fontes": len(ids_fontes),
             "resposta": resposta,
         }
+        if fontes_codigos is not None:
+            registro["fontes_codigos"] = [str(x) for x in fontes_codigos]
         _TRACE_PATH.parent.mkdir(parents=True, exist_ok=True)
         with _TRACE_PATH.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(registro, ensure_ascii=False) + "\n")
@@ -358,16 +394,24 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
     resumo_stats = f"Total: {total_discursos}. {periodo_txt} {top_parlamentares_txt} {temas_dist_txt}".strip()
 
     # Recupera os discursos relevantes (retrieval) que fundamentarão a resposta.
-    fontes_usadas = _selecionar_fontes(df, pergunta)
-    colunas_fonte = [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
-    contexto_dados = fontes_usadas[colunas_fonte].to_markdown(index=False) if colunas_fonte else fontes_usadas.to_markdown(index=False)
+    fontes_usadas = _selecionar_fontes(df, pergunta, limite=MAX_FONTES_PROMPT).reset_index(drop=True)
+    # Ref curto e citável por consulta (ex.: D1, D2…); casa com o exemplo do prompt e o
+    # regex de avaliação. O código real do Senado (id_discurso) fica visível para auditoria.
+    fontes_usadas["ref"] = [f"D{i + 1}" for i in range(len(fontes_usadas))]
 
-    prompt_qa = f"""Você é um assistente parlamentar e cientista de dados. Analise os discursos e responda à pergunta abaixo.
+    # Colunas vistas pelo modelo no prompt: só o ref curto + conteúdo (sem o código longo,
+    # para não confundir o modelo sobre qual id citar).
+    colunas_prompt = ["ref"] + [c for c in ["Data", "Parlamentar", "Partido", "Tema", "Resumo"] if c in fontes_usadas.columns]
+    # Colunas exibidas ao usuário (inclui o código real do Senado para rastrear a fonte).
+    colunas_fonte = ["ref"] + [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
+    contexto_dados = fontes_usadas[colunas_prompt].to_markdown(index=False)
+
+    prompt_qa = f"""Você é um assistente parlamentar e cientista de dados. Analise os pronunciamentos de senadores do Senado Federal e responda à pergunta abaixo.
 Gere insights RELATIVOS à amostra: frequências de parlamentares, predominância de temas, variações no período.
 Se a pergunta exigir dado ausente (ex.: presença física), explique brevemente a limitação e ofereça alternativa
 baseada em padrões de discursos e temas. Evite descartar totalmente a resposta; sempre traga ângulo útil.
 
-Estatísticas resumidas:
+Estatísticas agregadas (toda a amostra de {total_discursos} discursos — use para totais e rankings globais):
 {resumo_stats}
 
 Pergunta do usuário:
@@ -375,20 +419,19 @@ Pergunta do usuário:
 
 {extra_context or ''}
 
-Discursos recuperados (fontes — cada linha tem um id_discurso):
+Fontes recuperadas (cada linha é um discurso com um id 'ref' único; os autores são senadores):
 ---
-{contexto_dados[:16000]}
+{contexto_dados[:MAX_CHARS_CONTEXTO_PROMPT]}
 ---
 
 Diretrizes de resposta:
-- Português brasileiro, claro e conciso.
-- 4–6 frases objetivas.
-- Fundamente as afirmações nos discursos recuperados acima e cite as fontes usadas pelo id_discurso entre colchetes (ex.: [D3], [D7]) ao final das frases pertinentes.
-- Referencie parlamentares com mais discursos quando pertinente.
-- Use temas para qualificar tendências.
-- Indique se período é curto, mas ainda ofereça leitura relativa.
-- Não repita a pergunta, não use jargões desnecessários.
-- Não invente fatos externos nem cite ids que não estejam na lista acima.
+- Português brasileiro, claro e conciso. 4–6 frases objetivas.
+- Use as estatísticas agregadas para números globais (totais, ranking de parlamentares/temas).
+- Para afirmações apoiadas em discursos específicos, cite a fonte pelo 'ref' entre colchetes (ex.: [D3]) ao final da frase.
+- UM id por colchete: escreva [D1] [D3], nunca [D1, D3]. Use só refs que aparecem na lista de fontes acima.
+- Os autores são senadores — não afirme que "não há senadores" nos dados.
+- Não invente fatos externos nem detalhes que não estejam nas estatísticas ou nas fontes acima.
+- Indique se o período é curto, mas ainda ofereça leitura relativa. Não repita a pergunta.
 
 Resposta:
 """
@@ -418,11 +461,116 @@ Resposta:
                             use_container_width=True,
                             hide_index=True,
                         )
-            _registrar_trace(pergunta, fontes_usadas, resposta)
+            ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
+            codigos_fontes = (
+                fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
+                if COL_ID_DISCURSO in fontes_usadas.columns else None
+            )
+            _registrar_trace(pergunta, ids_fontes, resposta, origem="discurso", fontes_codigos=codigos_fontes)
         except Exception as e:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
             logger.error(f"Erro ao responder pergunta: {str(e)}", exc_info=True)
             resposta = "Desculpe, tive uma dificuldade momentânea em processar sua pergunta. Por favor, tente novamente em alguns instantes ou reformule a pergunta."
             st.session_state.messages.append({"role": "assistant", "content": resposta})
+            st.chat_message("assistant").write(resposta)
+
+
+# Colunas de busca e de exibição para o retrieval de votos.
+_COLUNAS_BUSCA_VOTOS = ["Parlamentar", "Partido", "UF", "Voto"]
+_COLUNAS_FONTE_VOTOS = ["id_voto", "Parlamentar", "Partido", "UF", "Voto"]
+
+
+def responder_pergunta_votacao_local(
+    df_votos: pd.DataFrame,
+    detalhes: dict,
+    descricao: str,
+    tipo_votacao: str,
+    resultado: str,
+    pergunta: str,
+) -> None:
+    """Responde a uma pergunta sobre uma votação, com rastreabilidade voto→fonte.
+
+    Espelha `responder_pergunta_usuario_local`: recupera os votos relevantes, injeta-os
+    como fontes citáveis por `[id_voto]`, exibe as fontes usadas e registra o trace
+    (origem="votacao"). O histórico `messages_votacoes` é gerido na UI; aqui tratamos
+    apenas a geração/exibição da resposta do assistente.
+    """
+    detalhes = detalhes or {}
+    df = df_votos.copy() if df_votos is not None else pd.DataFrame()
+    # Identificador citável e estável por voto dentro desta votação.
+    df["id_voto"] = [f"V{i + 1}" for i in range(len(df))]
+
+    # Contexto agregado da matéria/votação.
+    codigo_materia = detalhes.get("codigo_materia") or "não informado"
+    ementa = detalhes.get("ementa") or "não informada"
+    autores = detalhes.get("autores") or "não informados"
+    distribuicao = df["Voto"].value_counts().to_dict() if "Voto" in df.columns else {}
+    contexto_materia = (
+        f"Matéria: {descricao}\n"
+        f"Código da matéria: {codigo_materia}\n"
+        f"Ementa: {ementa}\n"
+        f"Autores: {autores}\n"
+        f"Tipo de votação: {tipo_votacao}\n"
+        f"Resultado: {resultado}\n"
+        f"Total de votos: {len(df)}\n"
+        f"Distribuição de votos: {distribuicao}"
+    )
+
+    # Recupera os votos relevantes (retrieval) que fundamentarão a resposta.
+    fontes_usadas = _selecionar_fontes(df, pergunta, limite=MAX_FONTES_PROMPT, colunas_busca=_COLUNAS_BUSCA_VOTOS)
+    colunas_fonte = [c for c in _COLUNAS_FONTE_VOTOS if c in fontes_usadas.columns]
+    contexto_votos = (
+        fontes_usadas[colunas_fonte].to_markdown(index=False)
+        if colunas_fonte and not fontes_usadas.empty else "Nenhum voto disponível."
+    )
+
+    prompt_votacao = f"""Você é um assistente especializado em votações do Senado Federal brasileiro.
+Responda à pergunta do usuário com base nos dados da votação e nos votos recuperados abaixo.
+
+Dados da votação:
+{contexto_materia}
+
+Votos recuperados (fontes — cada linha tem um id_voto):
+---
+{contexto_votos[:MAX_CHARS_CONTEXTO_PROMPT]}
+---
+
+Pergunta do usuário:
+"{pergunta}"
+
+Diretrizes de resposta:
+- Português brasileiro, claro e conciso.
+- Fundamente as afirmações nos votos recuperados acima e cite as fontes usadas pelo id_voto entre colchetes (ex.: [V1], [V3]) ao final das frases pertinentes.
+- UM id por colchete: escreva [V1] [V3], nunca [V1, V3]. Use só ids que aparecem na lista de votos acima.
+- Não invente fatos externos nem cite ids que não estejam na lista acima.
+- Se a pergunta exigir um dado ausente, explique brevemente a limitação. Se não souber responder, seja honesto.
+"""
+
+    from src.utils.logger import get_logger
+    logger = get_logger(__name__)
+    with st.spinner("O LLM local está analisando os votos e elaborando sua resposta..."):
+        try:
+            response = client.chat.completions.create(
+                model=_CFG["model"],
+                messages=[{"role": "user", "content": prompt_votacao}],
+                temperature=0.2,
+            )
+            resposta = response.choices[0].message.content.strip()
+            st.session_state.messages_votacoes.append({"role": "assistant", "content": resposta})
+            with st.chat_message("assistant"):
+                st.write(resposta)
+                if not fontes_usadas.empty and colunas_fonte:
+                    with st.expander(f"📚 Fontes utilizadas ({len(fontes_usadas)} votos)"):
+                        st.dataframe(
+                            fontes_usadas[colunas_fonte],
+                            use_container_width=True,
+                            hide_index=True,
+                        )
+            ids_fontes = fontes_usadas["id_voto"].astype(str).tolist() if "id_voto" in fontes_usadas.columns else []
+            _registrar_trace(pergunta, ids_fontes, resposta, origem="votacao")
+        except Exception as e:
+            logger.error(f"Erro ao responder pergunta sobre votação: {str(e)}", exc_info=True)
+            resposta = "Desculpe, tive uma dificuldade em processar sua pergunta. Tente novamente."
+            st.session_state.messages_votacoes.append({"role": "assistant", "content": resposta})
             st.chat_message("assistant").write(resposta)

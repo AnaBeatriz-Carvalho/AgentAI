@@ -7,5 +7,5 @@ pytest
 pytest-mock
 openai
 # tqdm
-# tabulate
+tabulate
 # commitizen
