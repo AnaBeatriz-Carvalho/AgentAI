@@ -13,8 +13,10 @@ Aplicação web interativa para analisar **pronunciamentos (discursos)** e **vot
 
 - **🗣️ Discursos:** coleta por período, classificação temática, resumo e atributos (agenda, tom, posicionamento etc.)
 - **📊 Dashboard:** gráficos (Plotly) e tabela filtrável
-- **💬 Chat com os dados:** perguntas em linguagem natural usando o contexto da amostra coletada
+- **💬 Chat com os dados:** perguntas em linguagem natural sobre discursos e votações, com retrieval por palavra-chave (RAG simplificado sobre DataFrame Pandas) seguido de geração
 - **🗳️ Votações:** exploração por período, filtros por partido/parlamentar e export CSV
+- **🔎 Rastreabilidade:** cada resposta do chat cita as fontes que a fundamentaram (`[D1]`, `[V1]`…), expõe a tabela de discursos/votos usados e grava um *trace* por consulta para auditoria
+- **📈 Painel de rastreabilidade:** aba dedicada na interface com métricas de cobertura/precisão de citação (geral e por origem), sem precisar do terminal
 
 ---
 
@@ -40,27 +42,33 @@ AgentAI/
 │
 ├── src/
 │   ├── app/
-│   │   └── app_streamlit.py      # Interface principal (Streamlit)
+│   │   └── app_streamlit.py      # Interface principal (Streamlit) + aba de rastreabilidade
 │   ├── data/
-│   │   ├── data_processing.py    # Processamento e limpeza dos discursos
+│   │   ├── data_processing.py    # Processamento de discursos (+ id_discurso estável)
 │   │   └── votacoes_handler.py   # Extração e organização das votações
 │   ├── ai/
-│   │   └── local_llm_handler.py  # LLM local (OpenAI-compatível / LM Studio)
+│   │   └── local_llm_handler.py  # LLM local: retrieval de fontes, citação e trace de QA
 │   ├── utils/
 │   │   ├── helpers.py            # Funções auxiliares gerais
-│   │   └── logger.py             # Logging centralizado
+│   │   ├── logger.py             # Logging centralizado
+│   │   └── rastreabilidade.py    # Núcleo das métricas de rastreabilidade
 │   └── config/
 │       ├── settings.py           # Carregamento de variáveis de ambiente
-│       └── constants.py          # Constantes centralizadas
+│       └── constants.py          # Constantes (ids, guardrails de contexto do prompt)
+│
+├── scripts/
+│   └── avaliar_rastreabilidade.py # CLI: lê logs/qa_trace.jsonl e imprime as métricas
 │
 ├── tests/                        # Testes automatizados com pytest
-│   ├── test_data_processing.py   # Testes de processamento de dados
+│   ├── test_data_processing.py   # Testes de processamento de dados (+ id_discurso)
 │   ├── test_votacoes_handler.py  # Testes de votações
-│   ├── test_local_llm_handler.py # Testes do LLM local
+│   ├── test_local_llm_handler.py # Testes do LLM local (retrieval + trace)
+│   ├── test_avaliar_rastreabilidade.py # Testes das métricas de rastreabilidade
 │   ├── test_utils_helpers.py     # Testes de utilidades
 │   ├── test_plotly_export.py     # Testes de visualização
 │   └── conftest.py               # Configurações pytest
 │
+├── logs/                         # Logs de execução (qa_trace.jsonl gerado pelo chat)
 ├── run_app.py                    # Script auxiliar para iniciar a aplicação
 ├── inspect_votacoes.py           # Script para inspecionar dados de votações
 ├── inspect_periodo_votacoes.py   # Script para análise de períodos de votação
@@ -173,20 +181,38 @@ pytest --cov=src tests/
 ```
 
 **Testes disponíveis:**
-- `test_data_processing.py` — Extração e processamento de discursos
+- `test_data_processing.py` — Extração e processamento de discursos (inclui `id_discurso`)
 - `test_votacoes_handler.py` — Manipulação de dados de votações
-- `test_local_llm_handler.py` — Análise e classificação com LLM
+- `test_local_llm_handler.py` — Análise/classificação com LLM, retrieval de fontes e trace
+- `test_avaliar_rastreabilidade.py` — Métricas de rastreabilidade
 - `test_utils_helpers.py` — Funções auxiliares
 - `test_plotly_export.py` — Visualizações e gráficos
+
+---
+
+## 🔎 Rastreabilidade
+
+O chat foi instrumentado para vincular cada resposta às fontes que a fundamentaram (resposta → registro):
+
+- **Fontes citáveis:** a cada consulta os discursos/votos recuperados recebem um id curto (`D1..Dn`, `V1..Vn`); o modelo é instruído a citar **só** esses ids (`[D1] [D3]`). O código real do Senado fica visível na tabela de fontes e é gravado para auditoria.
+- **Retrieval por palavra-chave:** `_selecionar_fontes` filtra a base (Resumo/Parlamentar/Tema/Partido) pelos termos da pergunta, com *fallback* para uma amostra geral, e só esse subconjunto vai ao prompt (respeitando guardrails de contexto — `MAX_FONTES_PROMPT` / `MAX_CHARS_CONTEXTO_PROMPT`).
+- **Fontes na interface:** cada resposta traz um `expander` "📚 Fontes utilizadas" com a tabela dos registros usados.
+- **Trace por consulta:** uma linha JSON por pergunta é gravada em `logs/qa_trace.jsonl` (`timestamp`, `pergunta`, `fontes_ids`, `fontes_codigos`, `n_fontes`, `resposta`, `origem`).
+- **Métricas:** cobertura de recuperação, cobertura de citação e precisão de citação — visíveis na aba **📊 Rastreabilidade** da interface ou via terminal:
+  ```bash
+  python scripts/avaliar_rastreabilidade.py
+  ```
+
+> ⚠️ As métricas atuais comprovam que a instrumentação funciona ponta a ponta (retrieval → prompt → citação → log → métrica), **não** que as respostas são corretas. A "precisão de citação" só verifica se o id citado existe nas fontes, não se a fonte sustenta semanticamente a afirmação — refinamento previsto como próximo passo.
 
 ---
 
 ## 🧭 Fluxo e Arquitetura  
 
 1. **Extração:** dados públicos são obtidos da API de Dados Abertos do Senado.  
-2. **Tratamento:** limpeza, normalização e estruturação dos dados (módulo `data/`).  
-3. **Análise com IA:** classificação/análise com LLM local (módulo `ai/local_llm_handler.py`).  
-4. **Visualização:** interface e dashboards em `app/`.
+2. **Tratamento:** limpeza, normalização e estruturação dos dados (módulo `data/`), com id estável por registro.  
+3. **Análise com IA:** retrieval das fontes relevantes + geração com LLM local, citando os registros usados (módulo `ai/local_llm_handler.py`).  
+4. **Visualização e auditoria:** interface, dashboards e painel de rastreabilidade em `app/`.
 
 ---
 
