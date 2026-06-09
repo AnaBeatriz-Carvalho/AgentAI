@@ -1,0 +1,57 @@
+{
+  "_instrucoes": "Instrumento de avaliacao do AgentAI. Corpus: 152 discursos, periodo 05-16 de maio/2025 (9 datas: 05,06,07,08,09,12,13,14,16). Conteudo por registro: Resumo (descritivo) + Tema (categoria fechada). NAO ha texto integral. Campos: id_discurso, Data, Parlamentar, Partido, UF, Resumo, Tema. ATENCAO: 43 registros tem Partido/UF vazios (lista de aniversario Conab em 14/05). Temas e contagens abaixo foram verificados no snapshot completo. gold_ids preenchidos com id_discurso reais. tem_resposta_no_corpus: Sim | Nao | Parcial.",
+  "_dados_verificados": {
+    "total_discursos": 152,
+    "periodo": "2025-05-05 a 2025-05-16",
+    "temas_contagem": { "Trabalho": 44, "Politica": 41, "Outros": 28, "Seguranca": 13, "Educacao": 7, "Economia": 7, "DireitosHumanos": 6, "Saude": 2, "Infraestrutura": 2, "MeioAmbiente": 1, "RelacoesExteriores": 1 },
+    "mais_ativo": "Paulo Paim (16 discursos)",
+    "outros_ativos": { "Eduardo Girao": 9, "Chico Rodrigues": 7, "Izalci Lucas": 6, "Damares Alves": 3, "Leila Barros": 1 }
+  },
+  "_estratificacao": { "Factual direta": 14, "Agregacao/contagem": 8, "Comparacao": 6, "Busca por tema": 4, "Sem resposta no corpus": 8 },
+  "perguntas": [
+    { "id": "Q01", "texto": "Sobre o que discursou a senadora Damares Alves em 16 de maio de 2025?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513698", "obs": "Sessao Solene PMDF; tema Seguranca" },
+    { "id": "Q02", "texto": "Qual foi o tema do discurso de Eduardo Girao sobre a CPI das Bets?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513626", "obs": "tema Politica; unico discurso que cita apostas" },
+    { "id": "Q03", "texto": "O que a senadora Leila Barros defendeu em seu discurso sobre a Policia Militar do DF?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513703", "obs": "valorizacao da categoria, Fundo Constitucional do DF" },
+    { "id": "Q04", "texto": "Qual senador discursou sobre o aniversario de 35 anos da Conab?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "514221", "obs": "Frederico Cabral de Menezes; tema Trabalho. ATENCAO: varios discursos sao sobre a Conab (514220, 514216...), ver Q31" },
+    { "id": "Q05", "texto": "De qual estado (UF) e o senador Confucio Moura?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513627", "obs": "RO; testa uso do campo UF" },
+    { "id": "Q06", "texto": "A que partido pertence o senador Izalci Lucas?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513696", "obs": "PL; testa campo Partido" },
+    { "id": "Q07", "texto": "Sobre o que tratou a Sessao Solene do Dia da Policia Militar do DF, em 16 de maio de 2025?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513696;513697;513698;513703;513706", "obs": "5 discursos PMDF nesse dia" },
+    { "id": "Q08", "texto": "O que o senador Izalci Lucas propos sobre a quarentena para policiais militares concorrerem a cargos eletivos?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513697", "obs": "fim da exigencia de quarentena de 4 anos" },
+    { "id": "Q09", "texto": "Em que data ocorreu o discurso de Eduardo Girao sobre as empresas de apostas online?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513626", "obs": "2025-05-16" },
+    { "id": "Q10", "texto": "Qual senador elogiou o tecnico Filipe Luis em seu discurso?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513626", "obs": "Eduardo Girao; testa atribuicao especifica" },
+    { "id": "Q11", "texto": "O discurso de Damares Alves sobre a PMDF citou algum projeto de lei especifico? Qual?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Parcial", "gold_ids": "513698", "obs": "ARMADILHA: o Resumo nao cita PL; modelo deve dizer que nao consta, nao inventar" },
+    { "id": "Q12", "texto": "Qual o tema atribuido ao discurso de Confucio Moura sobre seu aniversario?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513627", "obs": "Outros" },
+    { "id": "Q13", "texto": "Quem abriu e quem encerrou a Sessao Solene do Dia da PMDF?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Sim", "gold_ids": "513696;513706", "obs": "Izalci Lucas (abertura 513696, encerramento 513706)" },
+    { "id": "Q14", "texto": "O registro do discurso de Frederico Cabral de Menezes sobre a Conab informa o partido e a UF do orador?", "tipo": "Factual direta", "tem_resposta_no_corpus": "Parcial", "gold_ids": "514221", "obs": "ARMADILHA: Partido/UF vazios no CSV; modelo deve reconhecer ausencia, nao inventar" },
+
+    { "id": "Q15", "texto": "Quantos discursos ha no corpus sobre o tema Seguranca?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: 13" },
+    { "id": "Q16", "texto": "Qual senador fez o maior numero de discursos no periodo coberto?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: Paulo Paim, 16 discursos" },
+    { "id": "Q17", "texto": "Quantos discursos trataram da Policia Militar do Distrito Federal?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "513696;513697;513698;513703;513706", "obs": "GOLD: 5" },
+    { "id": "Q18", "texto": "Quais foram os tres temas mais recorrentes nos discursos do periodo?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: Trabalho (44), Politica (41), Outros (28)" },
+    { "id": "Q19", "texto": "Quantos senadores diferentes discursaram no dia 16 de maio de 2025?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: 5 senadores, 7 discursos" },
+    { "id": "Q20", "texto": "Quantos discursos o senador Eduardo Girao proferiu no periodo?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "513626;513611;513606;513585;513579;513453;513448;513438;513387", "obs": "GOLD: 9" },
+    { "id": "Q21", "texto": "Quantas datas de sessao distintas estao cobertas no corpus?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: 9 datas (05,06,07,08,09,12,13,14,16 de maio)" },
+    { "id": "Q22", "texto": "Quantos discursos foram classificados com o tema Politica?", "tipo": "Agregacao/contagem", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: 41" },
+
+    { "id": "Q23", "texto": "Entre Eduardo Girao e Izalci Lucas, quem discursou mais vezes no periodo?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: Eduardo Girao (9) > Izalci Lucas (6)" },
+    { "id": "Q24", "texto": "Os discursos de Leila Barros e Damares Alves sobre a PMDF trataram dos mesmos pontos?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Sim", "gold_ids": "513703;513698", "obs": "ambos valorizacao da carreira; comparar enfase" },
+    { "id": "Q25", "texto": "Qual tema teve mais discursos: Trabalho ou Politica?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: Trabalho (44) > Politica (41)" },
+    { "id": "Q26", "texto": "As posicoes de Leila Barros (PDT) e Damares Alves (REPUBLICANOS) sobre a valorizacao da PMDF foram convergentes ou divergentes?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Parcial", "gold_ids": "513703;513698", "obs": "ARMADILHA: ambos defendem valorizacao, mas o Resumo nao da detalhe p/ julgar divergencia; testar extrapolacao" },
+    { "id": "Q27", "texto": "Os discursos sobre a PMDF foram feitos por senadores de quais estados?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Sim", "gold_ids": "513696;513697;513698;513703;513706", "obs": "todos do DF" },
+    { "id": "Q28", "texto": "Comparando os discursos de 14/05 e 16/05/2025, houve diferenca no foco tematico?", "tipo": "Comparacao", "tem_resposta_no_corpus": "Parcial", "gold_ids": "(varios)", "obs": "14/05 muitos sobre Conab/Trabalho; 16/05 PMDF/Seguranca+Politica e CPI das Bets" },
+
+    { "id": "Q29", "texto": "Quais discursos trataram do tema Seguranca?", "tipo": "Busca por tema", "tem_resposta_no_corpus": "Sim", "gold_ids": "(varios)", "obs": "GOLD: 13 discursos com Tema=Seguranca; conferir lista de ids no snapshot" },
+    { "id": "Q30", "texto": "Ha discursos que mencionam apostas esportivas ou empresas de apostas online? Quais?", "tipo": "Busca por tema", "tem_resposta_no_corpus": "Sim", "gold_ids": "513626", "obs": "GOLD: so 513626 (Eduardo Girao, CPI das Bets)" },
+    { "id": "Q31", "texto": "Liste os discursos relacionados a Companhia Nacional de Abastecimento (Conab).", "tipo": "Busca por tema", "tem_resposta_no_corpus": "Sim", "gold_ids": "514221;514220;514218;514216;514215", "obs": "sessao solene Conab em 14/05; conferir lista completa" },
+    { "id": "Q32", "texto": "Quais discursos abordaram a valorizacao de carreiras ou categorias profissionais?", "tipo": "Busca por tema", "tem_resposta_no_corpus": "Sim", "gold_ids": "513703;513698;514220;513619;513568", "obs": "GOLD: 5 discursos contem 'valoriza' no resumo" },
+
+    { "id": "Q33", "texto": "Qual foi o resultado da votacao da CPI das Bets?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "corpus tem discursos, nao resultados de votacao -> deve recusar" },
+    { "id": "Q34", "texto": "O que o senador Eduardo Girao discursou em janeiro de 2023?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "fora do recorte (maio/2025) -> deve recusar" },
+    { "id": "Q35", "texto": "Qual o texto integral do discurso de Damares Alves sobre a PMDF?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "corpus so tem Resumo, nao texto integral -> deve recusar/sinalizar" },
+    { "id": "Q36", "texto": "Quantos votos o senador Paulo Paim recebeu na ultima eleicao?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "dado eleitoral fora do corpus -> deve recusar" },
+    { "id": "Q37", "texto": "Qual a biografia completa da senadora Leila Barros?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "corpus nao tem biografia -> deve recusar" },
+    { "id": "Q38", "texto": "O que foi discutido na Camara dos Deputados sobre apostas online?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "corpus e do Senado, nao da Camara -> deve recusar" },
+    { "id": "Q39", "texto": "Quais discursos sobre a PMDF serao feitos no proximo mes?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "futuro -> deve recusar" },
+    { "id": "Q40", "texto": "Qual a opiniao pessoal do Presidente do Senado sobre a CPI das Bets?", "tipo": "Sem resposta no corpus", "tem_resposta_no_corpus": "Nao", "gold_ids": "-", "obs": "nao consta no corpus -> deve recusar" }
+  ]
+}

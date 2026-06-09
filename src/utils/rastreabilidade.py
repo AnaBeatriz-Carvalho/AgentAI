@@ -22,6 +22,48 @@ TRACE_PADRAO = ROOT / "logs" / "qa_trace.jsonl"
 # Captura ids citados na resposta no formato [D3], [V1], [12345] etc.
 _PADRAO_CITACAO = re.compile(r"\[([A-Za-z]?\d+)\]")
 
+# Conteúdo de um colchete (sem colchetes aninhados), para tratar citação agrupada.
+_PADRAO_BRACKET = re.compile(r"\[([^\[\]]+)\]")
+# Conteúdo de um par de parênteses (sem aninhamento), para citação parentética.
+_PADRAO_PAREN = re.compile(r"\(([^()]+)\)")
+# Um id citável isolado: letra opcional + dígitos (ex.: D3, V1, 12345).
+_PADRAO_ID = re.compile(r"[A-Za-z]?\d+")
+# Id ESTRITO: letra(s) OBRIGATÓRIA(s) + dígitos (ex.: D3, V12). Usado nos parênteses
+# para nunca capturar número solto (datas, PECs, percentuais) em prosa.
+_PADRAO_ID_ESTRITO = re.compile(r"[A-Za-z]+\d+")
+# Colchete vira citação se o conteúdo for UM id ou LISTA de ids (letra OPCIONAL, pois o
+# código real do Senado é numérico). `[D1, D2, D5]` conta; `[Projeto de Lei nº 1958]` não.
+_PADRAO_GRUPO_IDS = re.compile(r"^\s*[A-Za-z]?\d+(?:\s*[,;]\s*[A-Za-z]?\d+)*\s*$")
+# Parêntese vira citação só no padrão estrito letra+dígitos (um id ou lista). Assim `(D1)`
+# e `(D1, D2)` contam, mas `(2025)`, `(66)`, `(13%)`, `(PEC 66)` (espaço) não.
+_PADRAO_GRUPO_IDS_ESTRITO = re.compile(r"^\s*[A-Za-z]+\d+(?:\s*[,;]\s*[A-Za-z]+\d+)*\s*$")
+
+
+def extrair_ids_citados(resposta: str) -> list[str]:
+    """Extrai os ids citados ([D3], [V1], [12345], (D1)…) de uma resposta.
+
+    Lógica única de extração de citações do projeto para o loop de avaliação comparativa
+    de modelos. Normaliza, SÓ na etapa de extração para a métrica (o texto bruto da
+    resposta salvo no CSV / enviado à anotação humana NÃO é alterado):
+
+    - colchete canônico e **agrupado**: `[D1]`, `[D1, D2, D5]` → D1, D2, D5 (letra opcional,
+      pois o código real do Senado é numérico — `[12345]` conta);
+    - **parêntese** no padrão ESTRITO letra+dígitos: `(D1)`, `(D12)`, `(D1, D2)` → contam,
+      mas número solto entre parênteses (`(2025)`, `(66)`, `(13%)`, `(PEC 66)`) NÃO, para
+      não gerar falso positivo com datas/PECs/percentuais em prosa.
+
+    Mantém a estritura do regex original: colchetes/parênteses com prosa não são tratados
+    como citação.
+    """
+    ids: list[str] = []
+    for conteudo in _PADRAO_BRACKET.findall(resposta or ""):
+        if _PADRAO_GRUPO_IDS.match(conteudo):
+            ids.extend(_PADRAO_ID.findall(conteudo))
+    for conteudo in _PADRAO_PAREN.findall(resposta or ""):
+        if _PADRAO_GRUPO_IDS_ESTRITO.match(conteudo):
+            ids.extend(_PADRAO_ID_ESTRITO.findall(conteudo))
+    return ids
+
 
 def carregar_registros(caminho: Path) -> list[dict]:
     """Lê o JSONL de trace, ignorando linhas vazias/inválidas."""

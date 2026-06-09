@@ -4,6 +4,7 @@ import re
 import unicodedata
 import streamlit as st
 import pandas as pd
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -355,14 +356,21 @@ def _registrar_trace(
         get_logger(__name__).debug(f"Falha ao registrar trace de rastreabilidade: {e}")
 
 
-def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
-    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos."""
-    if "messages" not in st.session_state:
-        st.session_state["messages"] = []
+def _montar_prompt_qa(
+    dataframe_classificado: pd.DataFrame,
+    pergunta: str,
+    extra_context: Optional[str] = None,
+) -> tuple[str, pd.DataFrame, list[str], Optional[list[str]]]:
+    """Constrói o prompt de QA de discursos (retrieval + estatísticas + fontes).
 
-    st.session_state.messages.append({"role": "user", "content": pergunta})
-    st.chat_message("user").write(pergunta)
+    Fonte única do prompt e da recuperação: tanto o chat (Streamlit) quanto o loop de
+    avaliação headless chamam esta função, garantindo prompt byte-idêntico entre eles.
+    Não altera a recuperação (`_selecionar_fontes`) nem o texto do prompt.
 
+    Retorna: (prompt_qa, fontes_usadas, ids_fontes, codigos_fontes), onde `ids_fontes`
+    são os refs citáveis por consulta (D1..Dn) e `codigos_fontes` os códigos reais do
+    Senado correspondentes (auditoria), quando disponíveis.
+    """
     df = dataframe_classificado.copy()
 
     # Estatísticas do período
@@ -402,8 +410,6 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
     # Colunas vistas pelo modelo no prompt: só o ref curto + conteúdo (sem o código longo,
     # para não confundir o modelo sobre qual id citar).
     colunas_prompt = ["ref"] + [c for c in ["Data", "Parlamentar", "Partido", "Tema", "Resumo"] if c in fontes_usadas.columns]
-    # Colunas exibidas ao usuário (inclui o código real do Senado para rastrear a fonte).
-    colunas_fonte = ["ref"] + [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
     contexto_dados = fontes_usadas[colunas_prompt].to_markdown(index=False)
 
     prompt_qa = f"""Você é um assistente parlamentar e cientista de dados. Analise os pronunciamentos de senadores do Senado Federal e responda à pergunta abaixo.
@@ -436,6 +442,115 @@ Diretrizes de resposta:
 Resposta:
 """
 
+    ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
+    codigos_fontes = (
+        fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
+        if COL_ID_DISCURSO in fontes_usadas.columns else None
+    )
+    return prompt_qa, fontes_usadas, ids_fontes, codigos_fontes
+
+
+@dataclass
+class RespostaQA:
+    """Resultado headless de uma geração de QA, com metadados para o logger de avaliação."""
+    resposta: str
+    modelo: str
+    tokens_gerados: Optional[int]
+    ids_recuperados: list[str]            # refs citáveis por consulta (D1..Dn)
+    fontes_codigos: Optional[list[str]]   # códigos reais do Senado (auditoria)
+    fontes_usadas: pd.DataFrame = field(repr=False, default_factory=pd.DataFrame)
+
+
+def gerar_resposta_qa(
+    dataframe_classificado: pd.DataFrame,
+    pergunta: str,
+    *,
+    temperature: float = 0.1,
+    seed: Optional[int] = None,
+    extra_context: Optional[str] = None,
+    timer=None,
+    stream: bool = True,
+) -> RespostaQA:
+    """Gera uma resposta de QA SEM Streamlit, para o loop de avaliação comparativa.
+
+    Reutiliza exatamente a recuperação e o prompt do chat (`_montar_prompt_qa`); a única
+    diferença em relação ao chat é o controle explícito de `temperature`/`seed` (fixados
+    na avaliação) e a instrumentação de latência/tokens. `timer` é qualquer objeto com
+    `mark_first_token()` (ex.: `EvalLogger.start()`), chamado no primeiro token de conteúdo.
+
+    Carimba o modelo a partir do campo `model` da resposta do LM Studio (com fallback na
+    config) e captura `completion_tokens` quando o servidor expõe `usage`.
+    """
+    prompt_qa, fontes_usadas, ids_fontes, codigos_fontes = _montar_prompt_qa(
+        dataframe_classificado, pergunta, extra_context
+    )
+
+    kwargs = {
+        "model": _CFG["model"],
+        "messages": [{"role": "user", "content": prompt_qa}],
+        "temperature": temperature,
+    }
+    if seed is not None and seed != "":
+        kwargs["seed"] = seed
+
+    modelo_resp = _CFG["model"]
+    tokens_gerados: Optional[int] = None
+
+    if stream:
+        kwargs["stream"] = True
+        # include_usage faz o LM Studio enviar um chunk final com usage (tokens).
+        kwargs["stream_options"] = {"include_usage": True}
+        partes: list[str] = []
+        for chunk in client.chat.completions.create(**kwargs):
+            if getattr(chunk, "model", None):
+                modelo_resp = chunk.model
+            choices = getattr(chunk, "choices", None) or []
+            if choices:
+                delta = getattr(choices[0], "delta", None)
+                conteudo = getattr(delta, "content", None) if delta is not None else None
+                if conteudo:
+                    if timer is not None and not partes:
+                        timer.mark_first_token()
+                    partes.append(conteudo)
+            usage = getattr(chunk, "usage", None)
+            if usage is not None:
+                tokens_gerados = getattr(usage, "completion_tokens", None)
+        resposta = "".join(partes).strip()
+    else:
+        response = client.chat.completions.create(**kwargs)
+        if timer is not None:
+            timer.mark_first_token()
+        resposta = response.choices[0].message.content.strip()
+        modelo_resp = getattr(response, "model", None) or _CFG["model"]
+        usage = getattr(response, "usage", None)
+        tokens_gerados = getattr(usage, "completion_tokens", None) if usage is not None else None
+
+    return RespostaQA(
+        resposta=resposta,
+        modelo=modelo_resp,
+        tokens_gerados=tokens_gerados,
+        ids_recuperados=ids_fontes,
+        fontes_codigos=codigos_fontes,
+        fontes_usadas=fontes_usadas,
+    )
+
+
+def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
+    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos."""
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = []
+
+    st.session_state.messages.append({"role": "user", "content": pergunta})
+    st.chat_message("user").write(pergunta)
+
+    # Mesmo construtor de prompt/retrieval usado pelo loop de avaliação headless
+    # (fonte única: o prompt e a recuperação ficam idênticos entre chat e avaliação).
+    prompt_qa, fontes_usadas, ids_fontes, codigos_fontes = _montar_prompt_qa(
+        dataframe_classificado, pergunta, extra_context
+    )
+    # Colunas exibidas ao usuário (inclui o código real do Senado para rastrear a fonte).
+    colunas_fonte = ["ref"] + [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
+
     with st.spinner("O LLM local está analisando os dados e elaborando sua resposta..."):
         try:
             from src.utils.logger import get_logger
@@ -461,11 +576,6 @@ Resposta:
                             use_container_width=True,
                             hide_index=True,
                         )
-            ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
-            codigos_fontes = (
-                fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
-                if COL_ID_DISCURSO in fontes_usadas.columns else None
-            )
             _registrar_trace(pergunta, ids_fontes, resposta, origem="discurso", fontes_codigos=codigos_fontes)
         except Exception as e:
             from src.utils.logger import get_logger

@@ -33,5 +33,9 @@ discursos.csv
 relatorio_discursos.pdf
 outputs/*.json
 
+### Avaliação comparativa de modelos (saídas por execução; o snapshot pode ser versionado)
+eval/coleta_*.csv
+exemplo_coleta.csv
+
 logs/app.log
 .venv_mac/
