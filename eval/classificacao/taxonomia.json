@@ -1,0 +1,49 @@
+{
+  "versao": "1.0",
+  "descricao": "Taxonomia consolidada para a avaliacao da classificacao tematica (clausula (a) da hipotese). Ancorada no catalogo oficial de areas tematicas do Senado (Dados Abertos); categorias de baixa frequencia foram consolidadas para garantir o minimo de ~20 instancias por classe no corpus congelado de 152 discursos (maio/2025). Toda fusao esta documentada no campo 'origem_12' (categorias finas que o app ja usava) e 'esquema_senado' (rotulos da fonte externa).",
+  "decisao_consolidacao": "Com 152 discursos, manter as 12 categorias finas do app deixaria a maioria das classes abaixo de 20 instancias (instavel para metricas por classe). Optou-se por 4 macrocategorias substantivas + 'Outros', mapeadas ao esquema oficial. Se a anotacao humana (gabarito) revelar volume suficiente, 'Politicas Sociais e Setoriais' pode ser desdobrada (decisao registrada APOS contagem do gabarito).",
+  "rotulos": [
+    "Politica e Instituicoes",
+    "Economia e Trabalho",
+    "Seguranca e Justica",
+    "Politicas Sociais e Setoriais",
+    "Outros"
+  ],
+  "macrocategorias": {
+    "Politica e Instituicoes": {
+      "definicao": "Funcionamento do Estado e do sistema politico: reforma politica e eleitoral, atuacao dos Poderes (Legislativo, Executivo, Judiciario), partidos, processo legislativo, administracao publica, orcamento, e relacoes exteriores/diplomacia.",
+      "esquema_senado": ["Politica e partidos", "Administracao publica", "Poder Legislativo", "Poder Judiciario", "Relacoes exteriores"],
+      "origem_12": ["Politica", "Relacoes Exteriores"],
+      "keywords": ["politica", "congresso", "senado", "camara", "governo", "poder", "instituicao", "legislacao", "lei", "reforma", "parlamentar", "eleicao", "eleitoral", "partido", "judiciario", "supremo", "stf", "ministro", "orcamento", "administracao publica", "diplomacia", "internacional", "exterior", "comercio exterior", "acordo", "embaixada", "relacoes exteriores"],
+      "exemplos_limite": "Discurso que critica uma decisao do STF -> Politica e Instituicoes (atuacao de Poder), nao Seguranca e Justica (esta e sobre criminalidade/policia, nao sobre o Judiciario como instituicao)."
+    },
+    "Economia e Trabalho": {
+      "definicao": "Economia, financas publicas e mundo do trabalho: tributacao, credito, cambio, PIB, mercado, investimentos, setor privado; emprego, sindicatos, direitos trabalhistas; e producao rural/agropecuaria (agricultura como atividade economica).",
+      "esquema_senado": ["Economia", "Financas publicas e orcamento", "Trabalho e emprego", "Agricultura e pecuaria"],
+      "origem_12": ["Economia", "Trabalho"],
+      "keywords": ["economia", "credito", "financiamento", "imposto", "tributo", "cambio", "pib", "investimento", "setor privado", "mercado", "inflacao", "operacao de credito", "trabalho", "emprego", "salario", "sindicato", "trabalhador", "labor", "agricultura", "agropecuaria", "pecuaria", "produtor", "rural", "fertilizante", "safra"],
+      "exemplos_limite": "Programa social de transferencia de renda -> Politicas Sociais e Setoriais (assistencia), nao Economia, mesmo citando dinheiro. Debate sobre taxa de juros/Banco Central -> Economia e Trabalho."
+    },
+    "Seguranca e Justica": {
+      "definicao": "Seguranca publica e ordem: policia, criminalidade, violencia, sistema prisional, seguranca pessoal, legislacao penal e seu cumprimento. NAO inclui o Judiciario como instituicao (isso e Politica e Instituicoes).",
+      "esquema_senado": ["Seguranca publica", "Direito penal e processual penal", "Sistema prisional"],
+      "origem_12": ["Seguranca"],
+      "keywords": ["seguranca publica", "policia", "policial", "crime", "criminalidade", "violencia", "prisao", "presidio", "penitenciario", "delegacia", "criminal", "homicidio", "trafico", "armas", "milicia", "faccao"],
+      "exemplos_limite": "Homenagem ao Dia da Policia Militar -> se o foco e valorizacao da carreira/instituicao policial pode ser Seguranca e Justica; se e so cerimonia/efemeride sem conteudo de politica de seguranca -> Outros. Decisao pelo ASSUNTO PRINCIPAL."
+    },
+    "Politicas Sociais e Setoriais": {
+      "definicao": "Politicas publicas setoriais e direitos: saude, educacao, direitos humanos e minorias, assistencia social, cultura, infraestrutura (rodovias, saneamento, energia, telecom) e meio ambiente. Consolida categorias de baixa frequencia no corpus.",
+      "esquema_senado": ["Saude", "Educacao", "Direitos humanos", "Assistencia e desenvolvimento social", "Cultura", "Infraestrutura e transportes", "Meio ambiente"],
+      "origem_12": ["Saude", "Educacao", "Direitos Humanos", "Infraestrutura", "Meio Ambiente", "Cultura"],
+      "keywords": ["saude", "sus", "medicamento", "hospital", "medico", "doenca", "vacinacao", "pandemia", "educacao", "ensino", "escola", "universidade", "aluno", "professor", "bolsa", "pesquisa", "ciencia", "direitos humanos", "minorias", "discriminacao", "igualdade", "dignidade", "assistencia social", "cultura", "arte", "patrimonio", "rodovia", "ferrovia", "porto", "aeroporto", "saneamento", "energia", "agua", "obra", "infraestrutura", "meio ambiente", "desmatamento", "poluicao", "climatica", "sustentabilidade", "preservacao", "floresta"],
+      "exemplos_limite": "Discurso sobre verba para construir hospital -> Politicas Sociais e Setoriais (saude), mesmo citando orcamento. Obra de rodovia -> Politicas Sociais e Setoriais (infraestrutura)."
+    },
+    "Outros": {
+      "definicao": "Conteudo que nao se enquadra de forma predominante em nenhuma macrocategoria substantiva: homenagens e efemerides sem agenda de politica publica, comunicacoes pessoais, registros protocolares, aniversarios, agradecimentos.",
+      "esquema_senado": ["Homenagens e datas comemorativas", "Outros"],
+      "origem_12": ["Outros"],
+      "keywords": [],
+      "exemplos_limite": "Satisfacao com aniversario de colega, abertura/encerramento protocolar de sessao sem conteudo de merito -> Outros."
+    }
+  }
+}

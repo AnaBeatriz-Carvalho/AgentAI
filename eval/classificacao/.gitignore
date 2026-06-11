@@ -1,0 +1,8 @@
+# Artefatos DETERMINISTICOS/regeneraveis do experimento (rode os scripts p/ recriar).
+# NAO sao ignorados (devem ser versionados como registro):
+#   - gabarito.csv      -> gabarito ouro (anotacao humana);
+#   - pred_mistral.csv  -> Mistral e NAO-deterministico neste runtime; e o resultado de
+#                          registro, nao reproduzivel byte-a-byte -> versionar.
+pred_keyword.csv
+pred_tfidf.csv
+resultados/

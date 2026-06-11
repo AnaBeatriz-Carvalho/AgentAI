@@ -6,6 +6,7 @@ python-dotenv
 pytest
 pytest-mock
 openai
+scikit-learn
 # tqdm
 tabulate
 # commitizen
