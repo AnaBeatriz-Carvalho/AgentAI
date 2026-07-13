@@ -35,3 +35,8 @@ outputs/*.json
 
 logs/app.log
 .venv_mac/
+
+### RAG: índice vetorial e cache de modelos de embedding (grandes; não versionar)
+vectorstore/
+.cache/
+models_cache/

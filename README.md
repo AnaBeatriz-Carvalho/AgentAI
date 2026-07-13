@@ -14,6 +14,7 @@ Aplicação web interativa para analisar **pronunciamentos (discursos)** e **vot
 - **🗣️ Discursos:** coleta por período, classificação temática, resumo e atributos (agenda, tom, posicionamento etc.)
 - **📊 Dashboard:** gráficos (Plotly) e tabela filtrável
 - **💬 Chat com os dados:** perguntas em linguagem natural sobre discursos e votações, com retrieval por palavra-chave (RAG simplificado sobre DataFrame Pandas) seguido de geração
+- **🧠 RAG semântico:** modo opcional no chat de discursos que indexa o **texto integral** dos pronunciamentos num banco vetorial (FAISS), busca por similaridade semântica e responde citando a fonte — 100% local (ver seção *RAG*)
 - **🗳️ Votações:** exploração por período, filtros por partido/parlamentar e export CSV
 - **🔎 Rastreabilidade:** cada resposta do chat cita as fontes que a fundamentaram (`[D1]`, `[V1]`…), expõe a tabela de discursos/votos usados e grava um *trace* por consulta para auditoria
 - **📈 Painel de rastreabilidade:** aba dedicada na interface com métricas de cobertura/precisão de citação (geral e por origem), sem precisar do terminal
@@ -48,6 +49,14 @@ AgentAI/
 │   │   └── votacoes_handler.py   # Extração e organização das votações
 │   ├── ai/
 │   │   └── local_llm_handler.py  # LLM local: retrieval de fontes, citação e trace de QA
+│   ├── rag/                      # RAG semântico: busca vetorial + citação de fonte
+│   │   ├── senado_texto.py       # Busca o texto integral do pronunciamento (+ fallback Resumo)
+│   │   ├── chunker.py            # Quebra o texto em trechos com overlap
+│   │   ├── embedder.py           # Embeddings PT-BR normalizados (CPU, cache de modelo)
+│   │   ├── vectorstore.py        # Índice FAISS (IndexFlatIP) + metadados em parquet
+│   │   ├── retriever.py          # Top-k semântico → contexto + fontes citáveis
+│   │   ├── indexer.py            # Pipeline idempotente de indexação (CLI: python -m src.rag.indexer)
+│   │   └── rag_chat.py           # Orquestra pergunta → retriever → LLM local → resposta + fontes
 │   ├── utils/
 │   │   ├── helpers.py            # Funções auxiliares gerais
 │   │   ├── logger.py             # Logging centralizado
@@ -63,6 +72,11 @@ AgentAI/
 │   ├── test_data_processing.py   # Testes de processamento de dados (+ id_discurso)
 │   ├── test_votacoes_handler.py  # Testes de votações
 │   ├── test_local_llm_handler.py # Testes do LLM local (retrieval + trace)
+│   ├── test_rag_chunker.py       # Testes do chunking (tamanho/overlap)
+│   ├── test_rag_embedder.py      # Testes do embedder (formato/normalização, modelo mockado)
+│   ├── test_rag_vectorstore.py   # Testes do FAISS (round-trip build/save/load/search)
+│   ├── test_rag_indexer.py       # Testes do indexador (fallback Resumo, contagem)
+│   ├── test_rag_chat.py          # Testes da orquestração RAG (sem/ com fontes)
 │   ├── test_avaliar_rastreabilidade.py # Testes das métricas de rastreabilidade
 │   ├── test_utils_helpers.py     # Testes de utilidades
 │   ├── test_plotly_export.py     # Testes de visualização
@@ -204,6 +218,43 @@ O chat foi instrumentado para vincular cada resposta às fontes que a fundamenta
   ```
 
 > ⚠️ As métricas atuais comprovam que a instrumentação funciona ponta a ponta (retrieval → prompt → citação → log → métrica), **não** que as respostas são corretas. A "precisão de citação" só verifica se o id citado existe nas fontes, não se a fonte sustenta semanticamente a afirmação — refinamento previsto como próximo passo.
+
+---
+
+## 🧠 RAG (busca semântica + citação de fonte)
+
+Além do chat por palavra-chave, o projeto oferece um modo **RAG** que indexa os discursos num
+banco vetorial (FAISS) e responde por **similaridade semântica**, ancorado nos trechos
+recuperados e citando a fonte (senador, partido, data). Roda 100% local, reaproveitando o
+mesmo LLM e a mesma camada de rastreabilidade do chat existente.
+
+**Como funciona (subpacote `src/rag/`):**
+- `senado_texto.py` busca o **texto integral** de cada pronunciamento na API do Senado
+  (`/discurso/texto-integral/{codigo}`), com *fallback* para o `Resumo` quando indisponível.
+- `chunker.py` → `embedder.py` (modelo PT-BR, embeddings normalizados em CPU) → `vectorstore.py`
+  (FAISS `IndexFlatIP` + metadados em parquet).
+- `retriever.py` monta o contexto com refs citáveis (`[D1]…`); `rag_chat.py` gera a resposta
+  com a regra de ouro: **se não está no contexto, não inventa** ("não encontrei nos discursos
+  indexados").
+
+**Como usar:**
+1. Instale as dependências (a 1ª vez baixa o PyTorch + o modelo de embedding — pode demorar):
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Colete discursos na aba **Análise de Discursos** e, no chat, escolha o modo
+   **RAG (busca semântica + citação)** e clique em **Indexar discursos**.
+   Alternativamente, indexe pelo terminal:
+   ```bash
+   python -m src.rag.indexer --dias 7
+   ```
+3. Pergunte no chat: a resposta vem com um `expander` **📚 Fontes** listando senador, partido,
+   data e o trecho citado. As consultas RAG também são gravadas em `logs/qa_trace.jsonl`
+   (origem `discurso_rag`), permitindo comparar **keyword × semântico** nas métricas.
+
+> 🔁 **Reindexe** sempre que coletar novos discursos — o índice não se atualiza sozinho.
+> ⚙️ Ajuste modelo/chunk/top-k pelo `.env` (ver `.env.example`, seção *Configuração RAG*).
+> O índice e o cache de modelos ficam fora do versionamento (`vectorstore/` no `.gitignore`).
 
 ---
 

@@ -1,227 +1,212 @@
-import pandas as pd
-import requests
-import xml.etree.ElementTree as ET
-import streamlit as st
-from difflib import get_close_matches
-import re
+"""Busca e enriquecimento de votações nominais do Plenário do Senado.
+
+Antes esta camada montava a votação a partir do XML de dois endpoints e casava as
+matérias por similaridade de texto (`get_close_matches`), consultando ainda o endpoint
+`/materia/{codigo}` (hoje **DEPRECATED**). O resultado era frágil: muitas votações
+apareciam sem "sobre o que foi".
+
+Agora usamos o JSON de `plenario/votacao/orientacaoBancada/{ini}/{fim}` — que já traz a
+descrição do que foi votado (`descricaoVotacao`), a identificação da matéria
+(`siglaTipoMateria`/`numeroMateria`/`anoMateria`), os votos individuais
+(`votosParlamentar`) e o placar — e enriquecemos cada votação com o endpoint moderno
+`/processo` (ementa, autoria, tipo de documento, situação atual e link do texto).
+"""
+
 import json
 from pathlib import Path
-from datetime import date
 
-from src.config.constants import SENADO_HEADERS, REQUEST_TIMEOUT, SENADO_API_MATERIAS, SENADO_API_MATERIA_DETALHES
+import pandas as pd
+import requests
+import streamlit as st
+
+from src.config.constants import (
+    CACHE_TTL_VOTACOES,
+    REQUEST_TIMEOUT,
+    SENADO_API_PROCESSO,
+    SENADO_API_VOTACOES,
+    SENADO_HEADERS_JSON,
+)
 from src.utils.logger import get_logger
 
-CACHE_PATH = Path('outputs/materias_cache.json')
+# Cache em disco dos detalhes de processo (evita rebater a API a cada rerun do Streamlit).
+CACHE_PATH = Path("outputs/processos_cache.json")
 logger = get_logger(__name__)
 
-def obter_detalhes_materia(codigo_materia: str) -> dict:
-    """Consulta detalhes adicionais de uma matéria legislativa."""
-    if not codigo_materia:
-        return {}
-    url = f"{SENADO_API_MATERIA_DETALHES}/{codigo_materia}"
-    try:
-        resp = requests.get(url, headers=SENADO_HEADERS, timeout=REQUEST_TIMEOUT)
-        resp.raise_for_status()
-        root = ET.fromstring(resp.text)
-        ementa = root.find('.//EmentaMateria')
-        explicacao = root.find('.//ExplicacaoEmentaMateria')
-        autores_nodes = root.findall('.//Autor')
-        autores = []
-        for a in autores_nodes:
-            nome = a.find('NomeAutor')
-            if nome is not None and nome.text:
-                autores.append(nome.text.strip())
-        return {
-            'ementa': (ementa.text.strip() if ementa is not None and ementa.text else ''),
-            'explicacao': (explicacao.text.strip() if explicacao is not None and explicacao.text else ''),
-            'autores': ', '.join(autores) if autores else ''
-        }
-    except Exception as e:
-        logger.debug(f"Failed to get materia details for {codigo_materia}: {e}")
-        return {}
+
+def _get_json(url: str) -> object:
+    """GET + parse JSON com decode robusto de encoding.
+
+    Os endpoints do Senado misturam UTF-8 e Latin-1 e às vezes anunciam o charset
+    errado. Decodificamos os bytes crus tentando UTF-8 (estrito) e caindo para
+    Latin-1, o que corrige a acentuação independentemente do endpoint.
+    """
+    resp = requests.get(url, headers=SENADO_HEADERS_JSON, timeout=REQUEST_TIMEOUT)
+    resp.raise_for_status()
+    raw = resp.content
+    for enc in ("utf-8", "latin-1"):
+        try:
+            return json.loads(raw.decode(enc))
+        except UnicodeDecodeError:
+            continue
+    return json.loads(raw.decode("latin-1", errors="replace"))
+
 
 def _load_cache() -> dict:
-    """Carrega cache de detalhes de matérias do arquivo."""
+    """Carrega o cache de detalhes de processos do arquivo."""
     if CACHE_PATH.exists():
         try:
-            return json.loads(CACHE_PATH.read_text(encoding='utf-8'))
+            return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
         except Exception as e:
             logger.debug(f"Failed to load cache: {e}")
-            return {}
     return {}
 
 
 def _save_cache(cache: dict) -> None:
-    """Salva cache de detalhes de matérias em arquivo."""
+    """Salva o cache de detalhes de processos em arquivo."""
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     try:
-        CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
+        CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as e:
         logger.debug(f"Failed to save cache: {e}")
 
-def _deduzir_identificacao(descricao: str) -> dict:
-    """Extrai tipo, número e ano da matéria a partir da descrição textual."""
-    if not descricao:
+
+def obter_detalhes_processo(sigla: str, numero, ano) -> dict:
+    """Consulta o endpoint moderno `/processo` por sigla/número/ano.
+
+    Retorna um dicionário com ementa, autoria, tipo de documento, situação atual e
+    link do texto integral. Dicionário vazio quando a matéria não é localizada.
+    """
+    if not (sigla and numero and ano):
         return {}
-    texto = descricao.replace('\n', ' ').replace(',', ' ').replace('  ', ' ')
-    padrao = re.compile(r'(?P<tipo>PLP|PL|PEC|PLC|MPV|PDL|REQ|EMC)\s*n[ºo]\s*(?P<numero>\d+)[/\-](?P<ano>\d{4})', re.IGNORECASE)
-    m = padrao.search(texto)
-    if m:
+    identificacao = f"{sigla} {numero}/{ano}"
+    url = f"{SENADO_API_PROCESSO}?sigla={sigla}&numero={numero}&ano={ano}"
+    try:
+        data = _get_json(url)
+        if not data:
+            return {}
+        itens = data if isinstance(data, list) else [data]
+        # Prefere o processo cuja identificação bate exatamente; senão usa o primeiro.
+        proc = next((p for p in itens if p.get("identificacao") == identificacao), itens[0])
         return {
-            'siglaTipoMateria': m.group('tipo').upper(),
-            'numeroMateria': m.group('numero'),
-            'anoMateria': m.group('ano')
+            "codigo_materia": str(proc.get("codigoMateria") or ""),
+            "id_processo": str(proc.get("id") or ""),
+            "identificacao": proc.get("identificacao") or identificacao,
+            "ementa": (proc.get("ementa") or "").strip(),
+            "autores": proc.get("autoria") or "",
+            "tipo_documento": proc.get("tipoDocumento") or "",
+            "situacao_atual": proc.get("situacaoAtual") or "",
+            "data_apresentacao": proc.get("dataApresentacao") or "",
+            "url_documento": proc.get("urlDocumento") or "",
+            "tramitando": proc.get("tramitando") or "",
         }
-    return {}
-
-def _buscar_por_tipo_numero_ano(tipo: str, numero: str, ano: str) -> dict:
-    """Localiza matéria na listagem geral de votações para obter ementa (heurística)."""
-    url = SENADO_API_MATERIAS
-    try:
-        resp = requests.get(url, headers=SENADO_HEADERS, timeout=REQUEST_TIMEOUT)
-        resp.raise_for_status()
-        root = ET.fromstring(resp.text)
-        for vot in root.findall('.//Votacao'):
-            t = vot.find('siglaTipoMateria')
-            n = vot.find('numeroMateria')
-            a = vot.find('anoMateria')
-            if all([t is not None, n is not None, a is not None]):
-                if t.text == tipo and n.text == numero and a.text == ano:
-                    ementa = vot.find('ementaMateria').text if vot.find('ementaMateria') is not None else ''
-                    resultado = vot.find('resultado').text if vot.find('resultado') is not None else ''
-                    tipo_votacao = vot.find('descricaoVotacao').text if vot.find('descricaoVotacao') is not None else ''
-                    return {
-                        'ementa': ementa or '',
-                        'resultado': resultado or '',
-                        'tipo_votacao': tipo_votacao or ''
-                    }
     except Exception as e:
-        logger.debug(f"Failed to search materia {tipo} {numero}/{ano}: {e}")
+        logger.debug(f"Falha ao consultar processo {identificacao}: {e}")
         return {}
-    return {}
 
-@st.cache_data(ttl=3600)
-def obter_votacoes_periodo(data_inicio, data_fim):
-    """
-    Busca todas as votações de um período com enriquecimento de informações da matéria.
-    """
-    data_inicio_str = data_inicio.strftime('%Y%m%d')
-    data_fim_str = data_fim.strftime('%Y%m%d')
 
-    url_orientacoes = f"https://legis.senado.leg.br/dadosabertos/plenario/votacao/orientacaoBancada/{data_inicio_str}/{data_fim_str}"
-    url_detalhes = "https://legis.senado.leg.br/dadosabertos/votacao"
+def _montar_votos(votacao: dict) -> pd.DataFrame:
+    """Extrai os votos individuais de uma votação em um DataFrame padronizado."""
+    votos = []
+    for vp in votacao.get("votosParlamentar") or []:
+        votos.append({
+            "Parlamentar": vp.get("nomeParlamentar"),
+            "Partido": vp.get("partido"),
+            "UF": vp.get("uf"),
+            "Voto": vp.get("voto"),
+        })
+    return pd.DataFrame(votos)
+
+
+@st.cache_data(ttl=CACHE_TTL_VOTACOES)
+def obter_votacoes_periodo(data_inicio, data_fim) -> dict:
+    """Busca as votações nominais do Plenário no período, já enriquecidas.
+
+    Retorna um dicionário `{rotulo: {"df_votos": DataFrame, "detalhes": {...}}}`, onde
+    `rotulo` identifica a votação no seletor da interface e `detalhes` reúne o que a
+    matéria propõe (ementa/autoria/situação) para exibição e para o LLM.
+    """
+    data_inicio_str = data_inicio.strftime("%Y%m%d")
+    data_fim_str = data_fim.strftime("%Y%m%d")
+    url = f"{SENADO_API_VOTACOES}/{data_inicio_str}/{data_fim_str}"
 
     try:
-        # Busca os detalhes das matérias
-        response_detalhes = requests.get(url_detalhes, headers=SENADO_HEADERS, timeout=30)
-        response_detalhes.raise_for_status()
-        detalhes_root = ET.fromstring(response_detalhes.text)
-
-        mapa_materias_detalhadas = {}
-        for votacao in detalhes_root.findall('.//Votacao'):
-            try:
-                tipo = votacao.find('siglaTipoMateria').text
-                numero = votacao.find('numeroMateria').text
-                ano = votacao.find('anoMateria').text
-                ementa = votacao.find('ementaMateria').text or ''
-                resultado = votacao.find('resultado').text or ''
-                tipo_votacao = votacao.find('descricaoVotacao').text or ''
-
-                chave = f"{tipo} {numero}/{ano}"
-                mapa_materias_detalhadas[chave] = {
-                    "ementa": ementa,
-                    "resultado": resultado,
-                    "tipo_votacao": tipo_votacao
-                }
-            except Exception:
-                continue
-
-        # Busca as votações no período
-        response_orientacoes = requests.get(url_orientacoes, headers=SENADO_HEADERS, timeout=30)
-        response_orientacoes.raise_for_status()
-        root_orientacoes = ET.fromstring(response_orientacoes.text)
-
-        votacoes_processadas = {}
-
-        cache = _load_cache()
-        for votacao_node in root_orientacoes.findall('.//votacoes'):
-            descricao_materia = votacao_node.find('descricaoMateria').text or "Matéria Indisponível"
-            data_sessao = votacao_node.find('dataInicioVotacao').text.split(' ')[0] if votacao_node.find('dataInicioVotacao') is not None else ""
-            chave = descricao_materia.strip()
-
-            codigo_materia = ''
-            codigo_elem = votacao_node.find('codigoMateria')
-            if codigo_elem is not None and codigo_elem.text:
-                codigo_materia = codigo_elem.text.strip()
-
-            # Match aproximado com o mapa de matérias detalhadas
-            chaves_detalhadas = list(mapa_materias_detalhadas.keys())
-            chave_proxima = get_close_matches(chave, chaves_detalhadas, n=1, cutoff=0.6)
-
-            if chave_proxima:
-                detalhes = mapa_materias_detalhadas.get(chave_proxima[0], {})
-            else:
-                detalhes = {}
-
-            # Enriquecer com detalhes da matéria se tivermos o código
-            if codigo_materia:
-                if codigo_materia in cache:
-                    extra = cache[codigo_materia]
-                else:
-                    extra = obter_detalhes_materia(codigo_materia)
-                    if extra:
-                        cache[codigo_materia] = extra
-                if extra.get('ementa'): detalhes['ementa'] = extra['ementa']
-                if extra.get('explicacao'): detalhes['explicacao'] = extra['explicacao']
-                if extra.get('autores'): detalhes['autores'] = extra['autores']
-            else:
-                ident = _deduzir_identificacao(descricao_materia)
-                if ident:
-                    tentativa = _buscar_por_tipo_numero_ano(ident['siglaTipoMateria'], ident['numeroMateria'], ident['anoMateria'])
-                    for k in ['ementa','resultado','tipo_votacao']:
-                        if tentativa.get(k):
-                            detalhes[k] = tentativa[k]
-
-            ementa = detalhes.get("ementa", "")
-            resultado = detalhes.get("resultado", "")
-            tipo_votacao = detalhes.get("tipo_votacao", "")
-            explicacao = detalhes.get("explicacao", "")
-            autores = detalhes.get("autores", "")
-
-            descricao_completa = f"{descricao_materia} (Votação em {data_sessao})"
-
-            votos_list = []
-            for voto_parlamentar in votacao_node.findall('votosParlamentar'):
-                votos_list.append({
-                    'Parlamentar': voto_parlamentar.find('nomeParlamentar').text,
-                    'Partido': voto_parlamentar.find('partido').text,
-                    'UF': voto_parlamentar.find('uf').text,
-                    'Voto': voto_parlamentar.find('voto').text
-                })
-
-            if votos_list:
-                df_votos = pd.DataFrame(votos_list)
-                votacoes_processadas[descricao_completa] = {
-                    "df_votos": df_votos,
-                    "detalhes": {
-                        "codigo_materia": codigo_materia,
-                        "ementa": ementa,
-                        "explicacao": explicacao,
-                        "autores": autores,
-                        "resultado": resultado,
-                        "tipo_votacao": tipo_votacao
-                    }
-                }
-
-        _save_cache(cache)
-        return votacoes_processadas
-
+        data = _get_json(url)
     except requests.RequestException:
         st.info("⚠️ Não foi possível recuperar as votações neste momento.")
         st.caption("Verifique sua conexão e tente novamente.")
         return {}
-
-    except ET.ParseError:
+    except (json.JSONDecodeError, ValueError):
         st.info("⚠️ Houve um problema ao processar os dados das votações.")
         st.caption("Tente novamente com um período diferente.")
         return {}
+
+    votacoes = data.get("votacoes", []) if isinstance(data, dict) else []
+    cache = _load_cache()
+    resultado_final: dict = {}
+
+    for votacao in votacoes:
+        df_votos = _montar_votos(votacao)
+        if df_votos.empty:
+            continue
+
+        tipo = votacao.get("siglaTipoMateria")
+        numero = votacao.get("numeroMateria")
+        ano = votacao.get("anoMateria")
+        descricao_votacao = (votacao.get("descricaoVotacao") or "").strip()
+        descricao_materia = (votacao.get("descricaoMateria") or "Matéria indisponível").strip()
+        data_sessao = (votacao.get("dataInicioVotacao") or "").split("T")[0]
+
+        # Enriquecimento pelo processo moderno (com cache por identificação).
+        chave_proc = f"{tipo} {numero}/{ano}"
+        if chave_proc in cache:
+            proc = cache[chave_proc]
+        else:
+            proc = obter_detalhes_processo(tipo, numero, ano)
+            if proc:
+                cache[chave_proc] = proc
+
+        # Placar e resultado desta votação específica (a partir das contagens oficiais).
+        sim = int(votacao.get("qtdVotosSim") or 0)
+        nao = int(votacao.get("qtdVotosNao") or 0)
+        abstencao = int(votacao.get("qtdVotosAbstencao") or 0)
+        if sim > nao:
+            resultado = f"Aprovada ({sim} a {nao})"
+        elif nao > sim:
+            resultado = f"Rejeitada ({nao} a {sim})"
+        else:
+            resultado = f"Empate ({sim} a {nao})"
+
+        detalhes = {
+            "codigo_materia": proc.get("codigo_materia", ""),
+            "identificacao": proc.get("identificacao", "") or chave_proc,
+            "descricao_votacao": descricao_votacao,
+            "descricao_materia": descricao_materia,
+            "ementa": proc.get("ementa", ""),
+            "autores": proc.get("autores", ""),
+            "tipo_documento": proc.get("tipo_documento", ""),
+            "situacao_atual": proc.get("situacao_atual", ""),
+            "data_apresentacao": proc.get("data_apresentacao", ""),
+            "url_documento": proc.get("url_documento", ""),
+            "tipo_votacao": "Nominal",
+            "resultado": resultado,
+            "placar": {"Sim": sim, "Não": nao, "Abstenção": abstencao},
+            "data_sessao": data_sessao,
+        }
+
+        # Rótulo do seletor: identificação + o que foi votado + data (garantindo unicidade).
+        resumo = descricao_votacao or descricao_materia
+        rotulo_base = f"{detalhes['identificacao']} — {resumo}"
+        if len(rotulo_base) > 130:
+            rotulo_base = rotulo_base[:127] + "..."
+        if data_sessao:
+            rotulo_base = f"{rotulo_base}  ·  {data_sessao}"
+        rotulo = rotulo_base
+        sufixo = 2
+        while rotulo in resultado_final:
+            rotulo = f"{rotulo_base} ({sufixo})"
+            sufixo += 1
+
+        resultado_final[rotulo] = {"df_votos": df_votos, "detalhes": detalhes}
+
+    _save_cache(cache)
+    return resultado_final

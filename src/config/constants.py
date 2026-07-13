@@ -5,12 +5,23 @@ SENADO_API_BASE = "https://legis.senado.leg.br/dadosabertos"
 SENADO_API_DISCURSOS = f"{SENADO_API_BASE}/plenario/lista/discursos"
 SENADO_API_VOTACOES = f"{SENADO_API_BASE}/plenario/votacao/orientacaoBancada"
 SENADO_API_MATERIAS = f"{SENADO_API_BASE}/votacao"
-SENADO_API_MATERIA_DETALHES = f"{SENADO_API_BASE}/materia"
+SENADO_API_MATERIA_DETALHES = f"{SENADO_API_BASE}/materia"  # DEPRECATED na API; ver SENADO_API_PROCESSO
+# Endpoint moderno de Processos Legislativos (substitui /materia/*): traz ementa,
+# autoria, situação atual, tipo de documento e link para o texto integral.
+SENADO_API_PROCESSO = f"{SENADO_API_BASE}/processo"
+# Texto integral de um pronunciamento (formato texto plano), por codigoPronunciamento.
+SENADO_API_TEXTO_INTEGRAL = f"{SENADO_API_BASE}/discurso/texto-integral"
 
 # Headers para requisições
 SENADO_HEADERS = {
     "Accept": "application/xml",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+}
+
+# Variante para os endpoints consumidos em JSON (votações/processos).
+SENADO_HEADERS_JSON = {
+    "Accept": "application/json",
+    "User-Agent": SENADO_HEADERS["User-Agent"],
 }
 
 # Temas de classificação

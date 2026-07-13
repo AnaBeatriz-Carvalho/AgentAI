@@ -9,3 +9,10 @@ openai
 # tqdm
 tabulate
 # commitizen
+
+# --- RAG (busca semântica + citação) ---
+# Observação: sentence-transformers puxa PyTorch (torch), download grande na 1ª instalação.
+sentence-transformers>=3.0,<4
+faiss-cpu==1.14.3
+numpy==1.26.4
+pyarrow==17.0.0

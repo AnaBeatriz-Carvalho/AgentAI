@@ -231,22 +231,40 @@ def classificar_tema_local(resumo: str, temas: list[str]) -> str:
     return "Outros"
 
 
-def explicar_votacao_local(descricao_materia: str, ementa: str, tipo_votacao: str, resultado: str) -> str:
-    """Explica uma matéria de votação de forma clara e acessível."""
+def explicar_votacao_local(
+    descricao_materia: str,
+    ementa: str,
+    tipo_votacao: str,
+    resultado: str,
+    autores: str = "",
+    tipo_documento: str = "",
+    situacao_atual: str = "",
+    descricao_votacao: str = "",
+) -> str:
+    """Explica uma matéria de votação de forma clara e acessível.
+
+    Recebe o contexto enriquecido pelo endpoint `/processo` (autoria, tipo de
+    documento, situação atual e a descrição do que efetivamente foi votado) para que a
+    explicação diga, de fato, sobre o que foi a votação.
+    """
     prompt = f"""
 Você é um especialista em legislação brasileira explicando para um cidadão leigo o que significa uma votação no Senado.
 
+Tipo de documento: {tipo_documento or 'Não informado'}
 Matéria: {descricao_materia}
-Ementa: {ementa}
+O que foi votado: {descricao_votacao or 'Não informado'}
+Ementa da matéria: {ementa or 'Não informada'}
+Autoria: {autores or 'Não informada'}
 Tipo de Votação: {tipo_votacao}
 Resultado: {resultado}
+Situação atual da matéria: {situacao_atual or 'Não informada'}
 
-Forneça uma explicação clara e concisa (3-4 frases) que inclua:
-1. O que é esta matéria em linguagem simples
-2. O que significa o tipo de votação utilizado
-3. O resultado e sua importância
+Forneça uma explicação clara e concisa (3-5 frases) que inclua:
+1. Sobre o que é esta matéria/votação, em linguagem simples
+2. O que exatamente estava sendo decidido nesta votação
+3. O resultado e o que ele significa na prática (e a situação atual, se relevante)
 
-Seja objetivo e evite jargão técnico desnecessário.
+Baseie-se apenas nas informações acima; não invente fatos. Seja objetivo e evite jargão técnico desnecessário.
 """
 
     try:
@@ -355,13 +373,19 @@ def _registrar_trace(
         get_logger(__name__).debug(f"Falha ao registrar trace de rastreabilidade: {e}")
 
 
-def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
-    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos."""
+def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None, escrever_pergunta: bool = True):
+    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos.
+
+    `escrever_pergunta=False` assume que quem chamou já registrou e exibiu a pergunta
+    do usuário (ex.: fluxo automático de chat que tenta o RAG primeiro e cai para cá),
+    evitando duplicar a mensagem no histórico.
+    """
     if "messages" not in st.session_state:
         st.session_state["messages"] = []
 
-    st.session_state.messages.append({"role": "user", "content": pergunta})
-    st.chat_message("user").write(pergunta)
+    if escrever_pergunta:
+        st.session_state.messages.append({"role": "user", "content": pergunta})
+        st.chat_message("user").write(pergunta)
 
     df = dataframe_classificado.copy()
 
@@ -502,15 +526,21 @@ def responder_pergunta_votacao_local(
     df["id_voto"] = [f"V{i + 1}" for i in range(len(df))]
 
     # Contexto agregado da matéria/votação.
-    codigo_materia = detalhes.get("codigo_materia") or "não informado"
+    identificacao = detalhes.get("identificacao") or "não informada"
+    descricao_votacao = detalhes.get("descricao_votacao") or "não informada"
     ementa = detalhes.get("ementa") or "não informada"
     autores = detalhes.get("autores") or "não informados"
+    tipo_documento = detalhes.get("tipo_documento") or "não informado"
+    situacao_atual = detalhes.get("situacao_atual") or "não informada"
     distribuicao = df["Voto"].value_counts().to_dict() if "Voto" in df.columns else {}
     contexto_materia = (
         f"Matéria: {descricao}\n"
-        f"Código da matéria: {codigo_materia}\n"
+        f"Identificação: {identificacao}\n"
+        f"Tipo de documento: {tipo_documento}\n"
+        f"O que foi votado: {descricao_votacao}\n"
         f"Ementa: {ementa}\n"
-        f"Autores: {autores}\n"
+        f"Autoria: {autores}\n"
+        f"Situação atual da matéria: {situacao_atual}\n"
         f"Tipo de votação: {tipo_votacao}\n"
         f"Resultado: {resultado}\n"
         f"Total de votos: {len(df)}\n"

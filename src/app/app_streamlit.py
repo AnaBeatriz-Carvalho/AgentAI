@@ -1,6 +1,18 @@
 import sys
 from pathlib import Path
 
+# --- PyTorch primeiro (Windows / WinError 1114) ---
+# O `c10.dll` do torch usa TLS estático no seu DllMain. Quando o torch é importado
+# tarde (import preguiçoso do embedder, disparado por um clique), o processo já
+# carregou dezenas de outras DLLs (pandas, plotly, openai, faiss...) e os slots de
+# TLS podem estar esgotados, fazendo o DllMain falhar com WinError 1114. Importar o
+# torch aqui, antes de tudo, garante que ele reserve o slot enquanto ainda há espaço.
+# É best-effort: se o torch não estiver instalado, o app segue e o RAG avisa depois.
+try:
+    import torch  # noqa: F401
+except Exception:
+    pass
+
 # Ensure project root is on sys.path so `import src.*` works when Streamlit
 # executes the script with a working directory inside `src/`.
 ROOT = Path(__file__).resolve().parents[2]
@@ -19,6 +31,9 @@ from src.data.data_processing import extrair_e_classificar_discursos
 from src.ai.local_llm_handler import responder_pergunta_usuario_local, explicar_votacao_local, responder_pergunta_votacao_local
 from src.data.votacoes_handler import obter_votacoes_periodo
 from src.utils.rastreabilidade import TRACE_PADRAO, avaliar, avaliar_por_origem, carregar_registros
+from src.rag import rag_chat, indexer
+from src.rag.vectorstore import VectorStore
+from src.config.settings import get_rag_config
 
 st.set_page_config(
     layout="wide",
@@ -97,16 +112,67 @@ with tab_discursos:
         )
 
         st.header("\U0001F4AC Converse com os Dados dos Discursos")
+        st.caption("Faça uma pergunta em linguagem natural. As respostas trazem as **fontes** dos discursos usados.")
         if "messages" not in st.session_state:
             st.session_state["messages"] = [{"role": "assistant", "content": "Olá! Em que posso ajudar com a análise destes discursos?"}]
 
-        # Simple chat interface: display past messages and provide an input field
+        _rag_cfg = get_rag_config()
+
+        # Histórico do chat.
         for msg in st.session_state.messages:
             st.chat_message(msg["role"]).write(msg["content"])
 
-        # Input field for free questions (minimal chat, no uploads or example prompts)
         if prompt := st.chat_input("Faça uma pergunta sobre os discursos..."):
-            responder_pergunta_usuario_local(df_discursos, prompt)
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            st.chat_message("user").write(prompt)
+
+            # Fluxo automático: sem o usuário escolher "modo". Tentamos sempre a melhor
+            # resposta (busca semântica com fontes). Se os discursos ainda não foram
+            # preparados, preparamos aqui — só na primeira vez. Se qualquer etapa do RAG
+            # falhar (ex.: dependência indisponível), caímos para a resposta simples pela
+            # amostra carregada, de forma transparente para o cidadão.
+            usar_rag = True
+            if not VectorStore.exists(_rag_cfg["index_path"], _rag_cfg["meta_path"]):
+                try:
+                    with st.spinner("Preparando os discursos para busca... (apenas nesta primeira vez, pode levar alguns minutos)"):
+                        stats = indexer.indexar_discursos(df_discursos)
+                    usar_rag = stats["chunks"] > 0
+                except Exception:
+                    usar_rag = False
+
+            if usar_rag:
+                try:
+                    with st.spinner("Buscando trechos relevantes e elaborando a resposta..."):
+                        resultado = rag_chat.responder(prompt)
+                    resposta, fontes = resultado["resposta"], resultado["fontes"]
+                    st.session_state.messages.append({"role": "assistant", "content": resposta})
+                    with st.chat_message("assistant"):
+                        st.write(resposta)
+                        if fontes:
+                            df_fontes = pd.DataFrame(fontes)
+                            cols_fonte = [c for c in ["ref", "Parlamentar", "Partido", "Data", "Tema", "score", "trecho"]
+                                          if c in df_fontes.columns]
+                            with st.expander(f"📚 Fontes ({len(fontes)} trechos citados)"):
+                                st.dataframe(df_fontes[cols_fonte], use_container_width=True, hide_index=True)
+                except Exception:
+                    usar_rag = False  # cai para a resposta simples abaixo
+
+            if not usar_rag:
+                responder_pergunta_usuario_local(df_discursos, prompt, escrever_pergunta=False)
+
+        # Opções avançadas: reindexação manual (para quando novos discursos forem coletados).
+        with st.expander("⚙️ Opções avançadas"):
+            _indice_existe = VectorStore.exists(_rag_cfg["index_path"], _rag_cfg["meta_path"])
+            st.caption(
+                "Os discursos são preparados automaticamente na primeira pergunta. "
+                "Use o botão abaixo apenas para **atualizar** a busca após coletar novos discursos."
+            )
+            if st.button("🔄 Atualizar busca com os discursos atuais"):
+                with st.spinner("Atualizando... pode levar alguns minutos."):
+                    stats = indexer.indexar_discursos(df_discursos)
+                st.success(f"Pronto: {stats['discursos']} discursos → {stats['chunks']} trechos "
+                           f"({stats['com_integral']} com texto integral).")
+            st.caption("Índice pronto." if _indice_existe else "Ainda não preparado — será feito na primeira pergunta.")
 
         # Advanced filters: keyword, parlamentar, partido
         with st.expander("Filtros avançados (aplicáveis à tabela)"):
@@ -161,10 +227,11 @@ with tab_votacoes:
 
             Esta seção permite que você explore votações ocorridas em um período específico, visualizando:
 
-            - **Matéria**: o título da proposta legislativa em pauta;
-            - **Ementa**: um resumo breve do conteúdo da proposta;
-            - **Tipo de Votação**: como a votação foi conduzida (nominal, simbólica etc.);
-            - **Resultado**: se a proposta foi aprovada, rejeitada ou retirada.
+            - **Matéria**: a proposta legislativa em pauta (tipo, número e ano);
+            - **O que foi votado**: a descrição do ponto específico decidido na votação;
+            - **Ementa**: um resumo do conteúdo da proposta;
+            - **Autoria** e **Situação atual**: quem propôs e em que estágio a matéria está;
+            - **Resultado**: se foi aprovada ou rejeitada, com o placar.
 
             Utilize os filtros à esquerda para buscar votações entre datas específicas e entenda como os parlamentares têm votado sobre diferentes assuntos.
             """)
@@ -179,33 +246,52 @@ with tab_votacoes:
         detalhes_materia = dados_da_votacao_selecionada['detalhes']
 
         st.subheader("Detalhes da Votação")
-        codigo_materia = detalhes_materia.get('codigo_materia')
-        if codigo_materia:
-            link_materia = f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo_materia}"
-            st.markdown(f"**Matéria:** *{descricao_selecionada}*  ")
-            st.markdown(f"**Código da Matéria:** [{codigo_materia}]({link_materia})")
-        else:
-            st.markdown(f"**Matéria:** *{descricao_selecionada}*")
 
         ementa = detalhes_materia.get('ementa') or 'Não informada'
-        explicacao = detalhes_materia.get('explicacao') or ''
+        descricao_votacao = detalhes_materia.get('descricao_votacao') or ''
         autores = detalhes_materia.get('autores') or ''
-        tipo_votacao = detalhes_materia.get('tipo_votacao', 'Não informado')
+        tipo_documento = detalhes_materia.get('tipo_documento') or ''
+        situacao_atual = detalhes_materia.get('situacao_atual') or ''
+        url_documento = detalhes_materia.get('url_documento') or ''
+        identificacao = detalhes_materia.get('identificacao') or ''
+        codigo_materia = detalhes_materia.get('codigo_materia')
+        tipo_votacao = detalhes_materia.get('tipo_votacao', 'Nominal')
         resultado = detalhes_materia.get('resultado', 'Não informado')
 
+        if identificacao:
+            if codigo_materia:
+                link_materia = f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo_materia}"
+                st.markdown(f"\U0001F4C4 **Matéria:** [{identificacao}]({link_materia})"
+                            + (f" — {tipo_documento}" if tipo_documento else ""))
+            else:
+                st.markdown(f"\U0001F4C4 **Matéria:** {identificacao}"
+                            + (f" — {tipo_documento}" if tipo_documento else ""))
+
+        if descricao_votacao:
+            st.markdown(f"\U0001F5F3️ **O que foi votado:** {descricao_votacao}")
         if ementa and ementa != 'Não informada':
             st.markdown(f"\U0001F4CC **Ementa:** *{ementa}*")
-        if explicacao:
-            st.markdown(f"📝 **Explicação da Ementa:** {explicacao}")
         if autores:
-            st.markdown(f"👥 **Autores:** {autores}")
-        st.markdown(f"\U0001F5F3️ **Tipo de Votação:** {tipo_votacao}")
-        st.markdown(f"✅ **Resultado:** {resultado}")
+            st.markdown(f"👥 **Autoria:** {autores}")
+        if situacao_atual:
+            st.markdown(f"📍 **Situação atual:** {situacao_atual}")
+        st.markdown(f"✅ **Resultado da votação:** {resultado}")
+        if url_documento:
+            st.markdown(f"🔗 [Ver texto integral da matéria]({url_documento})")
 
         st.write("---")
         st.subheader("💡 O que significa esta votação?")
         with st.spinner("IA analisando a matéria..."):
-            explicacao = explicar_votacao_local(descricao_selecionada, ementa, tipo_votacao, resultado)
+            explicacao = explicar_votacao_local(
+                descricao_selecionada,
+                ementa,
+                tipo_votacao,
+                resultado,
+                autores=autores,
+                tipo_documento=tipo_documento,
+                situacao_atual=situacao_atual,
+                descricao_votacao=descricao_votacao,
+            )
             st.info(explicacao)
         st.write("##### Filtros Adicionais")
         partidos = sorted(df_votos['Partido'].unique())
