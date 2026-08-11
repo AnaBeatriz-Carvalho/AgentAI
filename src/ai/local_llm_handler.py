@@ -353,21 +353,26 @@ def _registrar_trace(
         get_logger(__name__).debug(f"Falha ao registrar trace de rastreabilidade: {e}")
 
 
-def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None, escrever_pergunta: bool = True):
-    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos.
+def gerar_resposta_discurso(
+    df: pd.DataFrame,
+    pergunta: str,
+    extra_context: Optional[str] = None,
+    client=None,
+    modelo: Optional[str] = None,
+    temperature: float = 0.2,
+) -> dict:
+    """Núcleo headless do chat de discursos (sem Streamlit).
 
-    `escrever_pergunta=False` assume que quem chamou já registrou e exibiu a pergunta
-    do usuário (ex.: fluxo automático de chat que tenta o RAG primeiro e cai para cá),
-    evitando duplicar a mensagem no histórico.
+    Monta as estatísticas agregadas, faz o retrieval por palavra-chave, constrói o MESMO
+    prompt do app e chama o LLM. Compartilhado pela interface e pela avaliação de qualidade
+    factual (dimensão 4.3), garantindo que se avalie o agente real. Retorna a resposta, as
+    fontes usadas (com ref citável) e o prompt — sem tocar em session_state/UI.
+
+    `client`/`modelo` injetáveis (default: cliente/modelo do módulo).
     """
-    if "messages" not in st.session_state:
-        st.session_state["messages"] = []
-
-    if escrever_pergunta:
-        st.session_state.messages.append({"role": "user", "content": pergunta})
-        st.chat_message("user").write(pergunta)
-
-    df = dataframe_classificado.copy()
+    cli = client if client is not None else globals().get("client")
+    mod = modelo or _CFG["model"]
+    df = df.copy()
 
     # Estatísticas do período
     periodo_txt = ""
@@ -399,14 +404,9 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
 
     # Recupera os discursos relevantes (retrieval) que fundamentarão a resposta.
     fontes_usadas = _selecionar_fontes(df, pergunta, limite=MAX_FONTES_PROMPT).reset_index(drop=True)
-    # Ref curto e citável por consulta (ex.: D1, D2…); casa com o exemplo do prompt e o
-    # regex de avaliação. O código real do Senado (id_discurso) fica visível para auditoria.
     fontes_usadas["ref"] = [f"D{i + 1}" for i in range(len(fontes_usadas))]
 
-    # Colunas vistas pelo modelo no prompt: só o ref curto + conteúdo (sem o código longo,
-    # para não confundir o modelo sobre qual id citar).
     colunas_prompt = ["ref"] + [c for c in ["Data", "Parlamentar", "Partido", "Tema", "Resumo"] if c in fontes_usadas.columns]
-    # Colunas exibidas ao usuário (inclui o código real do Senado para rastrear a fonte).
     colunas_fonte = ["ref"] + [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
     contexto_dados = fontes_usadas[colunas_prompt].to_markdown(index=False)
 
@@ -440,20 +440,51 @@ Diretrizes de resposta:
 Resposta:
 """
 
+    response = cli.chat.completions.create(
+        model=mod,
+        messages=[{"role": "user", "content": prompt_qa}],
+        temperature=temperature,
+    )
+    resposta = response.choices[0].message.content.strip()
+    ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
+    codigos_fontes = (
+        fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
+        if COL_ID_DISCURSO in fontes_usadas.columns else None
+    )
+    return {
+        "resposta": resposta,
+        "fontes_usadas": fontes_usadas,
+        "colunas_fonte": colunas_fonte,
+        "ids_fontes": ids_fontes,
+        "codigos_fontes": codigos_fontes,
+        "prompt": prompt_qa,
+    }
+
+
+def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None, escrever_pergunta: bool = True):
+    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos.
+
+    `escrever_pergunta=False` assume que quem chamou já registrou e exibiu a pergunta
+    do usuário (ex.: fluxo automático de chat que tenta o RAG primeiro e cai para cá),
+    evitando duplicar a mensagem no histórico.
+    """
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = []
+
+    if escrever_pergunta:
+        st.session_state.messages.append({"role": "user", "content": pergunta})
+        st.chat_message("user").write(pergunta)
+
     with st.spinner("O LLM local está analisando os dados e elaborando sua resposta..."):
         try:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
             logger.info(f"Respondendo pergunta do usuário: {pergunta[:50]}...")
 
-            response = client.chat.completions.create(
-                model=_CFG["model"],
-                messages=[
-                    {"role": "user", "content": prompt_qa},
-                ],
-                temperature=0.2,
-            )
-            resposta = response.choices[0].message.content.strip()
+            resultado = gerar_resposta_discurso(dataframe_classificado, pergunta, extra_context)
+            resposta = resultado["resposta"]
+            fontes_usadas = resultado["fontes_usadas"]
+            colunas_fonte = resultado["colunas_fonte"]
             logger.info(f"Resposta gerada com sucesso: {resposta[:50]}...")
             st.session_state.messages.append({"role": "assistant", "content": resposta})
             with st.chat_message("assistant"):
@@ -465,12 +496,7 @@ Resposta:
                             use_container_width=True,
                             hide_index=True,
                         )
-            ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
-            codigos_fontes = (
-                fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
-                if COL_ID_DISCURSO in fontes_usadas.columns else None
-            )
-            _registrar_trace(pergunta, ids_fontes, resposta, origem="discurso", fontes_codigos=codigos_fontes)
+            _registrar_trace(pergunta, resultado["ids_fontes"], resposta, origem="discurso", fontes_codigos=resultado["codigos_fontes"])
         except Exception as e:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
