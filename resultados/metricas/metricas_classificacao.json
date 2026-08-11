@@ -1,7 +1,776 @@
 {
-  "n_anotados": 0,
+  "n_anotados": 180,
   "n_amostra": 180,
-  "classificadores": {},
+  "classificadores": {
+    "Baseline-KW": {
+      "por_categoria": {
+        "Saúde": {
+          "precisao": 0.6667,
+          "revocacao": 0.75,
+          "f1": 0.7059,
+          "suporte": 16
+        },
+        "Educação": {
+          "precisao": 0.7778,
+          "revocacao": 0.875,
+          "f1": 0.8235,
+          "suporte": 16
+        },
+        "Infraestrutura": {
+          "precisao": 0.2778,
+          "revocacao": 0.625,
+          "f1": 0.3846,
+          "suporte": 8
+        },
+        "Segurança": {
+          "precisao": 0.4444,
+          "revocacao": 0.7273,
+          "f1": 0.5517,
+          "suporte": 11
+        },
+        "Economia": {
+          "precisao": 0.8333,
+          "revocacao": 0.3488,
+          "f1": 0.4918,
+          "suporte": 43
+        },
+        "Meio Ambiente": {
+          "precisao": 0.6667,
+          "revocacao": 0.8571,
+          "f1": 0.75,
+          "suporte": 14
+        },
+        "Relações Exteriores": {
+          "precisao": 0.4444,
+          "revocacao": 0.5714,
+          "f1": 0.5,
+          "suporte": 14
+        },
+        "Trabalho": {
+          "precisao": 0.5,
+          "revocacao": 0.6429,
+          "f1": 0.5625,
+          "suporte": 14
+        },
+        "Política/Institucional": {
+          "precisao": 0.3889,
+          "revocacao": 0.1944,
+          "f1": 0.2593,
+          "suporte": 36
+        },
+        "Outros": {
+          "precisao": 0.1667,
+          "revocacao": 0.375,
+          "f1": 0.2308,
+          "suporte": 8
+        }
+      },
+      "acuracia": 0.5167,
+      "macro_f1": 0.526,
+      "weighted_f1": 0.5073,
+      "n": 180,
+      "kappa_vs_gabarito": 0.463,
+      "matriz_confusao": {
+        "Saúde": {
+          "Saúde": 12,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 2
+        },
+        "Educação": {
+          "Saúde": 0,
+          "Educação": 14,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 1,
+          "Política/Institucional": 1,
+          "Outros": 0
+        },
+        "Infraestrutura": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 5,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 0,
+          "Outros": 2
+        },
+        "Segurança": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 8,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 1,
+          "Outros": 2
+        },
+        "Economia": {
+          "Saúde": 6,
+          "Educação": 0,
+          "Infraestrutura": 6,
+          "Segurança": 2,
+          "Economia": 15,
+          "Meio Ambiente": 2,
+          "Relações Exteriores": 2,
+          "Trabalho": 6,
+          "Política/Institucional": 1,
+          "Outros": 3
+        },
+        "Meio Ambiente": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 12,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 1,
+          "Outros": 0
+        },
+        "Relações Exteriores": {
+          "Saúde": 0,
+          "Educação": 1,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 3,
+          "Relações Exteriores": 8,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 0
+        },
+        "Trabalho": {
+          "Saúde": 0,
+          "Educação": 2,
+          "Infraestrutura": 1,
+          "Segurança": 1,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 9,
+          "Política/Institucional": 0,
+          "Outros": 0
+        },
+        "Política/Institucional": {
+          "Saúde": 0,
+          "Educação": 1,
+          "Infraestrutura": 4,
+          "Segurança": 7,
+          "Economia": 0,
+          "Meio Ambiente": 1,
+          "Relações Exteriores": 8,
+          "Trabalho": 2,
+          "Política/Institucional": 7,
+          "Outros": 6
+        },
+        "Outros": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 2,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 3,
+          "Outros": 3
+        }
+      },
+      "macro_f1_reportaveis": 0.5962
+    },
+    "Gemma-2-9B": {
+      "por_categoria": {
+        "Saúde": {
+          "precisao": 1.0,
+          "revocacao": 0.75,
+          "f1": 0.8571,
+          "suporte": 16
+        },
+        "Educação": {
+          "precisao": 1.0,
+          "revocacao": 0.625,
+          "f1": 0.7692,
+          "suporte": 16
+        },
+        "Infraestrutura": {
+          "precisao": 0.6,
+          "revocacao": 0.375,
+          "f1": 0.4615,
+          "suporte": 8
+        },
+        "Segurança": {
+          "precisao": 1.0,
+          "revocacao": 0.3636,
+          "f1": 0.5333,
+          "suporte": 11
+        },
+        "Economia": {
+          "precisao": 0.8947,
+          "revocacao": 0.3953,
+          "f1": 0.5484,
+          "suporte": 43
+        },
+        "Meio Ambiente": {
+          "precisao": 1.0,
+          "revocacao": 0.7143,
+          "f1": 0.8333,
+          "suporte": 14
+        },
+        "Relações Exteriores": {
+          "precisao": 1.0,
+          "revocacao": 0.8571,
+          "f1": 0.9231,
+          "suporte": 14
+        },
+        "Trabalho": {
+          "precisao": 0.8,
+          "revocacao": 0.5714,
+          "f1": 0.6667,
+          "suporte": 14
+        },
+        "Política/Institucional": {
+          "precisao": 0.4156,
+          "revocacao": 0.8889,
+          "f1": 0.5664,
+          "suporte": 36
+        },
+        "Outros": {
+          "precisao": 0.0952,
+          "revocacao": 0.25,
+          "f1": 0.1379,
+          "suporte": 8
+        }
+      },
+      "acuracia": 0.6111,
+      "macro_f1": 0.6297,
+      "weighted_f1": 0.6365,
+      "n": 180,
+      "kappa_vs_gabarito": 0.5461,
+      "matriz_confusao": {
+        "Saúde": {
+          "Saúde": 12,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 1,
+          "Outros": 2
+        },
+        "Educação": {
+          "Saúde": 0,
+          "Educação": 10,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 1,
+          "Política/Institucional": 4,
+          "Outros": 1
+        },
+        "Infraestrutura": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 3,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 2
+        },
+        "Segurança": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 4,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 7,
+          "Outros": 0
+        },
+        "Economia": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 2,
+          "Segurança": 0,
+          "Economia": 17,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 1,
+          "Política/Institucional": 17,
+          "Outros": 6
+        },
+        "Meio Ambiente": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 10,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 2
+        },
+        "Relações Exteriores": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 12,
+          "Trabalho": 0,
+          "Política/Institucional": 1,
+          "Outros": 1
+        },
+        "Trabalho": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 8,
+          "Política/Institucional": 5,
+          "Outros": 1
+        },
+        "Política/Institucional": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 32,
+          "Outros": 4
+        },
+        "Outros": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 6,
+          "Outros": 2
+        }
+      },
+      "macro_f1_reportaveis": 0.6991
+    },
+    "Llama-3.1-8B": {
+      "por_categoria": {
+        "Saúde": {
+          "precisao": 0.4375,
+          "revocacao": 0.4375,
+          "f1": 0.4375,
+          "suporte": 16
+        },
+        "Educação": {
+          "precisao": 0.7,
+          "revocacao": 0.4375,
+          "f1": 0.5385,
+          "suporte": 16
+        },
+        "Infraestrutura": {
+          "precisao": 0.3333,
+          "revocacao": 0.25,
+          "f1": 0.2857,
+          "suporte": 8
+        },
+        "Segurança": {
+          "precisao": 1.0,
+          "revocacao": 0.1818,
+          "f1": 0.3077,
+          "suporte": 11
+        },
+        "Economia": {
+          "precisao": 0.6,
+          "revocacao": 0.0698,
+          "f1": 0.125,
+          "suporte": 43
+        },
+        "Meio Ambiente": {
+          "precisao": 1.0,
+          "revocacao": 0.2143,
+          "f1": 0.3529,
+          "suporte": 14
+        },
+        "Relações Exteriores": {
+          "precisao": 0.6667,
+          "revocacao": 0.7143,
+          "f1": 0.6897,
+          "suporte": 14
+        },
+        "Trabalho": {
+          "precisao": 0.75,
+          "revocacao": 0.2143,
+          "f1": 0.3333,
+          "suporte": 14
+        },
+        "Política/Institucional": {
+          "precisao": 0.3571,
+          "revocacao": 0.6944,
+          "f1": 0.4717,
+          "suporte": 36
+        },
+        "Outros": {
+          "precisao": 0.0408,
+          "revocacao": 0.25,
+          "f1": 0.0702,
+          "suporte": 8
+        }
+      },
+      "acuracia": 0.3556,
+      "macro_f1": 0.3612,
+      "weighted_f1": 0.3526,
+      "n": 180,
+      "kappa_vs_gabarito": 0.2668,
+      "matriz_confusao": {
+        "Saúde": {
+          "Saúde": 7,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 3,
+          "Outros": 6
+        },
+        "Educação": {
+          "Saúde": 1,
+          "Educação": 7,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 1,
+          "Política/Institucional": 4,
+          "Outros": 3
+        },
+        "Infraestrutura": {
+          "Saúde": 0,
+          "Educação": 1,
+          "Infraestrutura": 2,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 4,
+          "Outros": 0
+        },
+        "Segurança": {
+          "Saúde": 1,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 2,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 4,
+          "Outros": 4
+        },
+        "Economia": {
+          "Saúde": 4,
+          "Educação": 1,
+          "Infraestrutura": 1,
+          "Segurança": 0,
+          "Economia": 3,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 1,
+          "Trabalho": 0,
+          "Política/Institucional": 16,
+          "Outros": 17
+        },
+        "Meio Ambiente": {
+          "Saúde": 3,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 3,
+          "Relações Exteriores": 3,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 3
+        },
+        "Relações Exteriores": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 10,
+          "Trabalho": 0,
+          "Política/Institucional": 3,
+          "Outros": 1
+        },
+        "Trabalho": {
+          "Saúde": 0,
+          "Educação": 1,
+          "Infraestrutura": 3,
+          "Segurança": 0,
+          "Economia": 1,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 3,
+          "Política/Institucional": 3,
+          "Outros": 3
+        },
+        "Política/Institucional": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 1,
+          "Trabalho": 0,
+          "Política/Institucional": 25,
+          "Outros": 10
+        },
+        "Outros": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 6,
+          "Outros": 2
+        }
+      },
+      "macro_f1_reportaveis": 0.3838
+    },
+    "Mistral-7B": {
+      "por_categoria": {
+        "Saúde": {
+          "precisao": 0.8824,
+          "revocacao": 0.9375,
+          "f1": 0.9091,
+          "suporte": 16
+        },
+        "Educação": {
+          "precisao": 0.9286,
+          "revocacao": 0.8125,
+          "f1": 0.8667,
+          "suporte": 16
+        },
+        "Infraestrutura": {
+          "precisao": 0.5,
+          "revocacao": 0.375,
+          "f1": 0.4286,
+          "suporte": 8
+        },
+        "Segurança": {
+          "precisao": 0.5385,
+          "revocacao": 0.6364,
+          "f1": 0.5833,
+          "suporte": 11
+        },
+        "Economia": {
+          "precisao": 1.0,
+          "revocacao": 0.4884,
+          "f1": 0.6562,
+          "suporte": 43
+        },
+        "Meio Ambiente": {
+          "precisao": 0.875,
+          "revocacao": 1.0,
+          "f1": 0.9333,
+          "suporte": 14
+        },
+        "Relações Exteriores": {
+          "precisao": 0.8235,
+          "revocacao": 1.0,
+          "f1": 0.9032,
+          "suporte": 14
+        },
+        "Trabalho": {
+          "precisao": 0.8182,
+          "revocacao": 0.6429,
+          "f1": 0.72,
+          "suporte": 14
+        },
+        "Política/Institucional": {
+          "precisao": 0.4677,
+          "revocacao": 0.8056,
+          "f1": 0.5918,
+          "suporte": 36
+        },
+        "Outros": {
+          "precisao": 0.0,
+          "revocacao": 0.0,
+          "f1": 0.0,
+          "suporte": 8
+        }
+      },
+      "acuracia": 0.6944,
+      "macro_f1": 0.6592,
+      "weighted_f1": 0.6865,
+      "n": 180,
+      "kappa_vs_gabarito": 0.6456,
+      "matriz_confusao": {
+        "Saúde": {
+          "Saúde": 15,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 0,
+          "Outros": 1
+        },
+        "Educação": {
+          "Saúde": 1,
+          "Educação": 13,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 2,
+          "Outros": 0
+        },
+        "Infraestrutura": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 3,
+          "Segurança": 1,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 4,
+          "Outros": 0
+        },
+        "Segurança": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 7,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 4,
+          "Outros": 0
+        },
+        "Economia": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 2,
+          "Segurança": 2,
+          "Economia": 21,
+          "Meio Ambiente": 1,
+          "Relações Exteriores": 2,
+          "Trabalho": 1,
+          "Política/Institucional": 12,
+          "Outros": 2
+        },
+        "Meio Ambiente": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 14,
+          "Relações Exteriores": 0,
+          "Trabalho": 0,
+          "Política/Institucional": 0,
+          "Outros": 0
+        },
+        "Relações Exteriores": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 14,
+          "Trabalho": 0,
+          "Política/Institucional": 0,
+          "Outros": 0
+        },
+        "Trabalho": {
+          "Saúde": 0,
+          "Educação": 1,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 0,
+          "Trabalho": 9,
+          "Política/Institucional": 4,
+          "Outros": 0
+        },
+        "Política/Institucional": {
+          "Saúde": 1,
+          "Educação": 0,
+          "Infraestrutura": 1,
+          "Segurança": 3,
+          "Economia": 0,
+          "Meio Ambiente": 1,
+          "Relações Exteriores": 0,
+          "Trabalho": 1,
+          "Política/Institucional": 29,
+          "Outros": 0
+        },
+        "Outros": {
+          "Saúde": 0,
+          "Educação": 0,
+          "Infraestrutura": 0,
+          "Segurança": 0,
+          "Economia": 0,
+          "Meio Ambiente": 0,
+          "Relações Exteriores": 1,
+          "Trabalho": 0,
+          "Política/Institucional": 7,
+          "Outros": 0
+        }
+      },
+      "macro_f1_reportaveis": 0.75
+    }
+  },
   "concordancia_entre_modelos": [
     {
       "modelo_a": "Baseline-KW",
