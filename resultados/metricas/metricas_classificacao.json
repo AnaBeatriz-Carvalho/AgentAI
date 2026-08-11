@@ -1,0 +1,49 @@
+{
+  "n_anotados": 0,
+  "n_amostra": 180,
+  "classificadores": {},
+  "concordancia_entre_modelos": [
+    {
+      "modelo_a": "Baseline-KW",
+      "modelo_b": "Gemma-2-9B",
+      "n": 180,
+      "agreement": 0.4222,
+      "kappa": 0.358
+    },
+    {
+      "modelo_a": "Baseline-KW",
+      "modelo_b": "Llama-3.1-8B",
+      "n": 180,
+      "agreement": 0.2833,
+      "kappa": 0.2037
+    },
+    {
+      "modelo_a": "Baseline-KW",
+      "modelo_b": "Mistral-7B",
+      "n": 180,
+      "agreement": 0.4778,
+      "kappa": 0.4198
+    },
+    {
+      "modelo_a": "Gemma-2-9B",
+      "modelo_b": "Llama-3.1-8B",
+      "n": 180,
+      "agreement": 0.4833,
+      "kappa": 0.3385
+    },
+    {
+      "modelo_a": "Gemma-2-9B",
+      "modelo_b": "Mistral-7B",
+      "n": 180,
+      "agreement": 0.6833,
+      "kappa": 0.6094
+    },
+    {
+      "modelo_a": "Llama-3.1-8B",
+      "modelo_b": "Mistral-7B",
+      "n": 180,
+      "agreement": 0.4556,
+      "kappa": 0.3464
+    }
+  ]
+}

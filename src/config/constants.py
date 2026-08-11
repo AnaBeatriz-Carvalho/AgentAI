@@ -24,12 +24,9 @@ SENADO_HEADERS_JSON = {
     "User-Agent": SENADO_HEADERS["User-Agent"],
 }
 
-# Temas de classificação
-TEMAS_DEFINIDOS = [
-    "Educação", "Saúde", "Economia", "Cultura", "Segurança",
-    "Meio Ambiente", "Direitos Humanos", "Infraestrutura",
-    "Política", "Relações Exteriores", "Trabalho", "Outros"
-]
+# Temas de classificação — taxonomia definitiva (10 categorias) centralizada em
+# src.eval.categorias (fonte única reconciliada; ver protocolo de anotação / adendo).
+from src.eval.categorias import CATEGORIAS as TEMAS_DEFINIDOS  # noqa: E402
 
 # Timeouts
 REQUEST_TIMEOUT = 30  # segundos

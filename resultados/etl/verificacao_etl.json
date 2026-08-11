@@ -1,0 +1,61 @@
+{
+  "gerado_em": "2026-08-10T22:22:14",
+  "banco": "data/agentai.sqlite",
+  "completude": {
+    "total_discursos": 11348,
+    "campos_essenciais": {
+      "data": {
+        "preenchidos": 11348,
+        "taxa": 1.0
+      },
+      "nome_autor": {
+        "preenchidos": 11348,
+        "taxa": 1.0
+      },
+      "resumo": {
+        "preenchidos": 11290,
+        "taxa": 0.9949
+      },
+      "tipo_autor": {
+        "preenchidos": 11348,
+        "taxa": 1.0
+      }
+    },
+    "registros_completos": 11290,
+    "taxa_completude_geral": 0.9949,
+    "senadores_total": 9472,
+    "campos_senador": {
+      "partido": {
+        "preenchidos": 9472,
+        "taxa": 1.0
+      },
+      "uf": {
+        "preenchidos": 9472,
+        "taxa": 1.0
+      }
+    }
+  },
+  "consistencia": {
+    "duplicatas_codigo": 0,
+    "grupos_duplicata_conteudo": 334,
+    "datas_invalidas": 0,
+    "datas_futuras": 0,
+    "uf_invalidas_senador": 0,
+    "senador_sem_partido": 0,
+    "senador_sem_uf": 0,
+    "divergencia_data_vs_data_sessao": 156
+  },
+  "reprodutibilidade": {
+    "janela": {
+      "inicio": "2026-05-01",
+      "fim": "2026-05-15"
+    },
+    "n_api": 146,
+    "n_banco_no_periodo": 146,
+    "intersecao": 146,
+    "so_na_api": 0,
+    "so_no_banco": 0,
+    "registros_identicos_no_conteudo": 146,
+    "taxa_reprodutibilidade": 1.0
+  }
+}

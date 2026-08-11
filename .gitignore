@@ -28,6 +28,11 @@ Thumbs.db
 ### Streamlit local config
 .streamlit/
 
+### Corpus SQLite local (grande e regenerável pela coleta; não versionar)
+data/*.sqlite
+data/*.sqlite-*
+data/*.db
+
 ### App generated artifacts
 discursos.csv
 relatorio_discursos.pdf

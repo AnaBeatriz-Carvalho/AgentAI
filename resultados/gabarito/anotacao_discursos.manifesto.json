@@ -1,0 +1,38 @@
+{
+  "gerado_em": "2026-08-10T21:12:52",
+  "seed": 42,
+  "n_por_categoria_alvo": 18,
+  "n_total": 180,
+  "populacao_elegivel": 7424,
+  "periodo_corpus_senadores": {
+    "min": "2024-02-05",
+    "max": "2026-07-01"
+  },
+  "n_por_estrato_baseline": {
+    "Saúde": 18,
+    "Educação": 18,
+    "Infraestrutura": 18,
+    "Segurança": 18,
+    "Economia": 18,
+    "Meio Ambiente": 18,
+    "Relações Exteriores": 18,
+    "Trabalho": 18,
+    "Política/Institucional": 18,
+    "Outros": 18
+  },
+  "base_textual": "resumo",
+  "categorias": [
+    "Saúde",
+    "Educação",
+    "Infraestrutura",
+    "Segurança",
+    "Economia",
+    "Meio Ambiente",
+    "Relações Exteriores",
+    "Trabalho",
+    "Política/Institucional",
+    "Outros"
+  ],
+  "arquivo_csv": "resultados/gabarito/anotacao_discursos.csv",
+  "observacao": "Estratos calculados pelo baseline de palavras-chave (frame de amostragem). O rotulo verdadeiro e definido pela anotacao humana no campo 'categoria'."
+}

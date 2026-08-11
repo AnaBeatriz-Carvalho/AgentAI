@@ -196,39 +196,19 @@ def analisar_discurso(texto: str) -> str:
 
 
 def classificar_tema_local(resumo: str, temas: list[str]) -> str:
-    """Classifica um resumo em um tema da lista usando palavras-chave."""
-    palavras_chave = {
-        "Educação": ["educação", "ensino", "escola", "universidade", "aluno", "professor", "bolsa", "pesquisa", "ciência", "tecnologia", "inovação", "acadêmico"],
-        "Saúde": ["saúde", "sus", "medicamento", "hospital", "médico", "doença", "vacinação", "pandemia", "enfermidade", "clínico"],
-        "Economia": ["economia", "crédito", "financiamento", "imposto", "câmbio", "pib", "investimento", "setor privado", "mercado", "inflação", "operação de crédito"],
-        "Segurança": ["segurança pública", "polícia", "crime", "violência", "prisão", "criminalidade", "delegacia", "criminal"],
-        "Infraestrutura": ["rodovia", "ferrovia", "porto", "aeroporto", "saneamento", "energia", "água", "construção", "obra", "resiliência", "manutenção"],
-        "Meio Ambiente": ["meio ambiente", "desmatamento", "poluição", "climática", "sustentabilidade", "preservação", "ecologia", "floresta", "carbono"],
-        "Direitos Humanos": ["direitos humanos", "direito", "liberdade", "igualdade", "dignidade", "minorias", "discriminação", "humano"],
-        "Trabalho": ["trabalho", "emprego", "labor", "agricultura", "agropecuária", "produtor", "sindicato", "trabalhador", "rural"],
-        "Política": ["política", "congresso", "senado", "câmara", "governo", "poder", "instituição", "legislação", "lei", "reforma", "parlamentar"],
-        "Relações Exteriores": ["relações exteriores", "diplomacia", "internacional", "exterior", "país", "comércio exterior", "acordo", "embaixada"],
-        "Cultura": ["cultura", "arte", "música", "cinema", "patrimônio", "cultural", "artista", "festival"],
-    }
+    """Baseline por palavras-chave (dimensão 4.2).
 
-    texto_lower = resumo.lower()
-    contagem = {}
+    Delega para a fonte única `src.eval.categorias`, reconciliada para as 10 categorias
+    definitivas. O parâmetro `temas` é mantido por compatibilidade de assinatura, mas a
+    taxonomia efetiva é a do módulo de avaliação (garante que o baseline em produção e o
+    baseline medido nas métricas sejam idênticos).
+    """
+    from src.eval.categorias import classificar_keyword
 
-    for tema, palavras in palavras_chave.items():
-        contagem[tema] = sum(1 for palavra in palavras if palavra in texto_lower)
-
-    tema_vencedor = max(contagem, key=contagem.get)
-
-    if contagem[tema_vencedor] > 0:
-        from src.utils.logger import get_logger
-        logger = get_logger(__name__)
-        logger.info(f"Tema identificado: {tema_vencedor} (correspondências: {contagem[tema_vencedor]})")
-        return tema_vencedor
-
+    tema = classificar_keyword(resumo)
     from src.utils.logger import get_logger
-    logger = get_logger(__name__)
-    logger.info("Classificado como: Outros")
-    return "Outros"
+    get_logger(__name__).info(f"Tema identificado (baseline keyword): {tema}")
+    return tema
 
 
 def explicar_votacao_local(
