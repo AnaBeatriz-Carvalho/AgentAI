@@ -7,7 +7,7 @@ Este repositório reúne o material de reprodutibilidade de um artigo científic
 
 Todo o processamento com LLM roda de forma local, por um servidor compatível com a API OpenAI (por exemplo, LM Studio). Não há dependência de serviços pagos ou de nuvem.
 
-Espelho anônimo para revisão: https://anonymous.4open.science/r/AgentAI-5283/
+Espelho anônimo para revisão: https://anonymous.4open.science/r/AgentAI-D1DE/
 
 ---
 
