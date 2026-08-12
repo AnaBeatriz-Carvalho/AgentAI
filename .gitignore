@@ -38,7 +38,7 @@ discursos.csv
 relatorio_discursos.pdf
 outputs/*.json
 
-logs/app.log
+logs/*.log
 .venv_mac/
 
 ### RAG: índice vetorial e cache de modelos de embedding (grandes; não versionar)
