@@ -1,8 +1,22 @@
 """Testes das funções puras de métrica de classificação (dimensão 4.2)."""
 
+import sys
+from pathlib import Path
+
+import pytest
+
 from src.eval import metricas as M
 
 LABELS = ["A", "B", "C"]
+
+# --- Acesso ao pipeline do script (fonte CSV, sem LLM/rede/SQLite) ---
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import metricas_classificacao as mc  # noqa: E402
+
+GABARITO_ANOTADO = ROOT / "resultados/gabarito/anotacao_discursos_categorizado.csv"
+GABARITO_VAZIO = ROOT / "resultados/gabarito/anotacao_discursos.csv"
+PREDICOES_CSV = ROOT / "resultados/metricas/predicoes_classificacao_llm.csv"
 
 
 def test_acuracia_perfeita():
@@ -56,3 +70,56 @@ def test_macro_vs_weighted():
 def test_concordancia_simples():
     assert M.concordancia_simples(["A", "B"], ["A", "A"]) == 0.5
     assert M.concordancia_simples([], []) == 0.0
+
+
+# --- Testes do pipeline metricas_classificacao (fonte CSV versionada) ---
+
+def _macro_f1_reportaveis_por_modelo() -> dict[str, float]:
+    """Reproduz o macro-F1 (8 categorias reportáveis) por classificador lendo os CSV
+    versionados — mesmo cálculo do script, sem SQLite/LLM/rede."""
+    ids, resumos = mc._ids_e_resumos(GABARITO_ANOTADO)
+    llm_por_modelo = mc._llm_preds_csv(PREDICOES_CSV)
+    preds = mc._predicoes(resumos, llm_por_modelo, ids)
+    gold_map = mc._carregar_gabarito(GABARITO_ANOTADO)
+    gold_ids = list(gold_map.keys())
+
+    out: dict[str, float] = {}
+    for nome, mp in preds.items():
+        ids_val = [i for i in gold_ids if mp.get(i) is not None]
+        gold = [gold_map[i] for i in ids_val]
+        pred = [mp[i] for i in ids_val]
+        met = mc.M.metricas_por_categoria(gold, pred, mc.CATEGORIAS)
+        macro8 = sum(met["por_categoria"][c]["f1"] for c in mc.CATEGORIAS_REPORTAVEIS) / len(
+            mc.CATEGORIAS_REPORTAVEIS
+        )
+        out[nome] = macro8
+    return out
+
+
+def test_reprodutibilidade_macro_f1_fonte_csv():
+    """Calculando pela fonte CSV default, o macro-F1(8) por modelo bate com o esperado."""
+    esperado = {
+        "Mistral-7B": 0.750,
+        "Gemma-2-9B": 0.699,
+        "Baseline-KW": 0.596,
+        "Llama-3.1-8B": 0.384,
+    }
+    obtido = _macro_f1_reportaveis_por_modelo()
+    for modelo, alvo in esperado.items():
+        assert modelo in obtido, f"classificador ausente: {modelo}"
+        assert abs(obtido[modelo] - alvo) < 1e-3, (modelo, obtido[modelo], alvo)
+
+
+def test_guard_gabarito_sem_categorias_aborta(tmp_path, monkeypatch):
+    """Gabarito sem categorias → SystemExit != 0 e nenhum arquivo de saída gerado."""
+    saida = tmp_path / "out_nao_deve_existir"
+    monkeypatch.setattr(
+        sys, "argv",
+        ["metricas_classificacao.py",
+         "--gabarito", str(GABARITO_VAZIO),
+         "--saida", str(saida)],
+    )
+    with pytest.raises(SystemExit) as exc:
+        mc.main()
+    assert exc.value.code != 0
+    assert not saida.exists()  # abortou antes de criar qualquer saída
