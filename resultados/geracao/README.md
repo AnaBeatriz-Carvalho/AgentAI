@@ -21,6 +21,9 @@ as demais dimensões em `resultados/etl/`, `resultados/metricas/` (classificaç�
 | `coleta_<modelo>.csv` | Respostas + métricas automáticas por modelo (`;`-separado). 40 linhas cada. |
 | `PROTOCOLO.md` | Protocolo original da coleta (fixar tudo exceto o LLM gerador). |
 | `manifesto.json` | Proveniência, condição de execução, hardware, colunas e estado da anotação. |
+| `codebook_anotacao.md` | Guia de anotação: escalas 1–4 / 1–5, definições e exemplos-âncora. |
+| `anotacao_geracao.csv` | **Planilha de anotação cega** (embaralhada, sem o modelo) — a preencher. |
+| `_chave_modelos.csv` | Chave `anotacao_id → modelo` — **não abrir durante a anotação**. |
 
 ## Modelos avaliados (quantização Q4_K_M, LM Studio)
 Mistral 7B Instruct v0.3 · Qwen2.5 7B Instruct · Llama 3.1 8B Instruct · Gemma 2 9B Instruct.
@@ -30,13 +33,26 @@ Temperatura 0,1; seed 42 no payload mas **não controlada** no runtime; recupera
 **palavra-chave** sobre o corpus congelado (não o caminho FAISS denso do chat ao vivo);
 hardware Ryzen 7 5700X / 32 GB / RTX 4060 Ti 8 GB.
 
+## Fluxo de anotação (Fase 1)
+
+1. Gerar/regenerar a planilha cega (semente 42):
+   ```bash
+   python scripts/preparar_anotacao_geracao.py
+   ```
+   (Trava de segurança: recusa sobrescrever se já houver notas; use `--force` só com backup.)
+2. Ler `codebook_anotacao.md` e preencher `anotacao_geracao.csv` (colunas
+   `suporte_semantico`, `recusa_correta`, `pt_formal`, `completude`, `observacao`), **sem**
+   abrir `_chave_modelos.csv`.
+3. Após 2–4 semanas, reanotar ~30% para o **Kappa intra-anotador** (teste-reteste).
+
 ## O que ainda falta (roteiro em `PLANO-GERACAO-ROTA2.md`)
-1. **Codebook** de anotação (níveis 1–4 de suporte semântico com exemplos-âncora).
-2. **Re-anotação cega** das 160 respostas + **teste-reteste** (Kappa intra-anotador) +
-   cross-check **LLM-como-juiz**.
-3. `scripts/metricas_geracao.py` que recomputa a tabela do artigo a partir de
-   `coleta_*.csv` + a anotação.
-4. **Coleta pelo caminho FAISS** para comparação keyword × denso.
+- [x] **Codebook** de anotação (níveis 1–4, exemplos-âncora Q04/Q37).
+- [x] **Planilha de anotação cega** gerada (`anotacao_geracao.csv` + chave).
+- [ ] **Anotação** das 160 respostas + **teste-reteste** (Kappa intra-anotador).
+- [ ] Cross-check **LLM-como-juiz**.
+- [ ] `scripts/metricas_geracao.py` que recomputa a tabela do artigo a partir de
+      `coleta_*.csv` + `anotacao_geracao.csv` + `_chave_modelos.csv`.
+- [ ] **Coleta pelo caminho FAISS** para comparação keyword × denso (Fase 2).
 
 ## Reproduzir a coleta (palavra-chave)
 
