@@ -1,0 +1,64 @@
+{
+  "experimento": "Avaliacao de geracao comparativa (4 modelos) — clausulas (b) e (c) da hipotese",
+  "gerado_em": "2026-08-29",
+  "proveniencia": {
+    "coletas": "Respostas recuperadas do commit de stash cd0f2744 do proprio repositorio (as colunas automaticas do EvalLogger). As coletas haviam sido removidas do versionamento no commit 69f6db1 (anonimizacao para espelho double-blind).",
+    "inputs": "perguntas.json, corpus_snapshot.csv, corpus_snapshot_ids.txt e PROTOCOLO.md extraidos da branch feature/eval-logging-modelos.",
+    "data_da_coleta": "2026-06-08"
+  },
+  "corpus_congelado": {
+    "arquivo": "corpus_snapshot.csv",
+    "n_discursos": 152,
+    "periodo": "2025-05-05 a 2025-05-16",
+    "datas_distintas": 9,
+    "colunas": ["id_discurso", "Data", "Parlamentar", "Partido", "UF", "Resumo", "Tema"],
+    "texto_integral": false,
+    "ids_reais_senado": "corpus_snapshot_ids.txt"
+  },
+  "perguntas": {
+    "arquivo": "perguntas.json",
+    "n": 40,
+    "estratos": {
+      "Factual direta": 14,
+      "Agregacao/contagem": 8,
+      "Comparacao": 6,
+      "Busca por tema": 4,
+      "Sem resposta no corpus": 8
+    },
+    "gold": "campo gold_ids por pergunta (evidencia de referencia para conferencia de suporte)"
+  },
+  "modelos": [
+    {"stamp": "mistralai/mistral-7b-instruct-v0.3", "arquivo": "coleta_mistralai_mistral-7b-instruct-v0.3.csv"},
+    {"stamp": "qwen2.5-7b-instruct-1m", "arquivo": "coleta_qwen2.5-7b-instruct-1m.csv"},
+    {"stamp": "meta-llama-3.1-8b-instruct", "arquivo": "coleta_meta-llama-3.1-8b-instruct.csv"},
+    {"stamp": "gemma-2-9b-it", "arquivo": "coleta_gemma-2-9b-it.csv"}
+  ],
+  "condicao": {
+    "runtime": "LM Studio (API compativel com OpenAI, localhost)",
+    "quantizacao": "Q4_K_M",
+    "temperatura": 0.1,
+    "seed_no_payload": 42,
+    "seed_efetiva": "NAO controlada — o toggle de seed aleatoria do LM Studio sobrescreveu o valor 42; geracao nao deterministica",
+    "recuperacao": "palavra-chave (_selecionar_fontes) sobre o corpus congelado; NAO o caminho FAISS denso",
+    "hardware": "AMD Ryzen 7 5700X (8 nucleos), 32 GB RAM, NVIDIA RTX 4060 Ti 8 GB, Windows 64-bit",
+    "vram_offload": "nao instrumentado"
+  },
+  "colunas_coleta": [
+    "run_id", "modelo", "quantizacao", "pergunta_id", "tipo", "resposta_gerada",
+    "ids_recuperados", "ids_citados", "citacoes_validas", "total_citacoes",
+    "alucinacao", "recusou_correto", "latencia_1tok_s", "tokens_por_s",
+    "vram_gb", "temperatura", "seed", "timestamp"
+  ],
+  "separador_csv": ";",
+  "anotacao_humana": {
+    "status": "PERDIDA — a ser refeita (Fase 1 do PLANO-GERACAO-ROTA2)",
+    "colunas_faltantes": ["suporte_semantico (1-4)", "recusa_correta_humana", "pt_formal (1-5)", "completude (1-5)"],
+    "observacao": "As colunas automaticas (integridade referencial, alucinacao, tokens/s) estao nas coletas; as notas humanas viviam numa planilha offline que se perdeu."
+  },
+  "n_total_respostas": 160,
+  "caso_qualitativo_ancora": "Q04 (Conab): resposta do Mistral com integridade referencial 1.00 mas conteudo fabricado — preservada em coleta_mistralai_mistral-7b-instruct-v0.3.csv (run r004).",
+  "reproducao": {
+    "recomputar_metricas": "Fase 1: script scripts/metricas_geracao.py (a criar) recomputa a tabela do artigo a partir de coleta_*.csv + a anotacao humana refeita.",
+    "recoletar_keyword": "python scripts/coletar_avaliacao.py --perguntas resultados/geracao/perguntas.json --snapshot resultados/geracao/corpus_snapshot.csv (com o modelo carregado no LM Studio)"
+  }
+}

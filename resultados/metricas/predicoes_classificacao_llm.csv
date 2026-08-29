@@ -1,0 +1,541 @@
+id_discurso,modelo,categoria,prompt_versao,criado_em
+503736,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:06
+503792,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:43
+503870,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:45:12
+503935,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:42:50
+504049,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:08
+504271,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:43:50
+504292,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:04
+504418,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:43:48
+504648,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:31
+504816,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:43:01
+504824,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:41:54
+504828,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:12
+504915,gemma-2-9b-it,Segurança,fewshot-v1,2026-08-10T21:42:22
+505024,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:58
+505051,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:42:37
+505114,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:03
+505673,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:39:43
+505916,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:49
+506043,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:41:52
+506058,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:45:03
+506133,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:40:01
+506351,gemma-2-9b-it,Infraestrutura,fewshot-v1,2026-08-10T21:40:49
+506558,gemma-2-9b-it,Infraestrutura,fewshot-v1,2026-08-10T21:40:10
+506564,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:32
+506713,gemma-2-9b-it,Infraestrutura,fewshot-v1,2026-08-10T21:44:19
+506863,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:21
+506971,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:40:07
+506973,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:42:59
+507055,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:42:11
+507156,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:41:36
+507240,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:41:34
+507254,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:43:41
+507260,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:42:29
+507265,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:43:08
+507401,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:25
+507404,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:39:46
+507525,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:40:59
+507531,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:42:44
+507543,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:36
+507594,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:44:14
+507753,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:56
+507789,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:44:25
+507880,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:41:06
+507929,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:42:38
+508256,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:45:14
+508346,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:43:06
+508423,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:20
+508933,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:43:56
+508939,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:37
+509005,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:53
+509129,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:40
+509152,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:19
+509271,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:40:50
+509324,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:41:38
+509473,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:43:34
+509479,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:43:11
+509619,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:35
+509665,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:45:10
+509706,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:39:49
+509744,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:43:27
+509840,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:42:28
+509842,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:16
+510207,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:25
+510392,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:42:46
+510418,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:51
+510545,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:39:54
+510657,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:17
+510693,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:39:58
+510787,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:44:12
+510904,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:22
+510989,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:13
+511259,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:44:17
+511294,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:03
+511309,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:45:01
+511496,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:57
+511503,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:45:07
+511522,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:43:47
+511551,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:40:57
+511710,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:29
+512000,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:40
+512022,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:42:52
+512217,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:18
+512222,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:56
+512250,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:41:23
+512343,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:33
+512371,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:39:37
+512705,gemma-2-9b-it,Infraestrutura,fewshot-v1,2026-08-10T21:42:31
+512879,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:45:09
+512943,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:24
+512953,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:05
+512954,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:47
+512995,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:40:30
+513101,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:41:58
+513157,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:43:10
+513194,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:45:18
+513579,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:29
+513668,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:54
+513925,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:41:14
+513967,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:44:16
+513987,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:41:59
+514225,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:45
+514391,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:40:54
+514470,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:42:57
+514767,gemma-2-9b-it,Infraestrutura,fewshot-v1,2026-08-10T21:40:52
+514808,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:43:15
+515071,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:31
+515186,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:41:25
+515359,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:55
+515361,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:14
+515403,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:37
+515494,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:45
+515598,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:42:09
+515697,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:10
+515709,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:27
+515969,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:43
+516348,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:40:00
+516447,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:45:16
+516828,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:39:51
+516885,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:44:35
+516913,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:43:32
+517020,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:44:47
+517040,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:42:40
+517045,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:33
+517235,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:33
+517275,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:43:39
+517332,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:40:21
+517341,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:41
+517422,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:41:05
+517441,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:01
+517455,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:29
+517513,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:43:29
+517680,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:42
+517951,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:17
+517953,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:42:26
+517959,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:39:39
+518032,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:42:54
+518096,gemma-2-9b-it,Meio Ambiente,fewshot-v1,2026-08-10T21:41:08
+518325,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:39:41
+518566,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:40:39
+518729,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:23
+518740,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:23
+518959,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:01
+518967,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:44:10
+519229,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:39:53
+519275,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:42:18
+519391,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:43
+519422,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:03
+519448,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:40:22
+519515,gemma-2-9b-it,Segurança,fewshot-v1,2026-08-10T21:42:48
+520086,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:45:05
+520207,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:43:38
+520214,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:42:05
+520383,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:02
+520443,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:43:52
+520582,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:40:27
+520632,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:42
+520660,gemma-2-9b-it,Relações Exteriores,fewshot-v1,2026-08-10T21:43:21
+520676,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:00
+520750,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:17
+520983,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:05
+521048,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:40:03
+521145,gemma-2-9b-it,Segurança,fewshot-v1,2026-08-10T21:44:59
+521469,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:42:35
+521697,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:40:15
+521825,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:40:08
+521911,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:51
+521947,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:41:46
+522467,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:41:44
+522474,gemma-2-9b-it,Economia,fewshot-v1,2026-08-10T21:40:56
+522535,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:39:56
+522536,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:44:27
+522555,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:39:45
+522568,gemma-2-9b-it,Trabalho,fewshot-v1,2026-08-10T21:40:19
+522572,gemma-2-9b-it,Saúde,fewshot-v1,2026-08-10T21:42:07
+522647,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:42:15
+522873,gemma-2-9b-it,Educação,fewshot-v1,2026-08-10T21:44:41
+522906,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:44:45
+523078,gemma-2-9b-it,Segurança,fewshot-v1,2026-08-10T21:41:19
+523136,gemma-2-9b-it,Política/Institucional,fewshot-v1,2026-08-10T21:44:49
+523341,gemma-2-9b-it,Outros,fewshot-v1,2026-08-10T21:41:12
+503736,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:10:57
+503792,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:08:37
+503870,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:19:27
+503935,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:04:54
+504049,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:11:00
+504271,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:09:51
+504292,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:10:48
+504418,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:09:48
+504648,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:06:59
+504816,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:05:18
+504824,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T21:59:39
+504828,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:50:07
+504915,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:01:12
+505024,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:10:08
+505051,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:02:29
+505114,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:00:08
+505673,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:48:30
+505916,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:59:33
+506043,meta-llama-3.1-8b-instruct,Economia,fewshot-v1,2026-08-10T21:59:38
+506058,meta-llama-3.1-8b-instruct,Meio Ambiente,fewshot-v1,2026-08-10T22:18:27
+506133,meta-llama-3.1-8b-instruct,Economia,fewshot-v1,2026-08-10T21:49:34
+506351,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T21:54:15
+506558,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T21:49:59
+506564,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:14:01
+506713,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:01
+506863,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:02
+506971,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:49:47
+506973,meta-llama-3.1-8b-instruct,Economia,fewshot-v1,2026-08-10T22:05:15
+507055,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:00:15
+507156,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:58:21
+507240,meta-llama-3.1-8b-instruct,Economia,fewshot-v1,2026-08-10T21:58:14
+507254,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:08:28
+507260,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:01:46
+507265,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:05:55
+507401,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:06:21
+507404,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:48:33
+507525,meta-llama-3.1-8b-instruct,Meio Ambiente,fewshot-v1,2026-08-10T21:55:39
+507531,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:04:03
+507543,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:07:16
+507594,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:11:54
+507753,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:59:40
+507789,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:05
+507880,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:56:47
+507929,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:02:30
+508256,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:19:28
+508346,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:05:24
+508423,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:01:11
+508933,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:09:57
+508939,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:52:40
+509005,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:17:13
+509129,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:15:22
+509152,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:06:17
+509271,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:54:23
+509324,meta-llama-3.1-8b-instruct,Meio Ambiente,fewshot-v1,2026-08-10T21:58:22
+509473,meta-llama-3.1-8b-instruct,Trabalho,fewshot-v1,2026-08-10T22:07:13
+509479,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:05:57
+509619,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:52:38
+509665,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:19:16
+509706,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:49:00
+509744,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:06:33
+509840,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:01:18
+509842,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:57:04
+510207,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:51:31
+510392,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:04:06
+510418,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:17:12
+510545,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:49:06
+510657,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:06:15
+510693,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:49:31
+510787,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:11:43
+510904,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:57:12
+510989,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T22:00:38
+511259,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:11:59
+511294,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:56:05
+511309,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:18:24
+511496,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:17:52
+511503,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:19:02
+511522,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:09:35
+511551,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T21:55:38
+511710,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:10
+512000,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:58:25
+512022,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:04:57
+512217,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:57:07
+512222,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:05:01
+512250,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T21:57:35
+512343,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:58:12
+512371,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:48:26
+512705,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T22:01:49
+512879,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:19:05
+512943,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:01:15
+512953,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:05:24
+512954,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:54:00
+512995,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T21:51:37
+513101,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:59:42
+513157,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:05:56
+513194,meta-llama-3.1-8b-instruct,Trabalho,fewshot-v1,2026-08-10T22:19:58
+513579,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:57:59
+513668,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:09:57
+513925,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:57:03
+513967,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:11:57
+513987,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:59:54
+514225,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:53:57
+514391,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:54:27
+514470,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:05:13
+514767,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T21:54:25
+514808,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:06:12
+515071,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:58:02
+515186,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:57:37
+515359,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:17:17
+515361,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:06:00
+515403,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:14:37
+515494,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:09:17
+515598,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:00:14
+515697,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:56:52
+515709,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:57:58
+515969,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:15:27
+516348,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:49:32
+516447,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:19:57
+516828,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:49:01
+516885,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:14:35
+516913,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:07:01
+517020,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:17:07
+517040,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:02:54
+517045,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:02:24
+517235,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:52:35
+517275,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:08:06
+517332,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T21:51:05
+517341,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T21:53:26
+517422,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:56:45
+517441,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:55:42
+517455,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:51:36
+517513,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:06:58
+517680,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:03:29
+517951,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:00:49
+517953,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:01:16
+517959,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:48:27
+518032,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:04:58
+518096,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:56:50
+518325,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:48:28
+518566,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:52:43
+518729,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:06:20
+518740,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:04
+518959,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:59:57
+518967,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:11:34
+519229,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:49:03
+519275,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T22:01:08
+519391,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:53:56
+519422,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:05:21
+519448,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:51:30
+519515,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:04:53
+520086,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:18:30
+520207,meta-llama-3.1-8b-instruct,Economia,fewshot-v1,2026-08-10T22:07:18
+520214,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:00:11
+520383,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:10:35
+520443,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:09:54
+520582,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:51:34
+520632,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:58:26
+520660,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T22:06:19
+520676,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:10:32
+520750,meta-llama-3.1-8b-instruct,Segurança,fewshot-v1,2026-08-10T21:50:41
+520983,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:49:38
+521048,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:49:37
+521145,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:18:00
+521469,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:02:26
+521697,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:50:10
+521825,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T21:49:49
+521911,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:59:36
+521947,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T21:58:38
+522467,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T21:58:36
+522474,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T21:55:21
+522535,meta-llama-3.1-8b-instruct,Trabalho,fewshot-v1,2026-08-10T21:49:20
+522536,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:12:07
+522555,meta-llama-3.1-8b-instruct,Trabalho,fewshot-v1,2026-08-10T21:48:32
+522568,meta-llama-3.1-8b-instruct,Infraestrutura,fewshot-v1,2026-08-10T21:51:03
+522572,meta-llama-3.1-8b-instruct,Saúde,fewshot-v1,2026-08-10T22:00:12
+522647,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:00:40
+522873,meta-llama-3.1-8b-instruct,Educação,fewshot-v1,2026-08-10T22:15:25
+522906,meta-llama-3.1-8b-instruct,Outros,fewshot-v1,2026-08-10T22:16:24
+523078,meta-llama-3.1-8b-instruct,Segurança,fewshot-v1,2026-08-10T21:57:09
+523136,meta-llama-3.1-8b-instruct,Política/Institucional,fewshot-v1,2026-08-10T22:17:09
+523341,meta-llama-3.1-8b-instruct,Relações Exteriores,fewshot-v1,2026-08-10T21:56:54
+503736,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:49
+503792,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:45
+503870,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:34:00
+503935,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:36
+504049,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:49
+504271,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:46
+504292,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:48
+504418,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:46
+504648,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:42
+504816,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:38
+504824,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:25
+504828,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:08
+504915,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:30
+505024,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:47
+505051,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:33
+505114,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:27
+505673,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:02
+505916,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:25
+506043,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:25
+506058,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:58
+506133,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:06
+506351,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:14
+506558,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:07
+506564,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:53
+506713,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:51
+506863,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:51
+506971,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:07
+506973,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:37
+507055,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:28
+507156,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:22
+507240,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:22
+507254,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:44
+507260,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:32
+507265,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:39
+507401,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:42
+507404,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:03
+507525,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:16
+507531,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:35
+507543,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:43
+507594,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:50
+507753,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:26
+507789,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:52
+507880,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:17
+507929,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:33
+508256,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:34:00
+508346,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:38
+508423,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:30
+508933,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:47
+508939,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:12
+509005,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:57
+509129,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:55
+509152,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:41
+509271,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:14
+509324,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:23
+509473,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:43
+509479,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:39
+509619,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:12
+509665,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:34:00
+509706,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:03
+509744,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:42
+509840,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:32
+509842,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:19
+510207,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:10
+510392,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:35
+510418,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:57
+510545,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:04
+510657,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:40
+510693,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:05
+510787,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:50
+510904,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:20
+510989,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:29
+511259,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:51
+511294,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:16
+511309,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:58
+511496,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:58
+511503,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:59
+511522,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:46
+511551,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:15
+511710,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:53
+512000,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:23
+512022,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:36
+512217,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:19
+512222,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:37
+512250,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:20
+512343,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:22
+512371,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:01
+512705,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:32
+512879,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:59
+512943,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:31
+512953,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:38
+512954,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:14
+512995,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:11
+513101,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:26
+513157,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:39
+513194,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:34:01
+513579,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:21
+513668,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:47
+513925,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:18
+513967,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:50
+513987,mistralai/mistral-7b-instruct-v0.3,Outros,fewshot-v1,2026-08-10T21:33:26
+514225,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:13
+514391,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:15
+514470,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:37
+514767,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:15
+514808,mistralai/mistral-7b-instruct-v0.3,Infraestrutura,fewshot-v1,2026-08-10T21:33:40
+515071,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:21
+515186,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:20
+515359,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:57
+515361,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:40
+515403,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:54
+515494,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:45
+515598,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:28
+515697,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:18
+515709,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:21
+515969,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:55
+516348,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:05
+516447,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:34:01
+516828,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:04
+516885,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:54
+516913,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:43
+517020,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:56
+517040,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:34
+517045,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:33
+517235,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:11
+517275,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:44
+517332,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:09
+517341,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:12
+517422,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:17
+517441,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:16
+517455,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:10
+517513,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:42
+517680,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:34
+517951,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:29
+517953,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:31
+517959,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:02
+518032,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:36
+518096,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:17
+518325,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:02
+518566,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:12
+518729,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:41
+518740,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:52
+518959,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:27
+518967,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:49
+519229,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:04
+519275,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:30
+519391,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:13
+519422,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:38
+519448,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:09
+519515,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:35
+520086,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:59
+520207,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:44
+520214,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:28
+520383,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:48
+520443,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:47
+520582,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:10
+520632,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:24
+520660,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:41
+520676,mistralai/mistral-7b-instruct-v0.3,Outros,fewshot-v1,2026-08-10T21:33:48
+520750,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:08
+520983,mistralai/mistral-7b-instruct-v0.3,Meio Ambiente,fewshot-v1,2026-08-10T21:33:06
+521048,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:06
+521145,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:58
+521469,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:33
+521697,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:08
+521825,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:07
+521911,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:25
+521947,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:24
+522467,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:24
+522474,mistralai/mistral-7b-instruct-v0.3,Economia,fewshot-v1,2026-08-10T21:33:15
+522535,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:04
+522536,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:52
+522555,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:03
+522568,mistralai/mistral-7b-instruct-v0.3,Trabalho,fewshot-v1,2026-08-10T21:33:09
+522572,mistralai/mistral-7b-instruct-v0.3,Saúde,fewshot-v1,2026-08-10T21:33:28
+522647,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:29
+522873,mistralai/mistral-7b-instruct-v0.3,Educação,fewshot-v1,2026-08-10T21:33:55
+522906,mistralai/mistral-7b-instruct-v0.3,Outros,fewshot-v1,2026-08-10T21:33:56
+523078,mistralai/mistral-7b-instruct-v0.3,Segurança,fewshot-v1,2026-08-10T21:33:19
+523136,mistralai/mistral-7b-instruct-v0.3,Política/Institucional,fewshot-v1,2026-08-10T21:33:56
+523341,mistralai/mistral-7b-instruct-v0.3,Relações Exteriores,fewshot-v1,2026-08-10T21:33:18

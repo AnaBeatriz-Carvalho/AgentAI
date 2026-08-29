@@ -196,57 +196,55 @@ def analisar_discurso(texto: str) -> str:
 
 
 def classificar_tema_local(resumo: str, temas: list[str]) -> str:
-    """Classifica um resumo em um tema da lista usando palavras-chave."""
-    palavras_chave = {
-        "Educação": ["educação", "ensino", "escola", "universidade", "aluno", "professor", "bolsa", "pesquisa", "ciência", "tecnologia", "inovação", "acadêmico"],
-        "Saúde": ["saúde", "sus", "medicamento", "hospital", "médico", "doença", "vacinação", "pandemia", "enfermidade", "clínico"],
-        "Economia": ["economia", "crédito", "financiamento", "imposto", "câmbio", "pib", "investimento", "setor privado", "mercado", "inflação", "operação de crédito"],
-        "Segurança": ["segurança pública", "polícia", "crime", "violência", "prisão", "criminalidade", "delegacia", "criminal"],
-        "Infraestrutura": ["rodovia", "ferrovia", "porto", "aeroporto", "saneamento", "energia", "água", "construção", "obra", "resiliência", "manutenção"],
-        "Meio Ambiente": ["meio ambiente", "desmatamento", "poluição", "climática", "sustentabilidade", "preservação", "ecologia", "floresta", "carbono"],
-        "Direitos Humanos": ["direitos humanos", "direito", "liberdade", "igualdade", "dignidade", "minorias", "discriminação", "humano"],
-        "Trabalho": ["trabalho", "emprego", "labor", "agricultura", "agropecuária", "produtor", "sindicato", "trabalhador", "rural"],
-        "Política": ["política", "congresso", "senado", "câmara", "governo", "poder", "instituição", "legislação", "lei", "reforma", "parlamentar"],
-        "Relações Exteriores": ["relações exteriores", "diplomacia", "internacional", "exterior", "país", "comércio exterior", "acordo", "embaixada"],
-        "Cultura": ["cultura", "arte", "música", "cinema", "patrimônio", "cultural", "artista", "festival"],
-    }
+    """Baseline por palavras-chave (dimensão 4.2).
 
-    texto_lower = resumo.lower()
-    contagem = {}
+    Delega para a fonte única `src.eval.categorias`, reconciliada para as 10 categorias
+    definitivas. O parâmetro `temas` é mantido por compatibilidade de assinatura, mas a
+    taxonomia efetiva é a do módulo de avaliação (garante que o baseline em produção e o
+    baseline medido nas métricas sejam idênticos).
+    """
+    from src.eval.categorias import classificar_keyword
 
-    for tema, palavras in palavras_chave.items():
-        contagem[tema] = sum(1 for palavra in palavras if palavra in texto_lower)
-
-    tema_vencedor = max(contagem, key=contagem.get)
-
-    if contagem[tema_vencedor] > 0:
-        from src.utils.logger import get_logger
-        logger = get_logger(__name__)
-        logger.info(f"Tema identificado: {tema_vencedor} (correspondências: {contagem[tema_vencedor]})")
-        return tema_vencedor
-
+    tema = classificar_keyword(resumo)
     from src.utils.logger import get_logger
-    logger = get_logger(__name__)
-    logger.info("Classificado como: Outros")
-    return "Outros"
+    get_logger(__name__).info(f"Tema identificado (baseline keyword): {tema}")
+    return tema
 
 
-def explicar_votacao_local(descricao_materia: str, ementa: str, tipo_votacao: str, resultado: str) -> str:
-    """Explica uma matéria de votação de forma clara e acessível."""
+def explicar_votacao_local(
+    descricao_materia: str,
+    ementa: str,
+    tipo_votacao: str,
+    resultado: str,
+    autores: str = "",
+    tipo_documento: str = "",
+    situacao_atual: str = "",
+    descricao_votacao: str = "",
+) -> str:
+    """Explica uma matéria de votação de forma clara e acessível.
+
+    Recebe o contexto enriquecido pelo endpoint `/processo` (autoria, tipo de
+    documento, situação atual e a descrição do que efetivamente foi votado) para que a
+    explicação diga, de fato, sobre o que foi a votação.
+    """
     prompt = f"""
 Você é um especialista em legislação brasileira explicando para um cidadão leigo o que significa uma votação no Senado.
 
+Tipo de documento: {tipo_documento or 'Não informado'}
 Matéria: {descricao_materia}
-Ementa: {ementa}
+O que foi votado: {descricao_votacao or 'Não informado'}
+Ementa da matéria: {ementa or 'Não informada'}
+Autoria: {autores or 'Não informada'}
 Tipo de Votação: {tipo_votacao}
 Resultado: {resultado}
+Situação atual da matéria: {situacao_atual or 'Não informada'}
 
-Forneça uma explicação clara e concisa (3-4 frases) que inclua:
-1. O que é esta matéria em linguagem simples
-2. O que significa o tipo de votação utilizado
-3. O resultado e sua importância
+Forneça uma explicação clara e concisa (3-5 frases) que inclua:
+1. Sobre o que é esta matéria/votação, em linguagem simples
+2. O que exatamente estava sendo decidido nesta votação
+3. O resultado e o que ele significa na prática (e a situação atual, se relevante)
 
-Seja objetivo e evite jargão técnico desnecessário.
+Baseie-se apenas nas informações acima; não invente fatos. Seja objetivo e evite jargão técnico desnecessário.
 """
 
     try:
@@ -355,15 +353,26 @@ def _registrar_trace(
         get_logger(__name__).debug(f"Falha ao registrar trace de rastreabilidade: {e}")
 
 
-def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None):
-    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos."""
-    if "messages" not in st.session_state:
-        st.session_state["messages"] = []
+def gerar_resposta_discurso(
+    df: pd.DataFrame,
+    pergunta: str,
+    extra_context: Optional[str] = None,
+    client=None,
+    modelo: Optional[str] = None,
+    temperature: float = 0.2,
+) -> dict:
+    """Núcleo headless do chat de discursos (sem Streamlit).
 
-    st.session_state.messages.append({"role": "user", "content": pergunta})
-    st.chat_message("user").write(pergunta)
+    Monta as estatísticas agregadas, faz o retrieval por palavra-chave, constrói o MESMO
+    prompt do app e chama o LLM. Compartilhado pela interface e pela avaliação de qualidade
+    factual (dimensão 4.3), garantindo que se avalie o agente real. Retorna a resposta, as
+    fontes usadas (com ref citável) e o prompt — sem tocar em session_state/UI.
 
-    df = dataframe_classificado.copy()
+    `client`/`modelo` injetáveis (default: cliente/modelo do módulo).
+    """
+    cli = client if client is not None else globals().get("client")
+    mod = modelo or _CFG["model"]
+    df = df.copy()
 
     # Estatísticas do período
     periodo_txt = ""
@@ -395,14 +404,9 @@ def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergu
 
     # Recupera os discursos relevantes (retrieval) que fundamentarão a resposta.
     fontes_usadas = _selecionar_fontes(df, pergunta, limite=MAX_FONTES_PROMPT).reset_index(drop=True)
-    # Ref curto e citável por consulta (ex.: D1, D2…); casa com o exemplo do prompt e o
-    # regex de avaliação. O código real do Senado (id_discurso) fica visível para auditoria.
     fontes_usadas["ref"] = [f"D{i + 1}" for i in range(len(fontes_usadas))]
 
-    # Colunas vistas pelo modelo no prompt: só o ref curto + conteúdo (sem o código longo,
-    # para não confundir o modelo sobre qual id citar).
     colunas_prompt = ["ref"] + [c for c in ["Data", "Parlamentar", "Partido", "Tema", "Resumo"] if c in fontes_usadas.columns]
-    # Colunas exibidas ao usuário (inclui o código real do Senado para rastrear a fonte).
     colunas_fonte = ["ref"] + [c for c in _COLUNAS_FONTE if c in fontes_usadas.columns]
     contexto_dados = fontes_usadas[colunas_prompt].to_markdown(index=False)
 
@@ -436,20 +440,51 @@ Diretrizes de resposta:
 Resposta:
 """
 
+    response = cli.chat.completions.create(
+        model=mod,
+        messages=[{"role": "user", "content": prompt_qa}],
+        temperature=temperature,
+    )
+    resposta = response.choices[0].message.content.strip()
+    ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
+    codigos_fontes = (
+        fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
+        if COL_ID_DISCURSO in fontes_usadas.columns else None
+    )
+    return {
+        "resposta": resposta,
+        "fontes_usadas": fontes_usadas,
+        "colunas_fonte": colunas_fonte,
+        "ids_fontes": ids_fontes,
+        "codigos_fontes": codigos_fontes,
+        "prompt": prompt_qa,
+    }
+
+
+def responder_pergunta_usuario_local(dataframe_classificado: pd.DataFrame, pergunta: str, extra_context: Optional[str] = None, escrever_pergunta: bool = True):
+    """Responde à pergunta do usuário usando o LLM local e o contexto dos discursos.
+
+    `escrever_pergunta=False` assume que quem chamou já registrou e exibiu a pergunta
+    do usuário (ex.: fluxo automático de chat que tenta o RAG primeiro e cai para cá),
+    evitando duplicar a mensagem no histórico.
+    """
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = []
+
+    if escrever_pergunta:
+        st.session_state.messages.append({"role": "user", "content": pergunta})
+        st.chat_message("user").write(pergunta)
+
     with st.spinner("O LLM local está analisando os dados e elaborando sua resposta..."):
         try:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
             logger.info(f"Respondendo pergunta do usuário: {pergunta[:50]}...")
 
-            response = client.chat.completions.create(
-                model=_CFG["model"],
-                messages=[
-                    {"role": "user", "content": prompt_qa},
-                ],
-                temperature=0.2,
-            )
-            resposta = response.choices[0].message.content.strip()
+            resultado = gerar_resposta_discurso(dataframe_classificado, pergunta, extra_context)
+            resposta = resultado["resposta"]
+            fontes_usadas = resultado["fontes_usadas"]
+            colunas_fonte = resultado["colunas_fonte"]
             logger.info(f"Resposta gerada com sucesso: {resposta[:50]}...")
             st.session_state.messages.append({"role": "assistant", "content": resposta})
             with st.chat_message("assistant"):
@@ -461,12 +496,7 @@ Resposta:
                             use_container_width=True,
                             hide_index=True,
                         )
-            ids_fontes = fontes_usadas["ref"].astype(str).tolist() if "ref" in fontes_usadas.columns else []
-            codigos_fontes = (
-                fontes_usadas[COL_ID_DISCURSO].astype(str).tolist()
-                if COL_ID_DISCURSO in fontes_usadas.columns else None
-            )
-            _registrar_trace(pergunta, ids_fontes, resposta, origem="discurso", fontes_codigos=codigos_fontes)
+            _registrar_trace(pergunta, resultado["ids_fontes"], resposta, origem="discurso", fontes_codigos=resultado["codigos_fontes"])
         except Exception as e:
             from src.utils.logger import get_logger
             logger = get_logger(__name__)
@@ -502,15 +532,21 @@ def responder_pergunta_votacao_local(
     df["id_voto"] = [f"V{i + 1}" for i in range(len(df))]
 
     # Contexto agregado da matéria/votação.
-    codigo_materia = detalhes.get("codigo_materia") or "não informado"
+    identificacao = detalhes.get("identificacao") or "não informada"
+    descricao_votacao = detalhes.get("descricao_votacao") or "não informada"
     ementa = detalhes.get("ementa") or "não informada"
     autores = detalhes.get("autores") or "não informados"
+    tipo_documento = detalhes.get("tipo_documento") or "não informado"
+    situacao_atual = detalhes.get("situacao_atual") or "não informada"
     distribuicao = df["Voto"].value_counts().to_dict() if "Voto" in df.columns else {}
     contexto_materia = (
         f"Matéria: {descricao}\n"
-        f"Código da matéria: {codigo_materia}\n"
+        f"Identificação: {identificacao}\n"
+        f"Tipo de documento: {tipo_documento}\n"
+        f"O que foi votado: {descricao_votacao}\n"
         f"Ementa: {ementa}\n"
-        f"Autores: {autores}\n"
+        f"Autoria: {autores}\n"
+        f"Situação atual da matéria: {situacao_atual}\n"
         f"Tipo de votação: {tipo_votacao}\n"
         f"Resultado: {resultado}\n"
         f"Total de votos: {len(df)}\n"

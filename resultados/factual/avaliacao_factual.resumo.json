@@ -1,0 +1,17 @@
+{
+  "gerado_em": "2026-08-11T08:50:32",
+  "periodo": {
+    "inicio": "2026-05-01",
+    "fim": "2026-05-31"
+  },
+  "n_cenarios": 22,
+  "distribuicao": {
+    "correta": 20,
+    "incorreta": 2
+  },
+  "pct_corretas": 0.9091,
+  "pct_corretas_com_meia_parcial": 0.9091,
+  "meta": 0.7,
+  "atingiu_meta": true,
+  "nota": "Veredito automático preliminar — revisar coluna veredito_revisado no CSV."
+}

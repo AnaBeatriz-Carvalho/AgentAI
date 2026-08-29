@@ -28,10 +28,20 @@ Thumbs.db
 ### Streamlit local config
 .streamlit/
 
+### Corpus SQLite local (grande e regenerável pela coleta; não versionar)
+data/*.sqlite
+data/*.sqlite-*
+data/*.db
+
 ### App generated artifacts
 discursos.csv
 relatorio_discursos.pdf
 outputs/*.json
 
-logs/app.log
+logs/*.log
 .venv_mac/
+
+### RAG: índice vetorial e cache de modelos de embedding (grandes; não versionar)
+vectorstore/
+.cache/
+models_cache/

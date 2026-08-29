@@ -1,0 +1,5 @@
+modelo,n,acuracia,macro_f1,macro_f1_reportaveis,weighted_f1,kappa_vs_gabarito
+Mistral-7B,180,0.6944,0.6592,0.75,0.6865,0.6456
+Gemma-2-9B,180,0.6111,0.6297,0.6991,0.6365,0.5461
+Baseline-KW,180,0.5167,0.526,0.5962,0.5073,0.463
+Llama-3.1-8B,180,0.3556,0.3612,0.3838,0.3526,0.2668

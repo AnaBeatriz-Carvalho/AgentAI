@@ -1,0 +1,7 @@
+modelo_a,modelo_b,n,agreement,kappa
+Baseline-KW,Gemma-2-9B,180,0.4222,0.358
+Baseline-KW,Llama-3.1-8B,180,0.2833,0.2037
+Baseline-KW,Mistral-7B,180,0.4778,0.4198
+Gemma-2-9B,Llama-3.1-8B,180,0.4833,0.3385
+Gemma-2-9B,Mistral-7B,180,0.6833,0.6094
+Llama-3.1-8B,Mistral-7B,180,0.4556,0.3464
