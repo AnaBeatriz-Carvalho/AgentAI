@@ -1,0 +1,92 @@
+{
+  "n_respostas": 160,
+  "automaticas": {
+    "gemma-2-9b-it": {
+      "n": 40,
+      "integridade_referencial": 1.0,
+      "respostas_com_citacao": 33,
+      "alucinacao_referencial": 0.0,
+      "tokens_por_s_mediana": 4.15,
+      "latencia_1tok_s_mediana": 12.33,
+      "recusa_proxy_automatico": 3,
+      "n_sem_resposta": 8
+    },
+    "meta-llama-3.1-8b-instruct": {
+      "n": 40,
+      "integridade_referencial": 1.0,
+      "respostas_com_citacao": 28,
+      "alucinacao_referencial": 0.0,
+      "tokens_por_s_mediana": 29.59,
+      "latencia_1tok_s_mediana": 2.95,
+      "recusa_proxy_automatico": 3,
+      "n_sem_resposta": 8
+    },
+    "mistralai/mistral-7b-instruct-v0.3": {
+      "n": 40,
+      "integridade_referencial": 1.0,
+      "respostas_com_citacao": 33,
+      "alucinacao_referencial": 0.0,
+      "tokens_por_s_mediana": 29.62,
+      "latencia_1tok_s_mediana": 3.1,
+      "recusa_proxy_automatico": 1,
+      "n_sem_resposta": 8
+    },
+    "qwen2.5-7b-instruct-1m": {
+      "n": 40,
+      "integridade_referencial": 1.0,
+      "respostas_com_citacao": 39,
+      "alucinacao_referencial": 0.0,
+      "tokens_por_s_mediana": 23.07,
+      "latencia_1tok_s_mediana": 2.87,
+      "recusa_proxy_automatico": 0,
+      "n_sem_resposta": 8
+    }
+  },
+  "preenchimento": {},
+  "anotacao_completa": false,
+  "humanas": {
+    "meta-llama-3.1-8b-instruct": {
+      "suporte_semantico_media": null,
+      "suporte_dist": {},
+      "recusa_correta": 0,
+      "recusa_anotadas": 0,
+      "pt_formal_media": null,
+      "completude_media": null
+    },
+    "mistralai/mistral-7b-instruct-v0.3": {
+      "suporte_semantico_media": null,
+      "suporte_dist": {},
+      "recusa_correta": 0,
+      "recusa_anotadas": 0,
+      "pt_formal_media": null,
+      "completude_media": null
+    },
+    "qwen2.5-7b-instruct-1m": {
+      "suporte_semantico_media": null,
+      "suporte_dist": {},
+      "recusa_correta": 0,
+      "recusa_anotadas": 0,
+      "pt_formal_media": null,
+      "completude_media": null
+    },
+    "gemma-2-9b-it": {
+      "suporte_semantico_media": null,
+      "suporte_dist": {},
+      "recusa_correta": 0,
+      "recusa_anotadas": 0,
+      "pt_formal_media": null,
+      "completude_media": null
+    }
+  },
+  "q04_suporte_por_modelo": {
+    "meta-llama-3.1-8b-instruct": null,
+    "mistralai/mistral-7b-instruct-v0.3": null,
+    "qwen2.5-7b-instruct-1m": null,
+    "gemma-2-9b-it": null
+  },
+  "intra_anotador": {
+    "suporte_semantico": {
+      "n": 0
+    }
+  }
+}

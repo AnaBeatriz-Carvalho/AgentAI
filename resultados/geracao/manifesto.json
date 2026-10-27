@@ -11,7 +11,15 @@
     "n_discursos": 152,
     "periodo": "2025-05-05 a 2025-05-16",
     "datas_distintas": 9,
-    "colunas": ["id_discurso", "Data", "Parlamentar", "Partido", "UF", "Resumo", "Tema"],
+    "colunas": [
+      "id_discurso",
+      "Data",
+      "Parlamentar",
+      "Partido",
+      "UF",
+      "Resumo",
+      "Tema"
+    ],
     "texto_integral": false,
     "ids_reais_senado": "corpus_snapshot_ids.txt"
   },
@@ -28,10 +36,22 @@
     "gold": "campo gold_ids por pergunta (evidencia de referencia para conferencia de suporte)"
   },
   "modelos": [
-    {"stamp": "mistralai/mistral-7b-instruct-v0.3", "arquivo": "coleta_mistralai_mistral-7b-instruct-v0.3.csv"},
-    {"stamp": "qwen2.5-7b-instruct-1m", "arquivo": "coleta_qwen2.5-7b-instruct-1m.csv"},
-    {"stamp": "meta-llama-3.1-8b-instruct", "arquivo": "coleta_meta-llama-3.1-8b-instruct.csv"},
-    {"stamp": "gemma-2-9b-it", "arquivo": "coleta_gemma-2-9b-it.csv"}
+    {
+      "stamp": "mistralai/mistral-7b-instruct-v0.3",
+      "arquivo": "coleta_mistralai_mistral-7b-instruct-v0.3.csv"
+    },
+    {
+      "stamp": "qwen2.5-7b-instruct-1m",
+      "arquivo": "coleta_qwen2.5-7b-instruct-1m.csv"
+    },
+    {
+      "stamp": "meta-llama-3.1-8b-instruct",
+      "arquivo": "coleta_meta-llama-3.1-8b-instruct.csv"
+    },
+    {
+      "stamp": "gemma-2-9b-it",
+      "arquivo": "coleta_gemma-2-9b-it.csv"
+    }
   ],
   "condicao": {
     "runtime": "LM Studio (API compativel com OpenAI, localhost)",
@@ -44,21 +64,43 @@
     "vram_offload": "nao instrumentado"
   },
   "colunas_coleta": [
-    "run_id", "modelo", "quantizacao", "pergunta_id", "tipo", "resposta_gerada",
-    "ids_recuperados", "ids_citados", "citacoes_validas", "total_citacoes",
-    "alucinacao", "recusou_correto", "latencia_1tok_s", "tokens_por_s",
-    "vram_gb", "temperatura", "seed", "timestamp"
+    "run_id",
+    "modelo",
+    "quantizacao",
+    "pergunta_id",
+    "tipo",
+    "resposta_gerada",
+    "ids_recuperados",
+    "ids_citados",
+    "citacoes_validas",
+    "total_citacoes",
+    "alucinacao",
+    "recusou_correto",
+    "latencia_1tok_s",
+    "tokens_por_s",
+    "vram_gb",
+    "temperatura",
+    "seed",
+    "timestamp"
   ],
   "separador_csv": ";",
   "anotacao_humana": {
-    "status": "PERDIDA — a ser refeita (Fase 1 do PLANO-GERACAO-ROTA2)",
-    "colunas_faltantes": ["suporte_semantico (1-4)", "recusa_correta_humana", "pt_formal (1-5)", "completude (1-5)"],
-    "observacao": "As colunas automaticas (integridade referencial, alucinacao, tokens/s) estao nas coletas; as notas humanas viviam numa planilha offline que se perdeu."
+    "status": "A REFAZER: planilha cega anotacao_geracao.csv pronta (regenerada em 2026-10-27 apos correcao do loader; mesma chave)",
+    "colunas_faltantes": [
+      "suporte_semantico (1-4)",
+      "recusa_correta_humana",
+      "pt_formal (1-5)",
+      "completude (1-5)"
+    ],
+    "observacao": "As colunas automaticas (integridade referencial, alucinacao, tokens/s) estao nas coletas; as notas humanas viviam numa planilha offline que se perdeu.",
+    "reteste": "anotacao_geracao_reteste.csv: 49 linhas (31%), estratificado por tipo, semente 2027",
+    "llm_juiz": "scripts/juiz_geracao.py -> juiz_geracao.csv (sinal secundario)"
   },
   "n_total_respostas": 160,
   "caso_qualitativo_ancora": "Q04 (Conab): resposta do Mistral com integridade referencial 1.00 mas conteudo fabricado — preservada em coleta_mistralai_mistral-7b-instruct-v0.3.csv (run r004).",
   "reproducao": {
-    "recomputar_metricas": "Fase 1: script scripts/metricas_geracao.py (a criar) recomputa a tabela do artigo a partir de coleta_*.csv + a anotacao humana refeita.",
-    "recoletar_keyword": "python scripts/coletar_avaliacao.py --perguntas resultados/geracao/perguntas.json --snapshot resultados/geracao/corpus_snapshot.csv (com o modelo carregado no LM Studio)"
+    "recomputar_metricas": "python scripts/metricas_geracao.py (use --parcial para previa)",
+    "recoletar_keyword": "python scripts/coletar_avaliacao.py --recuperador palavra-chave --modelo <stamp> --quant Q4_K_M",
+    "coletar_faiss": "python scripts/coletar_avaliacao.py --recuperador faiss --modelo <stamp> --quant Q4_K_M"
   }
 }

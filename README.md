@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Framework-Streamlit-red)
 
-Este repositório reúne o material de reprodutibilidade de um artigo científico em avaliação. Ele contém dois blocos. O primeiro é um artefato de software que acessa dados legislativos abertos do Senado Federal (pronunciamentos e votações) por uma interface local. O segundo é o conjunto de dados, scripts e resultados que sustentam a avaliação comparativa de modelos de linguagem (LLMs) em três dimensões (classificação temática, qualidade factual e rastreabilidade de citações), além da verificação do processo de ETL sobre o corpus coletado.
+Este repositório reúne o material de reprodutibilidade de um artigo científico em avaliação. Ele contém dois blocos. O primeiro é um artefato de software que acessa dados legislativos abertos do Senado Federal (pronunciamentos e votações) por uma interface local. O segundo é o conjunto de dados, scripts e resultados que sustentam as duas frentes de avaliação reportadas no artigo: a classificação temática de discursos e a geração de respostas por quatro modelos de linguagem (LLMs) locais. Verificações complementares do ETL, da qualidade factual e da rastreabilidade de citações também estão versionadas.
 
 Todo o processamento com LLM roda de forma local, por um servidor compatível com a API OpenAI (por exemplo, LM Studio). Não há dependência de serviços pagos ou de nuvem.
 
@@ -47,9 +47,20 @@ Ordem de execução:
 - **Módulos de apoio:** `src/eval/categorias.py` (categorias e baseline por palavra-chave), `src/eval/classificador_llm.py` (prompt few-shot), `src/eval/metricas.py` (cálculo das métricas).
 - **Saídas versionadas** em `resultados/metricas/`: `comparativo_modelos.csv` (uma linha por classificador), `f1_por_categoria.csv` (categorias por modelo), `concordancia_entre_modelos.csv` (agreement e Kappa par a par) e `metricas_classificacao.json` (consolidado, com matrizes de confusão).
 
+### Avaliação de geração com quatro modelos (frente reportada no artigo)
+
+Material completo em `resultados/geracao/` (ver o `README.md` da pasta). Resumo:
+
+- **Respostas congeladas:** `coleta_<modelo>.csv`, 40 perguntas por modelo (Mistral 7B, Qwen2.5 7B, Llama 3.1 8B e Gemma 2 9B, todos em Q4_K_M), sobre o corpus congelado `corpus_snapshot.csv` (152 discursos de maio de 2025).
+- **Anotação humana cega:** `anotacao_geracao.csv` (sem o nome do modelo), `codebook_anotacao.md` e a chave `_chave_modelos.csv`. Reteste de 31% em `anotacao_geracao_reteste.csv`.
+- **Métricas:** `python scripts/metricas_geracao.py` recalcula a tabela do artigo e grava `metricas_geracao.json`, `comparativo_geracao.csv` e `tabela_comparativo_modelos.tex`, com Kappa intra-anotador e concordância com o LLM-juiz quando esses arquivos existem.
+- **LLM-juiz:** `python scripts/juiz_geracao.py --modelo <nome>` (sinal secundário; a nota humana é a referência).
+- **Nova coleta:** `python scripts/coletar_avaliacao.py --recuperador palavra-chave|faiss`. As saídas vão para subpastas e não sobrescrevem as coletas congeladas.
+
 ### Dimensão 3: qualidade factual (4.3)
 
 - **Script:** `scripts/avaliar_factual.py`. Gera cenários cuja resposta de referência é computada de forma determinística do corpus, roda o agente real (`gerar_resposta_discurso`, de `src/ai/local_llm_handler.py`) e atribui um veredito automático preliminar por presença dos fatos-chave.
+- **Escopo:** experimento exploratório anterior (22 cenários sobre maio de 2026, veredito automático). Não é a avaliação de geração reportada no artigo, que está em `resultados/geracao/`; fica versionado como registro.
 - **Saídas versionadas:** `resultados/factual/avaliacao_factual.csv` (com a coluna `veredito_revisado` em branco para revisão humana) e `resultados/factual/avaliacao_factual.resumo.json`.
 
 ### Dimensão 4: rastreabilidade de citações (4.4)
@@ -113,7 +124,7 @@ Parâmetros do LLM local e do RAG são definidos por variáveis de ambiente (ver
 │   ├── utils/         # utilidades, logging e núcleo das métricas de rastreabilidade
 │   └── config/        # settings e constantes
 ├── scripts/           # coleta do corpus e scripts de avaliação por dimensão
-├── resultados/        # saídas versionadas (etl, gabarito, metricas, factual, rastreabilidade)
+├── resultados/        # saídas versionadas (etl, gabarito, metricas, geracao, factual, rastreabilidade)
 ├── tests/             # testes automatizados (pytest)
 ├── logs/              # traces de execução (qa_trace.jsonl versionado; *.log fora do versionamento)
 ├── requirements.txt

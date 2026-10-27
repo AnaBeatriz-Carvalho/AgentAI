@@ -2,7 +2,7 @@
 o CSV de coleta (formato HEADER) para a planilha de avaliação comparativa de modelos.
 
 Princípio da avaliação: fixar TUDO exceto o LLM gerador. Este script:
-  - carrega o corpus CONGELADO (`eval/corpus_snapshot.csv` — não a API ao vivo);
+  - carrega o corpus CONGELADO (`resultados/geracao/corpus_snapshot.csv`, não a API ao vivo);
   - usa a recuperação por palavra-chave existente (`_selecionar_fontes`, inalterada);
   - usa o MESMO prompt do chat (`_montar_prompt_qa`, byte-idêntico);
   - fixa temperatura baixa e seed e os registra em cada linha;
@@ -13,10 +13,17 @@ Princípio da avaliação: fixar TUDO exceto o LLM gerador. Este script:
 Para comparar modelos: troque o modelo no LM Studio (e, se quiser, ajuste --modelo/--quant)
 e reexecute. NENHUMA outra parte do código muda entre modelos.
 
+Recuperador (Fase 2): `--recuperador faiss` troca SOMENTE a recuperação por palavra-chave
+pela busca densa sobre o mesmo corpus congelado (`src/eval/recuperador_denso.py`), com o
+mesmo k (MAX_FONTES_PROMPT) e o mesmo prompt. As saídas vão para subpastas próprias e
+nunca sobrescrevem as coletas congeladas de `resultados/geracao/coleta_*.csv`:
+  palavra-chave -> resultados/geracao/recoleta_palavra_chave/coleta_<modelo>.csv
+  faiss         -> resultados/geracao/faiss/coleta_<modelo>.csv
+
 Uso:
     python scripts/coletar_avaliacao.py
     python scripts/coletar_avaliacao.py --modelo mistral-7b-instruct --quant Q4_K_M --seed 42
-    python scripts/coletar_avaliacao.py --perguntas eval/perguntas.json --saida eval/coleta_mistral.csv
+    python scripts/coletar_avaliacao.py --recuperador faiss --modelo mistralai/mistral-7b-instruct-v0.3 --quant Q4_K_M
 
 NÃO preenche colunas de anotação humana (suporte semântico, PT formal, completude):
 essas são anotação manual e cega (aba 3 da planilha).
@@ -39,16 +46,17 @@ from src.config.settings import get_env
 from src.utils.rastreabilidade import extrair_ids_citados
 from src.utils.eval_logger import EvalLogger
 
-EVAL_DIR = ROOT / "eval"
+EVAL_DIR = ROOT / "resultados" / "geracao"
 SNAPSHOT_CSV = EVAL_DIR / "corpus_snapshot.csv"
 PERGUNTAS_PADRAO = EVAL_DIR / "perguntas.json"
+SUBPASTA = {"palavra-chave": "recoleta_palavra_chave", "faiss": "faiss"}
 
 
 def _carregar_snapshot(caminho: Path) -> pd.DataFrame:
     if not caminho.exists():
         raise SystemExit(
             f"Snapshot de corpus não encontrado: {caminho}\n"
-            "Rode antes: python scripts/congelar_corpus.py --inicio YYYYMMDD --fim YYYYMMDD"
+            "Use resultados/geracao/corpus_snapshot.csv (versionado)."
         )
     df = pd.read_csv(caminho)
     if "Data" in df.columns:
@@ -102,6 +110,10 @@ def main() -> int:
                         help="Roda só as N primeiras perguntas (teste mínimo).")
     parser.add_argument("--no-stream", action="store_true",
                         help="Desliga o streaming (não mede latência até o 1º token).")
+    parser.add_argument("--recuperador", choices=["palavra-chave", "faiss"], default="palavra-chave",
+                        help="Recuperação usada para montar as fontes do prompt.")
+    parser.add_argument("--embedding-model", type=str, default=None,
+                        help="Modelo de embedding do FAISS (default: RAG_EMBEDDING_MODEL do .env).")
     args = parser.parse_args()
 
     temperatura = args.temperatura if args.temperatura is not None else float(get_env("LLM_EVAL_TEMPERATURE", "0.1"))
@@ -120,12 +132,17 @@ def main() -> int:
     if args.limite is not None:
         perguntas = perguntas[:args.limite]
 
+    recuperador = None
+    if args.recuperador == "faiss":
+        from src.eval.recuperador_denso import RecuperadorDenso
+        recuperador = RecuperadorDenso(df, model_name=args.embedding_model)
+
     logger = EvalLogger(model=modelo_stamp, quant=quant, temperature=temperatura, seed=seed)
     stream = not args.no_stream
 
     print(f"Corpus congelado: {len(df)} discursos | perguntas: {len(perguntas)}")
     print(f"Modelo (carimbo inicial): {modelo_stamp} | quant: {quant or '-'} | "
-          f"temp: {temperatura} | seed: {seed} | stream: {stream}\n")
+          f"temp: {temperatura} | seed: {seed} | stream: {stream} | recuperador: {args.recuperador}\n")
 
     for i, p in enumerate(perguntas, 1):
         pid, texto = p["id"], p["texto"]
@@ -134,8 +151,9 @@ def main() -> int:
 
         timer = logger.start()
         try:
+            fontes = recuperador.selecionar(texto) if recuperador is not None else None
             res = gerar_resposta_qa(df, texto, temperature=temperatura, seed=seed,
-                                    timer=timer, stream=stream)
+                                    timer=timer, stream=stream, fontes_usadas=fontes)
             resposta_txt = res.resposta
             ids_recuperados = res.ids_recuperados
             tokens = res.tokens_gerados
@@ -167,7 +185,11 @@ def main() -> int:
         print(f"  [{i}/{len(perguntas)}] {pid} ({tipo}) "
               f"recup={len(ids_recuperados)} citados={len(ids_citados)}")
 
-    saida = Path(args.saida) if args.saida else (EVAL_DIR / f"coleta_{_sanitizar(logger.model)}.csv")
+    saida = Path(args.saida) if args.saida else (
+        EVAL_DIR / SUBPASTA[args.recuperador] / f"coleta_{_sanitizar(logger.model)}.csv")
+    congeladas = {q.resolve() for q in EVAL_DIR.glob("coleta_*.csv")}
+    if saida.resolve() in congeladas:
+        raise SystemExit(f"Recusado: {saida} é uma coleta congelada. Use outro --saida.")
     saida.parent.mkdir(parents=True, exist_ok=True)
     logger.to_csv(str(saida))
 

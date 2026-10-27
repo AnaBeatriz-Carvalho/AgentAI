@@ -86,6 +86,10 @@ def carregar_coleta(path: str | Path) -> list[dict]:
             fixos = raw[-10:]
             corpo = raw[:-10]
             lead = corpo[0:5]
+            # Sem citações, `ids_citados` vem como campo vazio no fim do corpo; descarta-o
+            # para que a varredura reversa encontre o bloco de ids recuperados.
+            if str(fixos[1]).strip() in ("0", "") and len(corpo) > 5 and not corpo[-1].strip():
+                corpo = corpo[:-1]
             k = len(corpo)
             while k > 5 and _ID.match((corpo[k - 1] or "").strip()):
                 k -= 1
