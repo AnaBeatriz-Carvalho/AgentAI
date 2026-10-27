@@ -1,5 +1,5 @@
 modelo,suporte_semantico_media,recusa_correta,recusa_proxy_automatico,pt_formal_media,completude_media,tokens_por_s_mediana,integridade_referencial,alucinacao_referencial
-Mistral 7B Instruct v0.3,2.98,7,1,4.38,3.88,29.62,1.0,0.0
+Mistral 7B Instruct v0.3,2.98,7,1,4.38,3.92,29.62,1.0,0.0
 Qwen2.5 7B Instruct,3.2,5,0,4.58,4.0,23.07,1.0,0.0
 Llama 3.1 8B Instruct,3.23,7,3,4.25,3.7,29.59,1.0,0.0
 Gemma 2 9B Instruct,3.15,6,3,4.47,3.38,4.15,1.0,0.0

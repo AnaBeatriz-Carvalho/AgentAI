@@ -45,6 +45,12 @@ da Conab?"; GOLD: **Frederico Cabral de Menezes**, id 514221):
   um total de 16 discursos."* → **erro relevante**: atribui a Paulo Paim (cujos 16 discursos
   são a contagem geral do período, não sobre a Conab) e não nomeia Frederico. Note que essa
   resposta tem citação formalmente válida — integridade referencial não salva o conteúdo.
+  > **Errata (27/10/2026).** A descrição acima resume apenas o início da resposta. A resposta
+  > completa cita Frederico (com grafia incorreta) entre outros senadores, além das contagens que
+  > o corpus contradiz. Na anotação, a anotadora atribuiu nota 3 (erros em detalhe secundário),
+  > com justificativa registrada no item A051. O exemplo continua válido como ilustração de erro
+  > afirmado com citação formalmente válida.
+
 - **Suporte 3** — resposta que descreve corretamente o contexto (sessão solene sobre a Conab
   em 14/05), mas **não crava o nome** pedido ou permanece genérica sobre os temas do período.
 

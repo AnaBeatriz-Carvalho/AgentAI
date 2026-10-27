@@ -74,7 +74,7 @@
       "recusa_correta": 7,
       "recusa_anotadas": 8,
       "pt_formal_media": 4.38,
-      "completude_media": 3.88
+      "completude_media": 3.92
     },
     "qwen2.5-7b-instruct-1m": {
       "suporte_semantico_media": 3.2,
