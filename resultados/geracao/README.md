@@ -37,12 +37,14 @@ hardware Ryzen 7 5700X / 32 GB / RTX 4060 Ti 8 GB.
 
 ## Fluxo (Fase 1)
 
-1. Ler `codebook_anotacao.md` e preencher `anotacao_geracao.csv` (colunas `suporte_semantico`,
-   `recusa_correta`, `pt_formal`, `completude`, `observacao`) **sem** abrir `_chave_modelos.csv`.
+1. Anotar pela interface guiada: `streamlit run scripts/anotar_geracao.py` (ver a seção 9 do
+   codebook). Ela grava em `anotacao_geracao.csv` e registra o caminho de decisão em
+   `anotacao_geracao_decisoes.csv`. Não abrir `_chave_modelos.csv`, `juiz_geracao.csv` nem `faiss/`.
 2. Prévia a qualquer momento: `python scripts/metricas_geracao.py --parcial`.
 3. LLM-juiz (modelo fora dos 4 avaliados, carregado no LM Studio):
    `python scripts/juiz_geracao.py --modelo <nome>`.
-4. Após 2 a 4 semanas, preencher `anotacao_geracao_reteste.csv` sem consultar a rodada 1.
+4. Após 2 a 4 semanas, reanotar pela mesma interface:
+   `streamlit run scripts/anotar_geracao.py -- --arquivo resultados/geracao/anotacao_geracao_reteste.csv`.
 5. Tabela final: `python scripts/metricas_geracao.py` e copiar as linhas de
    `tabela_comparativo_modelos.tex` para o quadro `tab:comparativo_modelos` do artigo.
 

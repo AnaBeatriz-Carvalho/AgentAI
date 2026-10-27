@@ -118,3 +118,33 @@ concordância humano×juiz (a nota humana é sempre a referência).
 
 Use `observacao` para justificar notas difíceis e casos de fronteira. Essa trilha torna a
 anotação auditável e ajuda a adjudicar a reanotação.
+
+## 9. Rubrica guiada (ferramenta de anotação)
+
+A anotação é feita pela interface `scripts/anotar_geracao.py`, que apresenta um item por vez,
+com a evidência gold ao lado da resposta, e converte as definições das seções 2 e 3 em
+perguntas de decisão. A nota é derivada das respostas por regras fixas
+(`src/eval/rubrica_anotacao.py`):
+
+| Pergunta | Opções |
+|---|---|
+| A. A resposta traz a informação pedida, de acordo com o gold? (nas perguntas sem resposta: reconhece que a informação não existe nos dados?) | completa e precisa / com lacunas ou genérica / não traz |
+| B. Afirma como verdade algo que contradiz o gold ou não tem base nele? | não / só em detalhe secundário / no ponto principal |
+| C. (só se B = ponto principal) Sobra informação correta e relevante? | sim / não |
+
+Regras de derivação do suporte semântico:
+
+- B = ponto principal: **2** se C = sim; **1** se C = não.
+- B = detalhe secundário: **3**.
+- B = não: **4** se A = completa; **3** se A = com lacunas ou não traz (resposta genérica que não crava o fato, sem afirmar nada falso).
+
+Recusa correta (perguntas sem resposta no corpus): **1** se A indica que a resposta reconhece a
+ausência, **0** caso contrário. Nessas perguntas, responder como se a informação existisse
+(A = não) com B = não é inconsistente e a interface pede revisão.
+
+Português formal e completude são escolhidos diretamente nas escalas das seções 4 e 5.
+
+A anotadora pode substituir a nota derivada por outra, com justificativa obrigatória. O
+caminho de decisão de cada item (respostas A, B e C, nota derivada, nota final, ajuste e
+justificativa) é gravado em `anotacao_geracao_decisoes.csv`, o que torna a anotação
+auditável e permite reportar a taxa de ajustes manuais.
