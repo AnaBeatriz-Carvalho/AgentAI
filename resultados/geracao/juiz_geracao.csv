@@ -1,0 +1,161 @@
+﻿anotacao_id;suporte_juiz;justificativa;modelo_juiz
+A001;4;A resposta confirma corretamente a contagem de 41 discursos com o tema 'Política', sem adicionar informações não sustentadas pelo gold.;qwen2.5-14b-instruct
+A002;3;A resposta confirma corretamente que Eduardo Girão elogiou Filipe Luís, mas contém informações adicionais irrelevantes e não solicitadas sobre outros senadores e discursos.;qwen2.5-14b-instruct
+A003;2;A resposta inverte a ordem dos temas com mais discursos, atribuindo o maior número ao tema que teve menos discursos no gold.;qwen2.5-14b-instruct
+A004;3;A resposta acerta os pontos principais do discurso da senadora, mas inclui detalhes não mencionados no gold (como qualificação contínua e reconhecimento profissional) e informações adicionais sobre outros discursos que não estão presentes na evidência fornecida.;qwen2.5-14b-instruct
+A005;2;A resposta afirma que os discursos não trataram dos mesmos pontos principais, o que contradiz a evidência de que ambos valorizaram a carreira da PMDF.;qwen2.5-14b-instruct
+A006;4;A resposta confirma corretamente o partido do senador e não faz afirmações falsas além da informação dada.;qwen2.5-14b-instruct
+A007;4;A resposta corretamente identifica a ausência de informações sobre partido e UF do orador, sem inventar dados.;qwen2.5-14b-instruct
+A008;3;A resposta menciona corretamente a celebração de aniversário, mas extrapola os detalhes fornecidos no gold com informações adicionais sobre frequência do tema 'Outros', que não estão presentes na evidência dada.;qwen2.5-14b-instruct
+A009;2;A resposta contradiz diretamente o gold ao afirmar que nenhum discurso mencionou a Polícia Militar do Distrito Federal, quando na verdade houve cinco discursos sobre o tema.;qwen2.5-14b-instruct
+A010;3;A resposta menciona corretamente os dois senadores que fizeram discursos sobre a PMDF, mas omite Izalci Lucas, que também participou dos discursos.;qwen2.5-14b-instruct
+A011;3;A resposta contém imprecisões sobre o número total de discursos e a quantidade específica relacionada à Conab.;qwen2.5-14b-instruct
+A012;2;A resposta contém uma data incorreta e subestima o número total de datas distintas.;qwen2.5-14b-instruct
+A013;3;A resposta menciona corretamente dois discursos sobre valorização da PMDF, mas omite os três outros discursos que abordaram valorização de outras categorias ou carreiras profissionais.;qwen2.5-14b-instruct
+A014;2;A resposta contradiz o gold ao afirmar que há poucos registros disponíveis no dia 16 de maio, quando na verdade o gold fornece um número específico de senadores e discursos.;qwen2.5-14b-instruct
+A015;4;A resposta está integralmente sustentada pela evidência, contando corretamente os discursos e atribuindo-os aos parlamentares corretos.;qwen2.5-14b-instruct
+A016;4;A resposta está integralmente sustentada pela evidência, abordando corretamente o tema da segurança e os pontos específicos sobre a PMDF e valorização da carreira policial.;qwen2.5-14b-instruct
+A017;3;A resposta captura corretamente o essencial do discurso de Damares Alves sobre a celebração do Dia da Polícia Militar do Distrito Federal, mas inclui informações adicionais que não são relevantes para a pergunta específica e não estão no gold.;qwen2.5-14b-instruct
+A018;4;A resposta corretamente lista os três temas mais recorrentes e suas respectivas porcentagens conforme o gold.;qwen2.5-14b-instruct
+A019;4;A resposta corretamente atribui a abertura e o encerramento da sessão ao senador Izalci Lucas.;qwen2.5-14b-instruct
+A020;4;A resposta está integralmente sustentada pelo gold, destacando a valorização da categoria e a menção ao Fundo Constitucional do DF.;qwen2.5-14b-instruct
+A021;4;A resposta reconhece a falta de previsão para os próximos discursos e não inventa dados.;qwen2.5-14b-instruct
+A022;4;A resposta corretamente reconhece a ausência de informações sobre a votação da CPI das Bets no corpus e não inventa dados.;qwen2.5-14b-instruct
+A023;3;A resposta acerta o essencial, mas adiciona informações não presentes no gold sobre estatísticas agregadas.;qwen2.5-14b-instruct
+A024;4;A resposta confirma corretamente o número de discursos (13) sobre o tema Segurança e fornece detalhes adicionais sustentados pela evidência.;qwen2.5-14b-instruct
+A025;4;A resposta está integralmente sustentada pelo gold, destacando a importância da PMDF e defendendo sua valorização.;qwen2.5-14b-instruct
+A026;4;A resposta está integralmente sustentada pelo gold, contando corretamente os discursos e descrevendo corretamente os temas abordados.;qwen2.5-14b-instruct
+A027;4;A resposta reconhece corretamente a falta de informações biográficas no corpus e fornece detalhes relevantes baseados nos dados disponíveis sem inventar informações.;qwen2.5-14b-instruct
+A028;3;A resposta menciona corretamente Frederico Cabral de Menezes como discursando sobre o aniversário de 35 anos da Conab, mas inclui informações adicionais não confirmadas pela evidência dada (Juliane Anzilago e outros temas).;qwen2.5-14b-instruct
+A029;2;A resposta contém erros materiais quanto ao tema predominante em cada dia.;qwen2.5-14b-instruct
+A030;1;A resposta inventa uma biografia para a senadora Leila Barros onde não há dados no corpus.;qwen2.5-14b-instruct
+A031;4;A resposta corretamente indica a falta de informações sobre votos no corpus e não inventa dados.;qwen2.5-14b-instruct
+A032;2;A resposta contém um erro material na quantidade de discursos atribuídos a cada senador.;qwen2.5-14b-instruct
+A033;3;A resposta menciona três discursos ao invés dos cinco presentes na gold.;qwen2.5-14b-instruct
+A034;2;A resposta atribui erroneamente a vários senadores um discurso que foi feito por Frederico Cabral de Menezes.;qwen2.5-14b-instruct
+A035;4;A resposta corretamente identifica a quantidade de discursos classificados com o tema 'Politica' (41) e não contém erros materiais ou informações inventadas.;qwen2.5-14b-instruct
+A036;2;A resposta contradiz o gold ao afirmar que há apenas 4 discursos sobre segurança quando o gold indica que são 13.;qwen2.5-14b-instruct
+A037;4;A resposta reconhece corretamente a ausência de informações sobre o resultado da votação no corpus e não inventa dados.;qwen2.5-14b-instruct
+A038;4;A resposta reconhece corretamente a falta de informações sobre votos e não inventa dados.;qwen2.5-14b-instruct
+A039;4;A resposta confirma corretamente a contagem de discursos sobre segurança e não afirma nada que contradiz ou excede as informações fornecidas no gold.;qwen2.5-14b-instruct
+A040;4;A resposta está integralmente sustentada pelo gold, sem adicionar informações não verificadas ou contradizer o conteúdo da referência.;qwen2.5-14b-instruct
+A041;2;A resposta inventa detalhes não presentes no gold e discute exemplos irrelevantes para o orador especificado.;qwen2.5-14b-instruct
+A042;2;A resposta contém nomes de senadores além do indicado no gold e não menciona que apenas Frederico Cabral de Menezes discursou sobre o aniversário da Conab.;qwen2.5-14b-instruct
+A043;2;A resposta afirma que os discursos não trataram dos mesmos pontos, contradizendo o gold que indica que ambos valorizaram a carreira.;qwen2.5-14b-instruct
+A044;3;A resposta inclui os três temas mais recorrentes corretamente, mas adiciona informações sobre senadores e temas que não foram solicitados na pergunta.;qwen2.5-14b-instruct
+A045;2;A resposta contradiz a evidência ao afirmar que não há elogio, quando na verdade Eduardo Girão fez um elogio ao técnico Filipe Luís.;qwen2.5-14b-instruct
+A046;4;A resposta reconhece corretamente a ausência de detalhes suficientes para determinar convergência ou divergência e não inventa dados.;qwen2.5-14b-instruct
+A047;2;A resposta contradiz o gold ao afirmar que Leila Barros abriu a sessão solene, quando na verdade foi Izalci Lucas.;qwen2.5-14b-instruct
+A048;2;A resposta contém um erro material na contagem de senadores que discursaram (afirma 3 quando o gold indica 5).;qwen2.5-14b-instruct
+A049;4;A resposta corretamente identifica que o tema 'Trabalho' teve mais discursos do que 'Política', sustentando a informação com os números fornecidos.;qwen2.5-14b-instruct
+A050;3;A resposta menciona corretamente os discursos sobre a PMDF, mas exagera na contagem total de discursos analisados (152 ao invés dos 5 presentes no gold).;qwen2.5-14b-instruct
+A051;2;A resposta atribuiu erroneamente o discurso principal sobre o aniversário da Conab ao senador Paulo Paim, quando na verdade é Frederico Cabral de Menezes quem discursou sobre isso.;qwen2.5-14b-instruct
+A052;3;A resposta é correta no essencial, mas faz afirmações genéricas sobre a baixa frequência do tema e limitações temporais não apoiadas pelo gold.;qwen2.5-14b-instruct
+A053;4;A resposta corretamente indica que não houve menção a projetos de lei específicos e descreve o conteúdo do discurso conforme o gold.;qwen2.5-14b-instruct
+A054;3;A resposta identifica corretamente a convergência na valorização da PMDF, mas extrapola os detalhes fornecidos no gold ao comentar sobre a temática 'Segurança' em geral e o período de discursos.;qwen2.5-14b-instruct
+A055;4;A resposta reconhece corretamente que não há como prever com certeza quais discursos serão feitos no próximo mês sobre a PMDF.;qwen2.5-14b-instruct
+A056;3;A resposta captura corretamente a convergência das posições sobre valorização da PMDF, mas extrapola os dados fornecidos ao sugerir possíveis divergências futuras sem evidência.;qwen2.5-14b-instruct
+A057;3;A resposta reconhece a ausência de partido e UF corretamente, mas inclui informações irrelevantes e não solicitadas sobre outros discursos.;qwen2.5-14b-instruct
+A058;4;A resposta corretamente indica a ausência de opinião pessoal específica e evita inventar dados.;qwen2.5-14b-instruct
+A059;2;A resposta contradiz o gold ao afirmar que Política teve mais discursos do que Trabalho.;qwen2.5-14b-instruct
+A060;4;A resposta confirma corretamente o número de discursos classificados com o tema Política (41) e não afirma nada além disso que não seja sustentado pelo gold.;qwen2.5-14b-instruct
+A061;1;A resposta fornece informações irrelevantes e inventa detalhes sobre um período futuro não mencionado no gold.;qwen2.5-14b-instruct
+A062;1;A resposta contradiz o gold ao afirmar que há apenas duas datas em vez de nove.;qwen2.5-14b-instruct
+A063;3;A resposta menciona corretamente que o tema foi classificado como 'Outros', mas adiciona informações não verificadas sobre os possíveis conteúdos do discurso.;qwen2.5-14b-instruct
+A064;2;A resposta menciona apenas o tema Trabalho no dia 14/05 e omite completamente os temas PMDF/Segurança+Política e CPI das Bets do dia 16/05.;qwen2.5-14b-instruct
+A065;3;A resposta contém a informação correta sobre os discursos de Eduardo Girão e Izalci Lucas, mas inclui dados irrelevantes sobre temas abordados que não estão no gold.;qwen2.5-14b-instruct
+A066;4;A resposta corretamente indica a falta do texto integral no corpus e fornece as informações disponíveis sem inventar dados.;qwen2.5-14b-instruct
+A067;3;A resposta menciona corretamente que o tema do discurso de Confúcio Moura é 'Outros', mas não especifica que ele discutiu a celebração do seu aniversário.;qwen2.5-14b-instruct
+A068;4;A resposta confirma corretamente o gold sem adicionar informações não sustentadas.;qwen2.5-14b-instruct
+A069;3;A resposta não menciona o estado de origem do senador Confúcio Moura, apesar da pergunta específica sobre isso.;qwen2.5-14b-instruct
+A070;4;A resposta corretamente identifica Paulo Paim como o senador com mais discursos e fornece a contagem exata de 16 discursos.;qwen2.5-14b-instruct
+A071;2;A resposta contradiz o gold ao afirmar que apenas cinco discursos trataram do tema Segurança quando o gold indica que são 13.;qwen2.5-14b-instruct
+A072;4;A resposta está integralmente sustentada pela evidência, mencionando corretamente o tema do discurso de Eduardo Girão sobre a CPI das Bets.;qwen2.5-14b-instruct
+A073;4;A resposta corretamente indica a falta de menção à opinião do Presidente do Senado sobre o tema.;qwen2.5-14b-instruct
+A074;3;A resposta acerta que Izalci Lucas abriu e encerrou a sessão, mas inclui informações irrelevantes e não presentes no gold.;qwen2.5-14b-instruct
+A075;2;A resposta afirma que há 152 sessões distintas, mas o gold especifica apenas 9 datas distintas.;qwen2.5-14b-instruct
+A076;1;A resposta contém afirmações incorretas sobre a Câmara dos Deputados e inventa dados não existentes no corpus.;qwen2.5-14b-instruct
+A077;3;A resposta captura corretamente a convergência nas posições sobre valorização da PMDF, mas extrapola ao sugerir detalhes específicos como promoções e reajustes salariais que não estão no gold.;qwen2.5-14b-instruct
+A078;4;A resposta confirma corretamente a data do discurso e não contém afirmações que contradizem o gold.;qwen2.5-14b-instruct
+A079;3;A resposta menciona corretamente alguns discursos sobre valorização de carreiras, mas exagera na quantidade (152 discursos) e não especifica os IDs corretos dos discursos analisados.;qwen2.5-14b-instruct
+A080;4;A resposta reconhece a falta de informação sobre os votos recebidos pelo senador Paulo Paim na última eleição e não inventa dados.;qwen2.5-14b-instruct
+A081;4;A resposta confirma corretamente o número de discursos classificados com o tema 'Política' e não afirma nada além do necessário.;qwen2.5-14b-instruct
+A082;4;A resposta está integralmente sustentada pela evidência do gold, sem adicionar informações não confirmadas ou irrelevantes.;qwen2.5-14b-instruct
+A083;3;A resposta contém a informação correta sobre Eduardo Girão elogiando Filipe Luís, mas inclui informações irrelevantes e não solicitadas que não estão no gold.;qwen2.5-14b-instruct
+A084;3;A resposta menciona corretamente a valorização da categoria, mas adiciona detalhes não presentes no gold (qualificação contínua, reconhecimento profissional, melhoria das condições de trabalho), além de informações extracorpóreas sobre frequência do tema 'Política' e discussões sobre PMDF.;qwen2.5-14b-instruct
+A085;1;A resposta inventa detalhes que não existem no corpus e não fornece o texto integral solicitado.;qwen2.5-14b-instruct
+A086;3;A resposta contém imprecisões menores e informações além do que foi solicitado no gold.;qwen2.5-14b-instruct
+A087;3;A resposta está correta sobre a UF do senador, mas inclui detalhes não confirmados no gold.;qwen2.5-14b-instruct
+A088;3;A resposta menciona corretamente o essencial sobre a proposta de Izalci Lucas, mas inicia com afirmação contraditória e inclui análises irrelevantes.;qwen2.5-14b-instruct
+A089;2;A resposta contém uma data futura e não menciona a quantidade correta de datas distintas no corpus.;qwen2.5-14b-instruct
+A090;3;A resposta menciona corretamente Eduardo Girão como o mais ativo no tema, mas exagera a quantidade de discursos e inclui parlamentares que não são mencionados na evidência dada.;qwen2.5-14b-instruct
+A091;3;A resposta menciona corretamente o tema do discurso e a data, mas adiciona informações irrelevantes sobre atividade do senador que não estão na evidência dada.;qwen2.5-14b-instruct
+A092;4;A resposta reconhece corretamente a ausência de informações sobre a biografia da senadora no corpus e fornece detalhes sustentados pela evidência disponível.;qwen2.5-14b-instruct
+A093;2;A resposta inventa dados não existentes no corpus ao afirmar que há um registro com o texto integral do discurso.;qwen2.5-14b-instruct
+A094;4;A resposta corretamente indica a ausência de discursos em janeiro de 2023 e não inventa dados.;qwen2.5-14b-instruct
+A095;4;A resposta confirma corretamente o partido do senador e não contém afirmações que contradizem ou sejam além da evidência fornecida.;qwen2.5-14b-instruct
+A096;4;A resposta está integralmente sustentada pelo gold, contando corretamente os discursos e descrevendo os temas com precisão.;qwen2.5-14b-instruct
+A097;4;A resposta corretamente indica a ausência de resultados de votação na amostra analisada e esclarece que o tema não foi predominante nos discursos.;qwen2.5-14b-instruct
+A098;2;A resposta contém erros materiais, como a data incorreta (14 e 15 de maio) e a menção a um discurso que não existe (Paulo Paim [D6]).;qwen2.5-14b-instruct
+A099;3;A resposta menciona corretamente o número total de discursos (sete), mas erra ao afirmar que foram sete senadores diferentes, quando na verdade foram cinco conforme o gold.;qwen2.5-14b-instruct
+A100;4;A resposta está integralmente sustentada pela evidência do gold, mencionando corretamente as críticas de Eduardo Girão às empresas de apostas online.;qwen2.5-14b-instruct
+A101;3;A resposta contém informações além do que é fornecido no gold, mas omite a informação específica sobre o estado de Rondônia (RO) para o qual Confúcio Moura representa.;qwen2.5-14b-instruct
+A102;1;A resposta inventa informações sobre discursos futuros da PMDF no próximo mês, quando não há evidência para isso.;qwen2.5-14b-instruct
+A103;1;A resposta contradiz o gold ao afirmar que não houve menção a apostas esportivas ou empresas de apostas online.;qwen2.5-14b-instruct
+A104;4;A resposta corretamente indica a ausência de menção a projetos de lei específicos no discurso.;qwen2.5-14b-instruct
+A105;4;A resposta está integralmente sustentada pelo gold, acertando o tema com mais discursos e suas respectivas quantidades.;qwen2.5-14b-instruct
+A106;4;A resposta reconhece a falta de informações sobre o período específico solicitado e não inventa dados.;qwen2.5-14b-instruct
+A107;3;A resposta é correta no essencial, mas contém uma imprecisão sobre o número de discursos (Izalci Lucas fez 5 discursos, não 4);qwen2.5-14b-instruct
+A108;4;A resposta corretamente identifica que não há menção à opinião do Presidente do Senado sobre a CPI das Bets nos discursos analisados e evita inventar informações.;qwen2.5-14b-instruct
+A109;3;A resposta contém informações além do necessário e algumas são irrelevantes ou não confirmadas pelo gold.;qwen2.5-14b-instruct
+A110;1;A resposta contradiz o gold ao atribuir discursos sobre a PMDF a senadores de estados diferentes e apresenta informações falsas sobre os senadores mais ativos nesse tema.;qwen2.5-14b-instruct
+A111;3;A resposta não trata da Câmara dos Deputados como solicitado e fornece informações sobre o Senado que não são relevantes para a pergunta, mas não inventa dados.;qwen2.5-14b-instruct
+A112;4;A resposta corretamente declina a existência de discussão sobre apostas online na Câmara dos Deputados no período especificado e esclarece que os temas tratados foram outros.;qwen2.5-14b-instruct
+A113;1;A resposta cita um projeto de lei que não está relacionado ao contexto do discurso sobre a PMDF e é completamente inventada.;qwen2.5-14b-instruct
+A114;3;A resposta é correta no essencial, mas contém imprecisões menores e fica genérica sobre a quantidade de discursos.;qwen2.5-14b-instruct
+A115;3;A resposta acerta o essencial sobre Paulo Paim, mas inclui detalhes adicionais sobre outros senadores e temas que não são confirmados pelo gold.;qwen2.5-14b-instruct
+A116;3;A resposta menciona corretamente a quantidade de discursos sobre segurança (13), mas inventa dados não fornecidos no gold, como o período específico e nomes detalhados de parlamentares com mais discursos.;qwen2.5-14b-instruct
+A117;1;A resposta inventou dados e não respondeu à pergunta sobre a contagem específica do dia 16 de maio de 2025.;qwen2.5-14b-instruct
+A118;3;A resposta reconhece corretamente que as informações sobre partido e UF não estão disponíveis, mas inclui detalhes irrelevantes e fora do escopo da pergunta.;qwen2.5-14b-instruct
+A119;3;A resposta acerta o partido PL, mas inclui informações sobre discursos que não são confirmadas pelo gold.;qwen2.5-14b-instruct
+A120;2;A resposta contradiz o gold ao afirmar que os temas predominantes foram diferentes quando ambos enfatizaram a valorização da carreira.;qwen2.5-14b-instruct
+A121;4;A resposta reconhece corretamente a ausência de registros e não inventa dados.;qwen2.5-14b-instruct
+A122;3;A resposta é correta no núcleo ao indicar ausência de menções explícitas, mas erra ao discutir o contexto do Senado em vez da Câmara dos Deputados.;qwen2.5-14b-instruct
+A123;3;A resposta contém informações além do necessário sobre filiação partidária e atividade parlamentar que não são confirmadas pelo gold.;qwen2.5-14b-instruct
+A124;4;A resposta confirma corretamente o número de discursos sobre o tema Segurança presente no gold.;qwen2.5-14b-instruct
+A125;4;A resposta confirma corretamente o partido do senador Izalci Lucas e não faz afirmações além daquelas sustentadas pelo gold.;qwen2.5-14b-instruct
+A126;3;A resposta acerta quem abriu e encerrou a sessão solene, mas inclui informações irrelevantes sobre outro tema.;qwen2.5-14b-instruct
+A127;2;A resposta afirma que não há informações suficientes para determinar a data exata, quando na verdade o gold fornece a data correta (2025-05-16).;qwen2.5-14b-instruct
+A128;2;A resposta atribui erroneamente o tema 'Trabalho' como predominante em 14/05 e 'Política' em 16/05, quando na verdade os temas mencionados no gold são Conab/Trabalho em 14/05 e PMDF/Segurança+Politica+CPI das Bets em 16/05.;qwen2.5-14b-instruct
+A129;1;A resposta inventa detalhes sobre um discurso que não existe no corpus e está fora do recorte temporal.;qwen2.5-14b-instruct
+A130;3;A resposta menciona corretamente os principais temas abordados na sessão, mas inclui um tema (Trabalho) que não existe na evidência e apresenta uma amostra de discursos que não está presente no corpus.;qwen2.5-14b-instruct
+A131;2;A resposta contém erros materiais na atribuição dos estados representados pelos senadores.;qwen2.5-14b-instruct
+A132;4;A resposta corretamente identifica que não há opinião pessoal do Presidente do Senado sobre a CPI das Bets no corpus.;qwen2.5-14b-instruct
+A133;2;A resposta atribuiu incorretamente 'Economia' em vez de 'Outros', e o percentual para Economia (7%) não está presente na evidência dada.;qwen2.5-14b-instruct
+A134;3;A resposta acerta o essencial da proposta do senador Izalci Lucas, mas inclui informações não presentes no gold sobre estatísticas e frequências de discursos.;qwen2.5-14b-instruct
+A135;2;A resposta contém erros na atribuição de parlamentares (Paulo Paim e Sérgio Petecão não participaram), além de uma afirmação sobre a porcentagem de discursos que não é fornecida no gold.;qwen2.5-14b-instruct
+A136;4;A resposta está integralmente sustentada pelo gold, abordando corretamente o tema da segurança e a valorização da PMDF.;qwen2.5-14b-instruct
+A137;3;A resposta menciona corretamente o tema do discurso e os principais pontos, mas inclui informações adicionais sobre a distribuição de temas que não são relevantes para a pergunta.;qwen2.5-14b-instruct
+A138;2;A resposta contradiz o gold ao afirmar que apenas dois discursos abordaram a valorização, quando na verdade são cinco.;qwen2.5-14b-instruct
+A139;4;A resposta corretamente indica que o texto integral do discurso não está disponível nos dados fornecidos e fornece informações relevantes sem inventar dados.;qwen2.5-14b-instruct
+A140;2;A resposta contém um erro material na contagem de discursos, indicando 4 quando há 5 discursos no gold que tratam da Polícia Militar do Distrito Federal.;qwen2.5-14b-instruct
+A141;2;A resposta contém erros materiais ao afirmar que a política foi o tema mais discutido no dia 16/05 e não menciona corretamente os temas PMDF e CPI das Bets.;qwen2.5-14b-instruct
+A142;4;A resposta reconhece a ausência de informação sem inventar dados.;qwen2.5-14b-instruct
+A143;2;A resposta inventa uma informação que não consta no gold, sugerindo a criação de um projeto de lei por Damares Alves.;qwen2.5-14b-instruct
+A144;1;A resposta inventa dados para um período futuro sem base nos dados fornecidos.;qwen2.5-14b-instruct
+A145;4;A resposta corretamente atribui o elogio ao técnico Filipe Luís ao senador Eduardo Girão e contextualiza adequadamente os comentários.;qwen2.5-14b-instruct
+A146;4;A resposta corretamente enumera os 9 discursos do senador Eduardo Girão no período especificado.;qwen2.5-14b-instruct
+A147;3;A resposta acerta o essencial, identificando Paulo Paim como o mais ativo com 16 discursos, mas inclui detalhes adicionais sobre temas que não são confirmados no gold e extrapolam a pergunta.;qwen2.5-14b-instruct
+A148;3;A resposta captura o essencial sobre a valorização da PMDF por ambas as parlamentares, mas Leila Barros não é mencionada como enfatizando qualificação contínua e melhoria das condições de trabalho no gold.;qwen2.5-14b-instruct
+A149;3;A resposta contém informações além do necessário e não menciona que a proposição foi durante uma sessão solene em homenagem ao Dia da Polícia Militar do Distrito Federal.;qwen2.5-14b-instruct
+A150;3;A resposta contém informações além do necessário e inclui dados não solicitados sobre outros senadores e temas.;qwen2.5-14b-instruct
+A151;2;A resposta contradiz o gold ao afirmar que apenas seis discursos trataram do tema segurança quando o gold indica que foram 13.;qwen2.5-14b-instruct
+A152;4;A resposta está integralmente sustentada pelo gold, apresentando corretamente as contagens de discursos para cada senador.;qwen2.5-14b-instruct
+A153;4;A resposta está corretamente sustentada pela evidência do gold, contando exatamente 9 discursos e não inventando dados.;qwen2.5-14b-instruct
+A154;3;A resposta menciona corretamente os senadores que discursaram sobre a PMDF, mas contém informações irrelevantes e incorretas sobre outros temas e senadores.;qwen2.5-14b-instruct
+A155;4;A resposta corretamente indica a falta de informações sobre os votos do senador Paulo Paim.;qwen2.5-14b-instruct
+A156;4;A resposta apresenta corretamente os três temas mais recorrentes e suas contagens, sem adicionar informações não sustentadas pelo gold.;qwen2.5-14b-instruct
+A157;4;A resposta está integralmente sustentada pelo gold, apresentando corretamente as contagens de discursos para cada senador.;qwen2.5-14b-instruct
+A158;2;A resposta contém nomes de senadores (Paulo Paim e Sérgio Petecão) que não aparecem na evidência dada.;qwen2.5-14b-instruct
+A159;4;A resposta está integralmente sustentada pela evidência do gold, mencionando corretamente os senadores envolvidos e as principais temáticas dos discursos.;qwen2.5-14b-instruct
+A160;4;A resposta está integralmente sustentada pela evidência, mencionando corretamente o número de discursos sobre segurança e destacando os senadores que abordaram o tema.;qwen2.5-14b-instruct
