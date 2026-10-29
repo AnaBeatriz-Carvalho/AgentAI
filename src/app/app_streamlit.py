@@ -34,17 +34,18 @@ from src.utils.rastreabilidade import TRACE_PADRAO, avaliar, avaliar_por_origem,
 from src.rag import rag_chat, indexer
 from src.rag.vectorstore import VectorStore
 from src.config.settings import get_rag_config
+from src.app import aba_municipal
 
 st.set_page_config(
     layout="wide",
-    page_title="Análise de Atividades do Senado",
+    page_title="Análise da Atividade Legislativa",
     initial_sidebar_state="expanded"
 )
 
-st.title("\U0001F3DB️ Análise de Atividades do Senado com LLM Local")
+st.title("\U0001F3DB️ Análise da Atividade Legislativa com LLM Local")
 
-tab_discursos, tab_votacoes, tab_rastreabilidade = st.tabs(
-    ["Análise de Discursos", "Análise de Votações", "📊 Rastreabilidade"]
+tab_discursos, tab_votacoes, tab_municipal, tab_rastreabilidade = st.tabs(
+    ["Senado: Discursos", "Senado: Votações", "🏙️ Câmaras Municipais", "📊 Rastreabilidade"]
 )
 
 with tab_discursos:
@@ -351,12 +352,16 @@ with tab_votacoes:
             )
 
 
+with tab_municipal:
+    aba_municipal.render()
+
+
 with tab_rastreabilidade:
     st.header("📊 Rastreabilidade das respostas")
     st.caption(
         "Estas porcentagens medem **rastreabilidade** (se a resposta se apoia em fontes reais), "
         "não acurácia de classificação. São calculadas a partir de `logs/qa_trace.jsonl`, que "
-        "recebe uma linha a cada pergunta feita nos chats de Discursos e Votações."
+        "recebe uma linha a cada pergunta feita nos chats de Discursos, Votações e Câmaras Municipais."
     )
 
     # O clique no botão já provoca o rerun do script, relendo o log atualizado.

@@ -93,6 +93,16 @@ O chat conversacional do artefato usa recuperação de fontes por palavra-chave.
 
 ---
 
+## Câmaras Municipais via SAPL (extensão fora do escopo da avaliação)
+
+O app tem uma aba **Câmaras Municipais** que consulta a API pública do SAPL (Sistema de Apoio ao Processo Legislativo, do Interlegis) de qualquer câmara que use o sistema. Mostra as matérias apresentadas no período (com tipo, autores, partido, link e PDF), os vereadores, as votações registradas e um chat que cita as matérias usadas (`[M1]`, `[M2]`...), com trace em `logs/qa_trace.jsonl` sob `origem="municipal"`.
+
+Esta extensão não participa de nenhuma das dimensões de avaliação acima e não altera os fluxos do Senado. O código fica em `src/sapl/` (cliente, normalização e serviço, sem dependência de Streamlit), `src/ai/municipal_qa.py` e `src/app/aba_municipal.py`; os testes, com a API simulada, em `tests/test_sapl.py`.
+
+Observações sobre os dados: cada câmara preenche o SAPL de um jeito, então a aba avisa quando faltam votações ou textos. O tema das matérias é atribuído pelo baseline de palavras-chave com a taxonomia do Senado, apenas como aproximação. Dos vereadores, só o e-mail institucional (`.leg.br`) é exibido.
+
+---
+
 ## Execução do artefato (opcional)
 
 Esta seção é secundária. Não é necessária para inspecionar dados, scripts ou resultados de avaliação.
@@ -121,6 +131,7 @@ Parâmetros do LLM local e do RAG são definidos por variáveis de ambiente (ver
 │   ├── ai/            # LLM local: retrieval de fontes, citação e trace (local_llm_handler.py)
 │   ├── eval/          # avaliação: categorias, classificador LLM e métricas
 │   ├── rag/           # busca semântica opcional (FAISS)
+│   ├── sapl/          # conector SAPL (câmaras municipais), fora do escopo da avaliação
 │   ├── utils/         # utilidades, logging e núcleo das métricas de rastreabilidade
 │   └── config/        # settings e constantes
 ├── scripts/           # coleta do corpus e scripts de avaliação por dimensão
