@@ -45,3 +45,6 @@ logs/*.log
 vectorstore/
 .cache/
 models_cache/
+
+### Trace local do app (consultas novas; o snapshot versionado é logs/qa_trace.jsonl)
+logs/qa_trace_local.jsonl

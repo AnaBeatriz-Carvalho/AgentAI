@@ -16,7 +16,8 @@ _CFG = get_local_llm_config()
 client = OpenAI(base_url=_CFG["base_url"], api_key=_CFG["api_key"])
 
 # Caminho do log estruturado de rastreabilidade (uma linha JSON por consulta).
-_TRACE_PATH = Path(__file__).resolve().parents[2] / "logs" / "qa_trace.jsonl"
+# Consultas feitas no app vão para um arquivo fora do git (ver src/utils/rastreabilidade.py).
+_TRACE_PATH = Path(__file__).resolve().parents[2] / "logs" / "qa_trace_local.jsonl"
 
 # Colunas expostas como "fonte" na interface e no trace, quando presentes.
 _COLUNAS_FONTE = [COL_ID_DISCURSO, "Data", "Parlamentar", "Partido", "Tema", "Resumo"]

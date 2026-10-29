@@ -17,7 +17,15 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+# Snapshot versionado: é o que o CLI lê e o que se reporta.
 TRACE_PADRAO = ROOT / "logs" / "qa_trace.jsonl"
+# Onde o app grava cada nova consulta. Fica fora do git; para reportar, copie as linhas
+# desejadas para o snapshot e versione.
+TRACE_LOCAL = ROOT / "logs" / "qa_trace_local.jsonl"
+
+# Origens que não entram no bloco "Geral" (artefato do Senado). O chat municipal é outro
+# artefato e aparece só na visão por origem.
+ORIGENS_FORA_DO_GERAL = {"municipal"}
 
 # Captura ids citados na resposta no formato [D3], [V1], [12345] etc.
 _PADRAO_CITACAO = re.compile(r"\[([A-Za-z]?\d+)\]")
@@ -114,6 +122,11 @@ def avaliar(registros: list[dict]) -> dict:
         "ids_citados_total": ids_citados_total,
         "ids_citados_validos": ids_citados_validos,
     }
+
+
+def registros_do_senado(registros: list[dict]) -> list[dict]:
+    """Remove as origens que não pertencem ao artefato do Senado (ex.: ``municipal``)."""
+    return [r for r in registros if r.get("origem") not in ORIGENS_FORA_DO_GERAL]
 
 
 def avaliar_por_origem(registros: list[dict]) -> dict[str, dict]:

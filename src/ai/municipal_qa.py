@@ -2,7 +2,7 @@
 
 Segue o mesmo contrato de rastreabilidade do chat do Senado: as matérias recuperadas
 entram no prompt com um ref curto (M1, M2...), o modelo é instruído a citar só esses
-refs, e cada consulta vai para ``logs/qa_trace.jsonl`` com ``origem="municipal"``. Assim
+refs, e cada consulta vai para ``logs/qa_trace_local.jsonl`` com ``origem="municipal"``. Assim
 a aba de Rastreabilidade mede o chat municipal com as mesmas métricas.
 
 Reaproveita a recuperação por palavra-chave e o registro de trace do handler do Senado

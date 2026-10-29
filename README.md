@@ -67,7 +67,7 @@ Material completo em `resultados/geracao/` (ver o `README.md` da pasta). Resumo:
 
 - **Script principal:** `scripts/avaliar_rastreabilidade_corpus.py`. Roda consultas pelo mesmo caminho do app, mede cobertura de citação e integridade referencial contra o corpus e sinaliza extrapolações (citações *dangling* e candidatos a incompatibilidade semântica).
 - **Saídas versionadas:** `resultados/rastreabilidade/traces_rastreabilidade.jsonl` (traces brutos) e `resultados/rastreabilidade/metricas_rastreabilidade.json`.
-- **Wrapper de linha de comando:** `scripts/avaliar_rastreabilidade.py`, que lê `logs/qa_trace.jsonl` e imprime as métricas. A lógica de cálculo fica em `src/utils/rastreabilidade.py`, reutilizada também pela interface.
+- **Wrapper de linha de comando:** `scripts/avaliar_rastreabilidade.py`, que lê `logs/qa_trace.jsonl` (snapshot versionado) e imprime as métricas. O app grava as consultas novas em `logs/qa_trace_local.jsonl`, fora do git; para reportar, copie as linhas para o snapshot. A lógica de cálculo fica em `src/utils/rastreabilidade.py`, reutilizada também pela interface.
 
 **Nota conceitual (central para esta dimensão).** A integridade referencial verifica se o identificador citado (`[D1]`, `[V1]`) existe entre as fontes recuperadas e no corpus. Ela não verifica se a fonte sustenta semanticamente a afirmação do agente. Os dois eixos são distintos. Uma citação pode ser referencialmente íntegra (o identificador existe) e ainda assim não sustentar a asserção do ponto de vista semântico. A checagem semântica é heurística (sobreposição de termos entre a frase citante e o resumo da fonte), reportada à parte e fora da métrica de integridade.
 
@@ -95,7 +95,7 @@ O chat conversacional do artefato usa recuperação de fontes por palavra-chave.
 
 ## Câmaras Municipais via SAPL (extensão fora do escopo da avaliação)
 
-O app tem uma aba **Câmaras Municipais** que consulta a API pública do SAPL (Sistema de Apoio ao Processo Legislativo, do Interlegis) de qualquer câmara que use o sistema. Mostra as matérias apresentadas no período (com tipo, autores, partido, link e PDF), os vereadores, as votações registradas e um chat que cita as matérias usadas (`[M1]`, `[M2]`...), com trace em `logs/qa_trace.jsonl` sob `origem="municipal"`.
+O app tem uma aba **Câmaras Municipais** que consulta a API pública do SAPL (Sistema de Apoio ao Processo Legislativo, do Interlegis) de qualquer câmara que use o sistema. Mostra as matérias apresentadas no período (com tipo, autores, partido, link e PDF), os vereadores, as votações registradas e um chat que cita as matérias usadas (`[M1]`, `[M2]`...), com trace sob `origem="municipal"`. Essas consultas não entram no bloco Geral da Rastreabilidade, que mede só o Senado.
 
 Esta extensão não participa de nenhuma das dimensões de avaliação acima e não altera os fluxos do Senado. O código fica em `src/sapl/` (cliente, normalização e serviço, sem dependência de Streamlit), `src/ai/municipal_qa.py` e `src/app/aba_municipal.py`; os testes, com a API simulada, em `tests/test_sapl.py`.
 
@@ -137,7 +137,7 @@ Parâmetros do LLM local e do RAG são definidos por variáveis de ambiente (ver
 ├── scripts/           # coleta do corpus e scripts de avaliação por dimensão
 ├── resultados/        # saídas versionadas (etl, gabarito, metricas, geracao, factual, rastreabilidade)
 ├── tests/             # testes automatizados (pytest)
-├── logs/              # traces de execução (qa_trace.jsonl versionado; *.log fora do versionamento)
+├── logs/              # traces: qa_trace.jsonl é o snapshot versionado; o app grava em qa_trace_local.jsonl (fora do git)
 ├── requirements.txt
 ├── .env.example
 └── README.md

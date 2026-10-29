@@ -73,3 +73,9 @@ def test_avaliar_por_origem_sem_campo_origem():
     registros = [{"fontes_ids": ["D1"], "resposta": "[D1]"}]
     por_origem = rast.avaliar_por_origem(registros)
     assert "desconhecida" in por_origem
+
+
+def test_registros_do_senado_exclui_municipal():
+    from src.utils.rastreabilidade import registros_do_senado
+    regs = [{"origem": "discurso"}, {"origem": "votacao"}, {"origem": "municipal"}, {}]
+    assert [r.get("origem") for r in registros_do_senado(regs)] == ["discurso", "votacao", None]

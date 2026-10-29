@@ -30,7 +30,9 @@ from pathlib import Path
 from src.data.data_processing import extrair_e_classificar_discursos
 from src.ai.local_llm_handler import responder_pergunta_usuario_local, explicar_votacao_local, responder_pergunta_votacao_local
 from src.data.votacoes_handler import obter_votacoes_periodo
-from src.utils.rastreabilidade import TRACE_PADRAO, avaliar, avaliar_por_origem, carregar_registros
+from src.utils.rastreabilidade import (
+    TRACE_LOCAL, TRACE_PADRAO, avaliar, avaliar_por_origem, carregar_registros, registros_do_senado,
+)
 from src.rag import rag_chat, indexer
 from src.rag.vectorstore import VectorStore
 from src.config.settings import get_rag_config
@@ -360,14 +362,15 @@ with tab_rastreabilidade:
     st.header("📊 Rastreabilidade das respostas")
     st.caption(
         "Estas porcentagens medem **rastreabilidade** (se a resposta se apoia em fontes reais), "
-        "não acurácia de classificação. São calculadas a partir de `logs/qa_trace.jsonl`, que "
-        "recebe uma linha a cada pergunta feita nos chats de Discursos, Votações e Câmaras Municipais."
+        "não acurácia de classificação. São calculadas a partir de `logs/qa_trace.jsonl` (snapshot "
+        "versionado) e de `logs/qa_trace_local.jsonl` (consultas feitas neste computador, fora do git). "
+        "O bloco Geral considera só o Senado; Câmaras Municipais aparece apenas em Por origem."
     )
 
     # O clique no botão já provoca o rerun do script, relendo o log atualizado.
     st.button("🔄 Atualizar")
 
-    registros = carregar_registros(TRACE_PADRAO)
+    registros = carregar_registros(TRACE_PADRAO) + carregar_registros(TRACE_LOCAL)
 
     if not registros:
         st.info(
@@ -383,8 +386,8 @@ with tab_rastreabilidade:
             c3.metric("Cobertura de citação", f"{m.get('cobertura_citacao', 0):.1%}")
             c4.metric("Precisão de citação", f"{m.get('precisao_citacao', 0):.1%}")
 
-        st.subheader("Geral")
-        _mostrar_metricas(avaliar(registros))
+        st.subheader("Geral (Senado)")
+        _mostrar_metricas(avaliar(registros_do_senado(registros)))
 
         st.subheader("Por origem")
         por_origem = avaliar_por_origem(registros)
