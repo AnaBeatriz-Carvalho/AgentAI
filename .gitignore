@@ -45,3 +45,6 @@ logs/*.log
 vectorstore/
 .cache/
 models_cache/
+
+### Trace de rastreabilidade gerado pelo app
+logs/*.jsonl
