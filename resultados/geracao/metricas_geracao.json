@@ -90,23 +90,23 @@
       "completude_media": 4.0
     },
     "gemma-2-9b-it": {
-      "suporte_semantico_media": 3.15,
+      "suporte_semantico_media": 3.2,
       "suporte_dist": {
-        "1": 6,
-        "3": 16,
+        "1": 5,
+        "3": 17,
         "4": 18
       },
       "recusa_correta": 6,
       "recusa_anotadas": 8,
       "pt_formal_media": 4.47,
-      "completude_media": 3.38
+      "completude_media": 3.45
     }
   },
   "q04_suporte_por_modelo": {
     "meta-llama-3.1-8b-instruct": 3.0,
     "mistralai/mistral-7b-instruct-v0.3": 3.0,
     "qwen2.5-7b-instruct-1m": 3.0,
-    "gemma-2-9b-it": 1.0
+    "gemma-2-9b-it": 3.0
   },
   "intra_anotador": {
     "suporte_semantico": {
@@ -117,8 +117,8 @@
     "n": 160,
     "concordancia_exata": 0.4813,
     "concordancia_pm1": 0.8625,
-    "kappa": 0.2475,
-    "kappa_ponderado_quadratico": 0.5155
+    "kappa": 0.2458,
+    "kappa_ponderado_quadratico": 0.5094
   },
   "juiz_media_por_modelo": {
     "meta-llama-3.1-8b-instruct": 3.05,
