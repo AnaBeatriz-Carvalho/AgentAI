@@ -85,7 +85,7 @@
   ],
   "separador_csv": ";",
   "anotacao_humana": {
-    "status": "A REFAZER: planilha cega anotacao_geracao.csv pronta (regenerada em 2026-10-27 apos correcao do loader; mesma chave)",
+    "status": "CONCLUIDA: rodada 1 em 2026-10-27 (160 respostas), revisoes de A028/A051 (2026-10-27) e A034 (2026-10-29); reteste em 2026-11-04 (49 respostas, 8 dias apos a rodada 1). Historico no README.md",
     "colunas_faltantes": [
       "suporte_semantico (1-4)",
       "recusa_correta_humana",
@@ -93,7 +93,7 @@
       "completude (1-5)"
     ],
     "observacao": "As colunas automaticas (integridade referencial, alucinacao, tokens/s) estao nas coletas; as notas humanas viviam numa planilha offline que se perdeu.",
-    "reteste": "anotacao_geracao_reteste.csv: 49 linhas (31%), estratificado por tipo, semente 2027",
+    "reteste": "anotacao_geracao_reteste.csv: 49 linhas (31%), estratificado por tipo, semente 2027; preenchido em 2026-11-04 (intervalo de 8 dias, abaixo das 2 a 4 semanas previstas)",
     "llm_juiz": "scripts/juiz_geracao.py -> juiz_geracao.csv (sinal secundario)"
   },
   "n_total_respostas": 160,
