@@ -110,7 +110,11 @@
   },
   "intra_anotador": {
     "suporte_semantico": {
-      "n": 0
+      "n": 49,
+      "concordancia_exata": 0.551,
+      "concordancia_pm1": 0.8367,
+      "kappa": 0.3107,
+      "kappa_ponderado_quadratico": 0.5984
     }
   },
   "humano_x_juiz": {
