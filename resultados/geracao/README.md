@@ -73,7 +73,7 @@ As colunas de anotação humana não são preenchidas pela coleta.
 ## Histórico
 
 Registro cronológico do que foi feito na avaliação de geração. Os commits citados estão no
-`main` do repositório.
+branch `pesquisa` (tag `avaliacao-dissertacao`).
 
 | Data | O que foi feito | Commit |
 |---|---|---|
@@ -97,7 +97,8 @@ deve ser informado no texto.
 
 ### Observações do reteste
 
-- A nota 4 é estável (21 de 24 itens repetidos); a oscilação se concentra entre 1 e 3.
+- A nota 4 é estável (21 de 24 itens repetidos). Dos 22 itens divergentes, 14 oscilaram entre
+  as notas 1 e 3 e 7 entre 3 e 4.
 - Nos 22 itens divergentes, o julgamento de **erro** mudou em 14 e o de **acerto** em 9. A
   **sobra** mudou em 15, quase sempre como consequência do caminho de erro (só 3 casos sem
   mudança de erro). Todos os saltos de 2 pontos (3 ↔ 1) vieram de alternância entre "sem erro"
